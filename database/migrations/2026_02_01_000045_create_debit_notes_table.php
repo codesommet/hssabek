@@ -32,6 +32,7 @@ return new class extends Migration {
             $table->text('terms')->nullable();
             $table->json('bank_details_snapshot')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('supplier_id')->references('id')->on('suppliers');

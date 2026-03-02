@@ -2,38 +2,60 @@
 
 namespace App\Models\Purchases;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DebitNote extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
+        'supplier_id',
+        'purchase_order_id',
         'vendor_bill_id',
-        'debit_note_number',
-        'debit_note_date',
-        'reason',
-        'subtotal',
-        'tax_amount',
-        'total_amount',
+        'number',
+        'reference_number',
         'status',
+        'debit_note_date',
+        'due_date',
+        'currency',
+        'enable_tax',
+        'subtotal',
+        'discount_total',
+        'tax_total',
+        'round_off',
+        'total',
+        'total_in_words',
         'notes',
+        'terms',
     ];
 
     protected $casts = [
         'debit_note_date' => 'date',
+        'due_date' => 'date',
+        'enable_tax' => 'boolean',
         'subtotal' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'total_amount' => 'decimal:2',
+        'discount_total' => 'decimal:2',
+        'tax_total' => 'decimal:2',
+        'round_off' => 'decimal:2',
+        'total' => 'decimal:2',
+        'bill_from_snapshot' => 'array',
+        'bill_to_snapshot' => 'array',
+        'bank_details_snapshot' => 'array',
     ];
 
-    public function tenant(): BelongsTo
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function purchaseOrder(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseOrder::class);
     }
 
     public function vendorBill(): BelongsTo

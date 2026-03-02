@@ -25,8 +25,14 @@ trait BelongsToTenant
         // Auto-fill tenant_id when creating a new model
         static::creating(function ($model) {
             if (empty($model->tenant_id)) {
-                $tenantId = TenantContext::id()
-                    ?? auth()->user()?->tenant_id;
+                $tenantId = TenantContext::id();
+
+                // Only fall back to auth user if TenantContext is not set,
+                // and avoid calling auth()->user() during authentication
+                // (it can trigger recursive User model resolution)
+                if ($tenantId === null && auth()->hasUser()) {
+                    $tenantId = auth()->user()?->tenant_id;
+                }
 
                 if ($tenantId !== null) {
                     $model->tenant_id = $tenantId;

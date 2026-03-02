@@ -145,6 +145,7 @@ Route::prefix('admin')
         require __DIR__ . '/superadmin/subscriptions.php';
         require __DIR__ . '/superadmin/templates.php';
         require __DIR__ . '/superadmin/settings.php';
+        require __DIR__ . '/superadmin/access.php';
     });
 
 // this route for testing the theming system, can be removed later

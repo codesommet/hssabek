@@ -2,16 +2,16 @@
 
 namespace App\Models\Finance;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MoneyTransfer extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'from_bank_account_id',
         'to_bank_account_id',
         'amount',
@@ -24,11 +24,6 @@ class MoneyTransfer extends Model
         'amount' => 'decimal:2',
         'transfer_date' => 'date',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function fromBankAccount(): BelongsTo
     {

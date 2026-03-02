@@ -26,12 +26,9 @@ class IdentifyTenantByDomain
         } else {
             // Fallback: try to find tenant by subdomain slug
             $parts = explode('.', $host);
-            if (count($parts) >= 2) {
-                $subdomain = $parts[0];
-                $tenant = Tenant::where('slug', $subdomain)->first();
-            } else {
-                $tenant = null;
-            }
+            $tenant = (count($parts) >= 2)
+                ? Tenant::where('slug', $parts[0])->first()
+                : null;
         }
 
         if ($tenant) {
@@ -41,6 +38,9 @@ class IdentifyTenantByDomain
             // Also bind into the container and request for backward compatibility
             app()->instance('tenant', $tenant);
             $request->attributes->set('tenant', $tenant);
+        } elseif ($request->is('backoffice/*')) {
+            // Hard stop: no tenant found for this domain on a backoffice route
+            abort(404, 'Domaine non reconnu.');
         }
 
         return $next($request);

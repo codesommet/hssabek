@@ -2,17 +2,16 @@
 
 namespace App\Models\Sales;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PaymentMethod extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'name',
         'type',
         'is_active',
@@ -21,11 +20,6 @@ class PaymentMethod extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function payments(): HasMany
     {

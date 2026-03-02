@@ -2,17 +2,18 @@
 
 namespace App\Models\Sales;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'customer_id',
         'invoice_number',
         'invoice_date',
@@ -32,11 +33,6 @@ class Invoice extends Model
         'tax_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function customer(): BelongsTo
     {

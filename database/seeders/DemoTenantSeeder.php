@@ -9,6 +9,7 @@ use App\Models\Tenancy\TenantSetting;
 use App\Models\Tenancy\Role;
 use App\Models\Tenancy\Permission;
 use App\Models\User;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Database\Seeder;
 
 /**
@@ -70,18 +71,23 @@ class DemoTenantSeeder extends Seeder
             ]
         );
 
-        // 4) Create Super Admin user (tenant_id = NULL)
+        // 4) Create Super Admin user (tenant_id = NULL — no tenant context)
         $superAdmin = User::firstOrCreate(
             ['email' => 'superadmin@facturation.local'],
             [
-                'tenant_id' => null,
                 'name' => 'Super Administrator',
-                'password' => bcrypt('superadmin123'),
+                'password' => bcrypt(env('DEMO_SA_PASSWORD', 'secret')),
                 'status' => 'active',
                 'email_verified_at' => now(),
                 'last_login_ip' => '127.0.0.1',
             ]
         );
+
+        // Ensure super admin has no tenant_id (direct assignment bypasses fillable)
+        if ($superAdmin->tenant_id !== null) {
+            $superAdmin->tenant_id = null;
+            $superAdmin->saveQuietly();
+        }
 
         // Assign super_admin role
         $superAdminRole = Role::where('name', 'super_admin')
@@ -92,18 +98,26 @@ class DemoTenantSeeder extends Seeder
             $superAdmin->syncRoles([$superAdminRole]);
         }
 
+        // Set tenant context so BelongsToTenant auto-fills tenant_id for all tenant users below
+        TenantContext::set($tenant);
+
         // 5) Create Company Administrator
         $adminCompany = User::firstOrCreate(
             ['email' => 'admin@localhost.local'],
             [
-                'tenant_id' => $tenant->id,
                 'name' => 'Company Administrator',
-                'password' => bcrypt('admin123'),
+                'password' => bcrypt(env('DEMO_ADMIN_PASSWORD', 'secret')),
                 'status' => 'active',
                 'email_verified_at' => now(),
                 'last_login_ip' => '127.0.0.1',
             ]
         );
+
+        // Ensure tenant_id is set (handles already-existing records)
+        if (!$adminCompany->tenant_id) {
+            $adminCompany->tenant_id = $tenant->id;
+            $adminCompany->saveQuietly();
+        }
 
         // Create tenant-scoped admin role
         $tenantAdminRole = Role::firstOrCreate([
@@ -119,16 +133,20 @@ class DemoTenantSeeder extends Seeder
 
         // 6) Create test manager user
         $testUser = User::firstOrCreate(
-            ['email' => 'rochdi.karouali@glszentrum.com'],
+            ['email' => 'manager@demo.local'],
             [
-                'tenant_id' => $tenant->id,
-                'name' => 'Rochdi Karouali',
-                'password' => bcrypt('password'),
+                'name' => 'Demo Manager',
+                'password' => bcrypt(env('DEMO_USER_PASSWORD', 'secret')),
                 'status' => 'active',
                 'email_verified_at' => now(),
                 'last_login_ip' => '127.0.0.1',
             ]
         );
+
+        if (!$testUser->tenant_id) {
+            $testUser->tenant_id = $tenant->id;
+            $testUser->saveQuietly();
+        }
 
         $managerRole = Role::firstOrCreate([
             'name' => 'manager',
@@ -158,14 +176,18 @@ class DemoTenantSeeder extends Seeder
         $testUser2 = User::firstOrCreate(
             ['email' => 'test@example.com'],
             [
-                'tenant_id' => $tenant->id,
                 'name' => 'Test User',
-                'password' => bcrypt('password'),
+                'password' => bcrypt(env('DEMO_USER_PASSWORD', 'secret')),
                 'status' => 'active',
                 'email_verified_at' => now(),
                 'last_login_ip' => '127.0.0.1',
             ]
         );
+
+        if (!$testUser2->tenant_id) {
+            $testUser2->tenant_id = $tenant->id;
+            $testUser2->saveQuietly();
+        }
 
         $receptionistRole = Role::firstOrCreate([
             'name' => 'receptionist',
@@ -188,6 +210,9 @@ class DemoTenantSeeder extends Seeder
 
         $receptionistRole->syncPermissions($receptionistPermissions);
         $testUser2->syncRoles([$receptionistRole]);
+
+        // Clear tenant context after seeding
+        TenantContext::forget();
 
         // 8) Assign Free plan subscription to demo tenant
         $freePlan = Plan::where('code', 'free')->first();

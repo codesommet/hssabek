@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('provider_payment_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('customer_id')->references('id')->on('customers')->cascadeOnDelete();

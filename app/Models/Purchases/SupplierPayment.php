@@ -2,6 +2,7 @@
 
 namespace App\Models\Purchases;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,10 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SupplierPayment extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'supplier_id',
         'vendor_bill_id',
         'payment_method_id',
@@ -27,11 +27,6 @@ class SupplierPayment extends Model
         'payment_date' => 'date',
         'payment_amount' => 'decimal:2',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function supplier(): BelongsTo
     {

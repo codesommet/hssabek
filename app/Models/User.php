@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -15,10 +16,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
-    use HasUuids, HasApiTokens, Notifiable, HasRoles, InteractsWithMedia;
+    use HasUuids, SoftDeletes, HasApiTokens, Notifiable, HasRoles, InteractsWithMedia, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'email',
         'name',
         'phone',
@@ -48,11 +48,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'date_of_birth' => 'date',
         'password' => 'hashed',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function invitations(): HasMany
     {

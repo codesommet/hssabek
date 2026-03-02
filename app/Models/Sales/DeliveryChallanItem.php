@@ -22,9 +22,9 @@ class DeliveryChallanItem extends Model
         'quantity_delivered' => 'integer',
     ];
 
-    public function deliveryChallан(): BelongsTo
+    public function deliveryChallan(): BelongsTo
     {
-        return $this->belongsTo(DeliveryChallан::class);
+        return $this->belongsTo(DeliveryChallan::class);
     }
 
     public function product(): BelongsTo

@@ -11,7 +11,6 @@ class Signature extends Model
     use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'name',
         'signature_image',
         'is_default',

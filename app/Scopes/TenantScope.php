@@ -18,6 +18,12 @@ use Illuminate\Database\Eloquent\Scope;
  */
 class TenantScope implements Scope
 {
+    /**
+     * Re-entrancy guard: prevents infinite recursion when auth()->user()
+     * triggers a User query that re-applies this scope.
+     */
+    protected static bool $resolving = false;
+
     public function apply(Builder $builder, Model $model): void
     {
         $tenantId = $this->resolveTenantId();
@@ -33,7 +39,7 @@ class TenantScope implements Scope
      */
     protected function resolveTenantId(): ?string
     {
-        // 1) If TenantContext has a tenant set, use it
+        // 1) If TenantContext has a tenant set, use it (fast path — no DB call)
         if (TenantContext::check()) {
             return TenantContext::id();
         }
@@ -43,8 +49,19 @@ class TenantScope implements Scope
             return null;
         }
 
-        // 3) Fallback: try the authenticated user's tenant_id
-        $user = auth()->user();
+        // 3) Re-entrancy guard: if we're already inside auth()->user(), bail out
+        //    to prevent infinite recursion (auth resolves User → TenantScope → auth → ...)
+        if (static::$resolving) {
+            return null;
+        }
+
+        // 4) Fallback: try the authenticated user's tenant_id
+        static::$resolving = true;
+        try {
+            $user = auth()->user();
+        } finally {
+            static::$resolving = false;
+        }
 
         if ($user === null) {
             return null;

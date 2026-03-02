@@ -2,44 +2,31 @@
 
 namespace App\Models\CRM;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
+        'type',
         'name',
         'email',
         'phone',
-        'customer_type',
         'tax_id',
-        'currency_id',
-        'credit_limit',
-        'credit_used',
-        'payment_terms',
+        'currency',
+        'payment_terms_days',
         'status',
         'notes',
     ];
 
     protected $casts = [
-        'credit_limit' => 'decimal:2',
-        'credit_used' => 'decimal:2',
+        'payment_terms_days' => 'integer',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
-
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Finance\Currency::class);
-    }
 
     public function addresses(): HasMany
     {

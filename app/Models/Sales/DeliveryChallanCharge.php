@@ -20,8 +20,8 @@ class DeliveryChallanCharge extends Model
         'charge_amount' => 'decimal:2',
     ];
 
-    public function deliveryChallан(): BelongsTo
+    public function deliveryChallan(): BelongsTo
     {
-        return $this->belongsTo(DeliveryChallан::class);
+        return $this->belongsTo(DeliveryChallan::class);
     }
 }

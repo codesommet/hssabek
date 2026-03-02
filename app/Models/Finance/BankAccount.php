@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,10 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BankAccount extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'account_name',
         'account_number',
         'bank_name',
@@ -29,11 +29,6 @@ class BankAccount extends Model
         'current_balance' => 'decimal:2',
         'is_active' => 'boolean',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function currency(): BelongsTo
     {

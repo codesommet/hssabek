@@ -137,6 +137,8 @@
 
 @include('backoffice.layout.partials.footer-scripts')
 
+@stack('scripts')
+
 </body>
 
 </html>

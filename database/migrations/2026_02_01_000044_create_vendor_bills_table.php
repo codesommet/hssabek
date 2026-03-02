@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->decimal('amount_due', 12, 2);
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('supplier_id')->references('id')->on('suppliers');

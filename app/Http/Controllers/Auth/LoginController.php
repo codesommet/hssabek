@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\System\LoginLog;
+use App\Scopes\TenantScope;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +19,7 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
+        $credentials = $request->only('email', 'password');
         $ip = $request->ip();
         $userAgent = $request->userAgent();
 
@@ -25,11 +27,30 @@ class LoginController extends Controller
         $tenant = app()->has('tenant') ? app('tenant') : $request->attributes->get('tenant');
 
         // First check if user is super admin (tenant_id = NULL)
-        $user = \App\Models\User::where('email', $credentials['email'])->first();
+        // Must bypass TenantScope: the middleware already set TenantContext for
+        // this domain (e.g. localhost), which would filter out superadmin (tenant_id IS NULL).
+        $user = \App\Models\User::withoutGlobalScope(TenantScope::class)
+            ->where('email', $credentials['email'])
+            ->whereNull('tenant_id')
+            ->first();
 
-        if ($user && $user->tenant_id === null) {
+        if ($user) {
             // SUPER ADMIN LOGIN (no tenant required)
-            if (!Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $request->boolean('remember'))) {
+            // Temporarily clear TenantContext so Auth::attempt doesn't apply
+            // the tenant scope when resolving the user from the provider.
+            $savedTenant = TenantContext::get();
+            TenantContext::forget();
+
+            $authResult = Auth::attempt(
+                ['email' => $credentials['email'], 'password' => $credentials['password']],
+                $request->boolean('remember')
+            );
+
+            if (!$authResult) {
+                // Restore tenant context before returning
+                if ($savedTenant) {
+                    TenantContext::set($savedTenant);
+                }
                 LoginLog::create([
                     'tenant_id' => null,
                     'user_id' => null,
@@ -43,6 +64,11 @@ class LoginController extends Controller
                 return back()
                     ->withInput($request->only('email'))
                     ->withErrors(['email' => 'The provided credentials do not match our records.']);
+            }
+
+            // Restore tenant context after successful super admin auth
+            if ($savedTenant) {
+                TenantContext::set($savedTenant);
             }
 
             // Check user status after successful auth attempt

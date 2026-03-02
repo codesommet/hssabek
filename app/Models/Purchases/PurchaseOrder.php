@@ -2,17 +2,18 @@
 
 namespace App\Models\Purchases;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseOrder extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'supplier_id',
         'po_number',
         'po_date',
@@ -25,11 +26,6 @@ class PurchaseOrder extends Model
         'po_date' => 'date',
         'expected_delivery_date' => 'date',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function supplier(): BelongsTo
     {

@@ -2,16 +2,16 @@
 
 namespace App\Models\System;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserInvitation extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'invited_by_id',
         'email',
         'invitation_token',
@@ -23,11 +23,6 @@ class UserInvitation extends Model
         'accepted_at' => 'datetime',
         'expires_at' => 'datetime',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function invitedBy(): BelongsTo
     {

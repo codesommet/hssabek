@@ -37,6 +37,7 @@ return new class extends Migration {
 
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('category_id')->references('id')->on('product_categories')->nullOnDelete();

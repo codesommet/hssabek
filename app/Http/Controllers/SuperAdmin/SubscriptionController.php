@@ -23,7 +23,7 @@ class SubscriptionController extends Controller
 
         $subscriptions = $query->paginate(20);
 
-        return view('backoffice.superadmin.subscriptions.index', compact('subscriptions'));
+        return view('backoffice.subscriptions.index', compact('subscriptions'));
     }
 
     /**
@@ -33,6 +33,6 @@ class SubscriptionController extends Controller
     {
         $subscription->load('tenant', 'plan', 'invoices');
 
-        return view('backoffice.superadmin.subscriptions.show', compact('subscription'));
+        return view('backoffice.subscriptions.show', compact('subscription'));
     }
 }

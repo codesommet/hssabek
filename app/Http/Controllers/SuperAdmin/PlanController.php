@@ -15,7 +15,7 @@ class PlanController extends Controller
     {
         $plans = Plan::orderBy('price')->get();
 
-        return view('backoffice.superadmin.plans.index', compact('plans'));
+        return view('backoffice.plans.index', compact('plans'));
     }
 
     /**
@@ -23,7 +23,7 @@ class PlanController extends Controller
      */
     public function create()
     {
-        return view('backoffice.superadmin.plans.create');
+        return view('backoffice.plans.create');
     }
 
     /**
@@ -64,7 +64,7 @@ class PlanController extends Controller
     {
         $plan->loadCount('subscriptions');
 
-        return view('backoffice.superadmin.plans.show', compact('plan'));
+        return view('backoffice.plans.show', compact('plan'));
     }
 
     /**
@@ -72,7 +72,7 @@ class PlanController extends Controller
      */
     public function edit(Plan $plan)
     {
-        return view('backoffice.superadmin.plans.edit', compact('plan'));
+        return view('backoffice.plans.edit', compact('plan'));
     }
 
     /**

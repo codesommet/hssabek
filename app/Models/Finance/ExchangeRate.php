@@ -2,18 +2,18 @@
 
 namespace App\Models\Finance;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExchangeRate extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'tenant_id',
         'from_currency_id',
         'to_currency_id',
         'rate',
@@ -24,11 +24,6 @@ class ExchangeRate extends Model
         'rate' => 'decimal:6',
         'effective_date' => 'date',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function fromCurrency(): BelongsTo
     {

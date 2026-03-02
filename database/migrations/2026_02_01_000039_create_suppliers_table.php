@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text('notes')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->index('tenant_id');

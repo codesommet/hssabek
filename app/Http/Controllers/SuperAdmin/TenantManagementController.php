@@ -14,11 +14,12 @@ class TenantManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $tenants = Tenant::withCount('users', 'domains')
+        $tenants = Tenant::with('domains')
+            ->withCount('users')
             ->orderByDesc('created_at')
             ->paginate(20);
 
-        return view('backoffice.superadmin.tenants.index', compact('tenants'));
+        return view('backoffice.tenants.index', compact('tenants'));
     }
 
     /**
@@ -26,7 +27,7 @@ class TenantManagementController extends Controller
      */
     public function create()
     {
-        return view('backoffice.superadmin.tenants.create');
+        return view('backoffice.tenants.create');
     }
 
     /**
@@ -68,7 +69,7 @@ class TenantManagementController extends Controller
     {
         $tenant->load('domains', 'users', 'settings');
 
-        return view('backoffice.superadmin.tenants.show', compact('tenant'));
+        return view('backoffice.tenants.show', compact('tenant'));
     }
 
     /**
@@ -76,7 +77,7 @@ class TenantManagementController extends Controller
      */
     public function edit(Tenant $tenant)
     {
-        return view('backoffice.superadmin.tenants.edit', compact('tenant'));
+        return view('backoffice.tenants.edit', compact('tenant'));
     }
 
     /**

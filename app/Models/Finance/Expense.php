@@ -2,16 +2,16 @@
 
 namespace App\Models\Finance;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expense extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'bank_account_id',
         'finance_category_id',
         'amount',
@@ -25,11 +25,6 @@ class Expense extends Model
         'amount' => 'decimal:2',
         'date' => 'date',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function bankAccount(): BelongsTo
     {

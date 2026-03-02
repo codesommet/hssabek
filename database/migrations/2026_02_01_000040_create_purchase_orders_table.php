@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->text('notes')->nullable();
             $table->text('terms')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->cascadeOnDelete();

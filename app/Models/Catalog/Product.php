@@ -2,17 +2,18 @@
 
 namespace App\Models\Catalog;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'product_category_id',
         'unit_id',
         'name',
@@ -31,11 +32,6 @@ class Product extends Model
         'selling_price' => 'decimal:2',
         'track_inventory' => 'boolean',
     ];
-
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Tenancy\Tenant::class);
-    }
 
     public function category(): BelongsTo
     {

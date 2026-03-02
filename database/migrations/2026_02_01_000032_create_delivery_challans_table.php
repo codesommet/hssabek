@@ -34,6 +34,7 @@ return new class extends Migration {
             $table->dateTime('issued_at')->nullable();
             $table->dateTime('delivered_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('customer_id')->references('id')->on('customers')->cascadeOnDelete();
