@@ -5,10 +5,12 @@ namespace App\Models\Tenancy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Tenant extends Model
+class Tenant extends Model implements HasMedia
 {
-    use HasUuids;
+    use HasUuids, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -38,5 +40,19 @@ class Tenant extends Model
     public function settings()
     {
         return $this->hasOne(TenantSetting::class);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('logo')
+            ->singleFile()
+            ->useFallbackUrl(asset('build/img/icons/company-icon-01.svg'))
+            ->useFallbackPath(public_path('build/img/icons/company-icon-01.svg'));
+    }
+
+    public function getLogoUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('logo')
+            ?: asset('build/img/icons/company-icon-01.svg');
     }
 }

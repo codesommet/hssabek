@@ -1,47 +1,95 @@
-<div class="table-responsive table-nowrap">
-    <table class="table border mb-0">
-        <thead class="table-light">
+<div class="table-responsive">
+    <table class="table table-nowrap datatable">
+        <thead class="thead-light">
             <tr>
-                <th>Tenant</th>
+                <th class="no-sort">
+                    <div class="form-check form-check-md">
+                        <input class="form-check-input" type="checkbox" id="select-all">
+                    </div>
+                </th>
+                <th class="no-sort">Entreprise</th>
                 <th>Plan</th>
-                <th>Date de d&eacute;but</th>
-                <th>Date de fin</th>
-                <th>Statut</th>
-                <th>Cr&eacute;&eacute; le</th>
+                <th>Cycle</th>
+                <th>Fournisseur</th>
+                <th>Quantité</th>
+                <th>Début</th>
+                <th>Fin</th>
+                <th class="no-sort">Statut</th>
                 <th class="no-sort"></th>
             </tr>
         </thead>
         <tbody>
             @forelse($subscriptions as $subscription)
                 <tr>
-                    <td>{{ $subscription->tenant?->name ?? '—' }}</td>
+                    <td>
+                        <div class="form-check form-check-md">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="avatar avatar-sm bg-soft-info rounded-circle me-2 flex-shrink-0 d-flex align-items-center justify-content-center">
+                                <i class="isax isax-buildings-25 text-info"></i>
+                            </span>
+                            <div>
+                                <h6 class="fs-14 fw-medium mb-0">{{ $subscription->tenant?->name ?? '—' }}</h6>
+                            </div>
+                        </div>
+                    </td>
                     <td>{{ $subscription->plan?->name ?? '—' }}</td>
+                    <td>
+                        @if($subscription->plan)
+                            @switch($subscription->plan->interval)
+                                @case('month') Mensuel @break
+                                @case('year') Annuel @break
+                                @case('lifetime') À vie @break
+                                @default {{ $subscription->plan->interval }}
+                            @endswitch
+                        @else
+                            —
+                        @endif
+                    </td>
+                    <td>
+                        @if($subscription->provider === 'stripe')
+                            <span class="badge badge-soft-info">Stripe</span>
+                        @else
+                            <span class="badge badge-soft-warning">Manuel</span>
+                        @endif
+                    </td>
+                    <td>{{ $subscription->quantity }}</td>
                     <td>{{ $subscription->starts_at?->format('d/m/Y') ?? '—' }}</td>
                     <td>{{ $subscription->ends_at?->format('d/m/Y') ?? '—' }}</td>
                     <td>
                         @switch($subscription->status)
                             @case('active')
-                                <span class="badge bg-success-transparent">Actif</span>
+                                <span class="badge badge-soft-success d-inline-flex align-items-center">Actif
+                                    <i class="isax isax-tick-circle ms-1"></i>
+                                </span>
                                 @break
                             @case('trialing')
-                                <span class="badge bg-info-transparent">Essai</span>
+                                <span class="badge badge-soft-info d-inline-flex align-items-center">Essai
+                                    <i class="isax isax-timer-1 ms-1"></i>
+                                </span>
+                                @break
+                            @case('past_due')
+                                <span class="badge badge-soft-warning d-inline-flex align-items-center">Impayé
+                                    <i class="isax isax-warning-2 ms-1"></i>
+                                </span>
                                 @break
                             @case('cancelled')
-                                <span class="badge bg-danger-transparent">Annul&eacute;</span>
-                                @break
-                            @case('expired')
-                                <span class="badge bg-secondary-transparent">Expir&eacute;</span>
+                                <span class="badge badge-soft-danger d-inline-flex align-items-center">Annulé
+                                    <i class="isax isax-close-circle ms-1"></i>
+                                </span>
                                 @break
                             @default
-                                <span class="badge bg-secondary-transparent">{{ ucfirst($subscription->status) }}</span>
+                                <span class="badge badge-soft-secondary">{{ ucfirst($subscription->status) }}</span>
                         @endswitch
                     </td>
-                    <td>{{ $subscription->created_at->format('d/m/Y') }}</td>
                     @include('backoffice.subscriptions.partials._actions', ['subscription' => $subscription])
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted py-4">Aucun enregistrement trouv&eacute;.</td>
+                    <td colspan="10" class="text-center text-muted py-4">Aucun enregistrement trouvé.</td>
                 </tr>
             @endforelse
         </tbody>

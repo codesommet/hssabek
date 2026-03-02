@@ -13,17 +13,22 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $plans = Plan::orderBy('price')->get();
+        $plans = Plan::withCount('subscriptions')
+            ->orderBy('price')
+            ->get();
 
-        return view('backoffice.plans.index', compact('plans'));
-    }
+        $totalPlans = Plan::count();
+        $activePlans = Plan::where('is_active', true)->count();
+        $inactivePlans = Plan::where('is_active', false)->count();
+        $totalSubscribers = \App\Models\Billing\Subscription::where('status', 'active')->count();
 
-    /**
-     * Show form to create a new plan.
-     */
-    public function create()
-    {
-        return view('backoffice.plans.create');
+        return view('backoffice.plans.index', compact(
+            'plans',
+            'totalPlans',
+            'activePlans',
+            'inactivePlans',
+            'totalSubscribers'
+        ));
     }
 
     /**
@@ -38,41 +43,23 @@ class PlanController extends Controller
             'price' => 'required|numeric|min:0',
             'currency' => 'nullable|string|size:3',
             'trial_days' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable|boolean',
             'features' => 'nullable|array',
         ]);
 
-        $plan = Plan::create([
+        Plan::create([
             'name' => $validated['name'],
             'code' => $validated['code'],
             'interval' => $validated['interval'],
             'price' => $validated['price'],
             'currency' => $validated['currency'] ?? 'MAD',
             'trial_days' => $validated['trial_days'] ?? 0,
-            'is_active' => $validated['is_active'] ?? true,
+            'is_active' => $request->boolean('is_active'),
             'features' => $validated['features'] ?? null,
         ]);
 
         return redirect()->route('sa.plans.index')
-            ->with('success', "Plan '{$plan->name}' created successfully.");
-    }
-
-    /**
-     * Show a single plan.
-     */
-    public function show(Plan $plan)
-    {
-        $plan->loadCount('subscriptions');
-
-        return view('backoffice.plans.show', compact('plan'));
-    }
-
-    /**
-     * Show form to edit a plan.
-     */
-    public function edit(Plan $plan)
-    {
-        return view('backoffice.plans.edit', compact('plan'));
+            ->with('success', 'Le plan a été créé avec succès.');
     }
 
     /**
@@ -87,14 +74,16 @@ class PlanController extends Controller
             'price' => 'required|numeric|min:0',
             'currency' => 'nullable|string|size:3',
             'trial_days' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable|boolean',
             'features' => 'nullable|array',
         ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
 
         $plan->update($validated);
 
         return redirect()->route('sa.plans.index')
-            ->with('success', "Plan '{$plan->name}' updated successfully.");
+            ->with('success', "Le plan « {$plan->name} » a été mis à jour avec succès.");
     }
 
     /**
@@ -106,6 +95,6 @@ class PlanController extends Controller
         $plan->delete();
 
         return redirect()->route('sa.plans.index')
-            ->with('success', "Plan '{$name}' deleted successfully.");
+            ->with('success', "Le plan « {$name} » a été supprimé avec succès.");
     }
 }

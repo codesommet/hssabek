@@ -1,31 +1,36 @@
-{{-- 
-    Reusable Avatar Cropper Component
-    
+{{--
+    Reusable Avatar / Image Cropper Component
+
     Usage:
     @include('backoffice.components.avatar-cropper', [
         'currentUrl'  => $user->avatar_url,
+        'defaultUrl'  => asset('build/img/profiles/avatar-01.jpg'), // fallback on delete
         'inputName'   => 'cropped_avatar',  // hidden input name for base64
-        'previewId'   => 'avatar-preview',   // unique ID for the preview img
+        'previewId'   => 'avatar-preview',  // unique ID for the preview img
         'hasImage'    => $user->hasMedia('avatar'),
         'alt'         => $user->name,
+        'label'       => 'Photo de profil', // label text
+        'required'    => true,              // show * after label
     ])
-    
-    The parent form must include enctype="multipart/form-data" if also uploading files.
+
     The cropped base64 is stored in a hidden input with the given inputName.
     On "Save" (parent form submit), the server receives the base64 string.
 --}}
 
 @php
     $currentUrl = $currentUrl ?? asset('build/img/profiles/avatar-01.jpg');
+    $defaultUrl = $defaultUrl ?? asset('build/img/profiles/avatar-01.jpg');
     $inputName = $inputName ?? 'cropped_avatar';
     $previewId = $previewId ?? 'avatar-preview';
     $hasImage = $hasImage ?? false;
     $alt = $alt ?? 'Avatar';
+    $label = $label ?? 'Photo de profil';
+    $required = $required ?? true;
     $uid = 'cropper-' . Str::random(6);
 @endphp
 
 <div class="mb-3" id="{{ $uid }}-wrapper">
-    <span class="text-gray-9 fw-bold mb-2 d-flex">Photo de profil<span class="text-danger ms-1">*</span></span>
+    <span class="text-gray-9 fw-bold mb-2 d-flex">{{ $label }}@if($required)<span class="text-danger ms-1">*</span>@endif</span>
     <div class="d-flex align-items-center">
         <div class="avatar avatar-xxl border border-dashed bg-light me-3 flex-shrink-0">
             <div class="position-relative d-flex align-items-center">
@@ -37,7 +42,7 @@
         </div>
         <div class="d-inline-flex flex-column align-items-start">
             <div class="drag-upload-btn btn btn-sm btn-primary position-relative mb-2">
-                <i class="isax isax-image me-1"></i>Télécharger une image
+                <i class="isax isax-image me-1"></i>T&eacute;l&eacute;charger une image
                 <input type="file" class="form-control image-sign" id="{{ $uid }}-file-input"
                     accept="image/jpeg,image/png,image/webp">
             </div>
@@ -52,32 +57,6 @@
     <input type="hidden" name="{{ $inputName }}_deleted" id="{{ $uid }}-deleted-flag" value="0">
 </div>
 
-{{-- Crop Modal --}}
-<div class="modal fade" id="{{ $uid }}-modal" tabindex="-1"
-    aria-labelledby="{{ $uid }}-modal-label" aria-hidden="true" data-bs-backdrop="static"
-    data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="{{ $uid }}-modal-label">Recadrer l'image</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-            </div>
-            <div class="modal-body p-0">
-                <div class="d-flex justify-content-center" style="max-height:70vh; overflow:hidden;">
-                    <img id="{{ $uid }}-crop-img" src="" alt="Aperçu"
-                        style="max-width:100%; display:block;">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-white" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="{{ $uid }}-crop-btn">
-                    <i class="isax isax-image me-1"></i>Recadrer
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @push('styles')
     @once
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
@@ -87,97 +66,148 @@
 @push('scripts')
     @once
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+        <script>
+            // ── Shared Crop Modal (single instance for ALL avatar-cropper components) ──
+            (function() {
+                var modalHtml = '<div class="modal fade" id="shared-crop-modal" tabindex="-1"'
+                    + ' aria-labelledby="shared-crop-modal-label" aria-hidden="true"'
+                    + ' data-bs-backdrop="static" data-bs-keyboard="false">'
+                    + '<div class="modal-dialog modal-dialog-centered modal-lg">'
+                    + '<div class="modal-content">'
+                    + '<div class="modal-header">'
+                    + '<h5 class="modal-title" id="shared-crop-modal-label">Recadrer l\'image</h5>'
+                    + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>'
+                    + '</div>'
+                    + '<div class="modal-body p-0">'
+                    + '<div class="d-flex justify-content-center" style="max-height:70vh; overflow:hidden;">'
+                    + '<img id="shared-crop-img" src="" alt="Aper\u00e7u" style="max-width:100%; display:block;">'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="modal-footer">'
+                    + '<button type="button" class="btn btn-outline-white" data-bs-dismiss="modal">Annuler</button>'
+                    + '<button type="button" class="btn btn-primary" id="shared-crop-btn">'
+                    + '<i class="isax isax-image me-1"></i>Recadrer'
+                    + '</button>'
+                    + '</div>'
+                    + '</div></div></div>';
+
+                var wrapper = document.createElement('div');
+                wrapper.innerHTML = modalHtml;
+                document.body.appendChild(wrapper.firstElementChild);
+
+                var modalEl = document.getElementById('shared-crop-modal');
+                var cropImg = document.getElementById('shared-crop-img');
+                var cropBtn = document.getElementById('shared-crop-btn');
+                var cropModal = new bootstrap.Modal(modalEl);
+                var cropper = null;
+                var activeCallback = null;
+
+                // Init cropper when modal is shown
+                modalEl.addEventListener('shown.bs.modal', function() {
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(cropImg, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: 'move',
+                        autoCropArea: 0.8,
+                        responsive: true,
+                        restore: false,
+                        guides: true,
+                        center: true,
+                        highlight: false,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                        toggleDragModeOnDblclick: false,
+                    });
+                });
+
+                // Cleanup on modal close
+                modalEl.addEventListener('hidden.bs.modal', function() {
+                    if (cropper) {
+                        cropper.destroy();
+                        cropper = null;
+                    }
+                    cropImg.src = '';
+                    activeCallback = null;
+                    // Re-add modal-open to body if a parent modal is still visible
+                    if (document.querySelector('.modal.show')) {
+                        document.body.classList.add('modal-open');
+                        document.body.style.overflow = 'hidden';
+                        document.body.style.paddingRight = '';
+                    }
+                });
+
+                // Crop button → send result to the active callback
+                cropBtn.addEventListener('click', function() {
+                    if (!cropper || !activeCallback) return;
+
+                    var canvas = cropper.getCroppedCanvas({
+                        width: 300,
+                        height: 300,
+                        imageSmoothingEnabled: true,
+                        imageSmoothingQuality: 'high',
+                    });
+
+                    var base64 = canvas.toDataURL('image/png');
+                    activeCallback(base64);
+                    cropModal.hide();
+                });
+
+                // Expose open method for per-instance scripts
+                window.__sharedCropper = {
+                    open: function(imageSrc, callback) {
+                        activeCallback = callback;
+                        cropImg.src = imageSrc;
+                        cropModal.show();
+                    }
+                };
+            })();
+        </script>
     @endonce
+
+    {{-- Per-instance initialization --}}
     <script>
         (function() {
             var uid = @json($uid);
-            var defaultUrl = @json(asset('build/img/profiles/avatar-01.jpg'));
-            var currentUrl = @json($currentUrl);
+            var defaultUrl = @json($defaultUrl);
 
             var fileInput = document.getElementById(uid + '-file-input');
             var preview = document.getElementById(@json($previewId));
-            var cropImg = document.getElementById(uid + '-crop-img');
-            var modalEl = document.getElementById(uid + '-modal');
-            var cropBtn = document.getElementById(uid + '-crop-btn');
             var deleteBtn = document.getElementById(uid + '-delete-btn');
             var croppedData = document.getElementById(uid + '-cropped-data');
             var deletedFlag = document.getElementById(uid + '-deleted-flag');
-            var cropModal = new bootstrap.Modal(modalEl);
-            var cropper = null;
 
-            // File select → open crop modal
+            // File select → open shared crop modal
             fileInput.addEventListener('change', function() {
                 var file = this.files[0];
                 if (!file) return;
 
                 var validTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 if (validTypes.indexOf(file.type) === -1) {
-                    alert('Seuls les formats JPG, PNG et WEBP sont acceptés.');
+                    alert('Seuls les formats JPG, PNG et WEBP sont accept\u00e9s.');
                     this.value = '';
                     return;
                 }
                 if (file.size > 5 * 1024 * 1024) {
-                    alert("L'image ne doit pas dépasser 5 Mo.");
+                    alert("L'image ne doit pas d\u00e9passer 5 Mo.");
                     this.value = '';
                     return;
                 }
 
                 var reader = new FileReader();
                 reader.onload = function(e) {
-                    cropImg.src = e.target.result;
-                    cropModal.show();
+                    window.__sharedCropper.open(e.target.result, function(base64) {
+                        croppedData.value = base64;
+                        deletedFlag.value = '0';
+                        preview.src = base64;
+                        deleteBtn.style.display = '';
+                    });
                 };
                 reader.readAsDataURL(file);
+                this.value = '';
             });
 
-            // Init cropper on modal show
-            modalEl.addEventListener('shown.bs.modal', function() {
-                if (cropper) cropper.destroy();
-                cropper = new Cropper(cropImg, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    dragMode: 'move',
-                    autoCropArea: 0.8,
-                    responsive: true,
-                    restore: false,
-                    guides: true,
-                    center: true,
-                    highlight: false,
-                    cropBoxMovable: true,
-                    cropBoxResizable: true,
-                    toggleDragModeOnDblclick: false,
-                });
-            });
-
-            // Cleanup on modal close
-            modalEl.addEventListener('hidden.bs.modal', function() {
-                if (cropper) {
-                    cropper.destroy();
-                    cropper = null;
-                }
-                fileInput.value = '';
-            });
-
-            // Crop button → set preview + hidden input (NO submit)
-            cropBtn.addEventListener('click', function() {
-                if (!cropper) return;
-
-                var canvas = cropper.getCroppedCanvas({
-                    width: 300,
-                    height: 300,
-                    imageSmoothingEnabled: true,
-                    imageSmoothingQuality: 'high',
-                });
-
-                var base64 = canvas.toDataURL('image/png');
-                croppedData.value = base64;
-                deletedFlag.value = '0';
-                preview.src = base64;
-                deleteBtn.style.display = '';
-                cropModal.hide();
-            });
-
-            // Delete button → reset to default (NO server call)
+            // Delete button → reset to default
             deleteBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 preview.src = defaultUrl;

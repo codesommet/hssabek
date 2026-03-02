@@ -19,4 +19,6 @@
 
     @include('backoffice.layout.partials.head')
 
+    @stack('styles')
+
 </head>

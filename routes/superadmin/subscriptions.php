@@ -11,5 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('subscriptions')->as('subscriptions.')->group(function () {
     Route::get('/', [SubscriptionController::class, 'index'])->name('index');
-    Route::get('/{subscription}', [SubscriptionController::class, 'show'])->name('show');
+    Route::post('/', [SubscriptionController::class, 'store'])->name('store');
+    Route::put('/{subscription}', [SubscriptionController::class, 'update'])->name('update');
+    Route::delete('/{subscription}', [SubscriptionController::class, 'destroy'])->name('destroy');
 });

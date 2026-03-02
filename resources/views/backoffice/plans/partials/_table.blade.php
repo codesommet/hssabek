@@ -1,45 +1,55 @@
-<div class="table-responsive table-nowrap">
-    <table class="table border mb-0">
-        <thead class="table-light">
+<div class="table-responsive no-pagination">
+    <table class="table table-nowrap datatable">
+        <thead class="thead-light">
             <tr>
-                <th>Nom</th>
+                <th>Plan</th>
                 <th>Code</th>
-                <th>Prix</th>
                 <th>Intervalle</th>
+                <th>Abonnés</th>
+                <th>Prix</th>
                 <th>Essai</th>
+                <th>Créé le</th>
                 <th>Statut</th>
-                <th>Cr&eacute;&eacute; le</th>
                 <th class="no-sort"></th>
             </tr>
         </thead>
         <tbody>
             @forelse($plans as $plan)
                 <tr>
-                    <td>{{ $plan->name }}</td>
+                    <td>
+                        <a href="javascript:void(0);" class="text-dark" data-bs-toggle="modal" data-bs-target="#view_plan_{{ $plan->id }}">
+                            {{ $plan->name }}
+                        </a>
+                    </td>
                     <td><code>{{ $plan->code }}</code></td>
-                    <td>{{ number_format($plan->price, 2, ',', ' ') }} {{ $plan->currency ?? 'MAD' }}</td>
                     <td>
                         @switch($plan->interval)
                             @case('month') Mensuel @break
                             @case('year') Annuel @break
-                            @case('lifetime') &Agrave; vie @break
+                            @case('lifetime') À vie @break
                             @default {{ $plan->interval }}
                         @endswitch
                     </td>
+                    <td>{{ $plan->subscriptions_count ?? 0 }}</td>
+                    <td>{{ number_format($plan->price, 2, ',', ' ') }} {{ $plan->currency }}</td>
                     <td>{{ $plan->trial_days ? $plan->trial_days . ' jours' : '—' }}</td>
+                    <td>{{ $plan->created_at->format('d/m/Y') }}</td>
                     <td>
                         @if($plan->is_active)
-                            <span class="badge bg-success-transparent">Actif</span>
+                            <span class="badge badge-soft-success d-inline-flex align-items-center">Actif
+                                <i class="isax isax-tick-circle ms-1"></i>
+                            </span>
                         @else
-                            <span class="badge bg-danger-transparent">Inactif</span>
+                            <span class="badge badge-soft-danger d-inline-flex align-items-center">Inactif
+                                <i class="isax isax-close-circle ms-1"></i>
+                            </span>
                         @endif
                     </td>
-                    <td>{{ $plan->created_at->format('d/m/Y') }}</td>
                     @include('backoffice.plans.partials._actions', ['plan' => $plan])
                 </tr>
             @empty
                 <tr>
-                    <td colspan="8" class="text-center text-muted py-4">Aucun enregistrement trouv&eacute;.</td>
+                    <td colspan="9" class="text-center text-muted py-4">Aucun enregistrement trouvé.</td>
                 </tr>
             @endforelse
         </tbody>
