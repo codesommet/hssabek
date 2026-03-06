@@ -2,31 +2,30 @@
 
 namespace App\Models\Pro;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Branch extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
-        'branch_name',
-        'branch_code',
-        'address',
-        'city',
-        'state',
-        'postal_code',
-        'country',
-        'phone',
+        'name',
+        'code',
         'email',
-        'is_headquarters',
+        'phone',
+        'tax_id',
+        'address_snapshot',
+        'is_default',
+        'is_active',
     ];
 
     protected $casts = [
-        'is_headquarters' => 'boolean',
+        'address_snapshot' => 'array',
+        'is_default'       => 'boolean',
+        'is_active'        => 'boolean',
     ];
 
     public function tenant(): BelongsTo

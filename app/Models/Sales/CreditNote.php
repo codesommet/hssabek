@@ -3,6 +3,7 @@
 namespace App\Models\Sales;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,26 +12,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CreditNote extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
+        'customer_id',
         'invoice_id',
-        'credit_note_number',
-        'credit_note_date',
-        'reason',
-        'subtotal',
-        'tax_amount',
-        'total_amount',
+        'number',
+        'reference_number',
         'status',
+        'issue_date',
+        'enable_tax',
+        'subtotal',
+        'tax_total',
+        'round_off',
+        'total',
         'notes',
     ];
 
     protected $casts = [
-        'credit_note_date' => 'date',
+        'issue_date' => 'date',
+        'enable_tax' => 'boolean',
         'subtotal' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'total_amount' => 'decimal:2',
+        'tax_total' => 'decimal:2',
+        'round_off' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\CRM\Customer::class);
+    }
 
     public function invoice(): BelongsTo
     {

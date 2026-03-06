@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CRM\Store\StoreCustomerRequest;
 use App\Http\Requests\CRM\Update\UpdateCustomerRequest;
 use App\Models\CRM\Customer;
-use App\Models\Finance\Currency;
-use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Customer::class);
+
         $query = Customer::query()
             ->withCount(['invoices', 'quotes']);
 
@@ -40,13 +40,15 @@ class CustomerController extends Controller
 
     public function create()
     {
-        $currencies = Currency::orderBy('code')->get();
+        $this->authorize('create', Customer::class);
 
-        return view('backoffice.crm.customers.create', compact('currencies'));
+        return view('backoffice.crm.customers.create');
     }
 
     public function store(StoreCustomerRequest $request)
     {
+        $this->authorize('create', Customer::class);
+
         Customer::create($request->validated());
 
         return redirect()->route('bo.crm.customers.index')
@@ -55,13 +57,13 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
-        $this->assertSameTenant($customer);
+        $this->authorize('view', $customer);
 
         $customer->load([
             'addresses',
             'contacts',
-            'invoices' => fn ($q) => $q->latest()->take(10),
-            'quotes' => fn ($q) => $q->latest()->take(5),
+            'invoices' => fn($q) => $q->latest()->take(10),
+            'quotes' => fn($q) => $q->latest()->take(5),
         ]);
 
         return view('backoffice.crm.customers.show', compact('customer'));
@@ -69,16 +71,14 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
-        $this->assertSameTenant($customer);
+        $this->authorize('update', $customer);
 
-        $currencies = Currency::orderBy('code')->get();
-
-        return view('backoffice.crm.customers.edit', compact('customer', 'currencies'));
+        return view('backoffice.crm.customers.edit', compact('customer'));
     }
 
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $this->assertSameTenant($customer);
+        $this->authorize('update', $customer);
 
         $customer->update($request->validated());
 
@@ -88,16 +88,11 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $this->assertSameTenant($customer);
+        $this->authorize('delete', $customer);
 
         $customer->delete();
 
         return redirect()->route('bo.crm.customers.index')
             ->with('success', 'Client supprimé avec succès.');
-    }
-
-    private function assertSameTenant(Customer $customer): void
-    {
-        abort_unless($customer->tenant_id === TenantContext::id(), 403);
     }
 }

@@ -1,0 +1,207 @@
+<?php $page = 'incomes'; ?>
+@extends('backoffice.layout.mainlayout')
+@section('content')
+    <!-- ========================
+                    Start Page Content
+                ========================= -->
+
+    <div class="page-wrapper">
+
+        <!-- Start Content -->
+        <div class="content">
+
+            <!-- start row -->
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h6><a href="{{ route('bo.finance.incomes.index') }}"><i
+                                        class="isax isax-arrow-left me-2"></i>Revenus</a></h6>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="mb-3">Modifier le revenu — {{ $income->income_number }}</h5>
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                @endif
+
+                                <form action="{{ route('bo.finance.incomes.update', $income) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <h6 class="text-gray-9 fw-bold mb-2 d-flex">Détails du revenu</h6>
+                                    </div>
+                                    <div class="row gx-3">
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Date du revenu <span
+                                                        class="text-danger ms-1">*</span></label>
+                                                <input type="date"
+                                                    class="form-control @error('income_date') is-invalid @enderror"
+                                                    name="income_date"
+                                                    value="{{ old('income_date', $income->income_date instanceof \Carbon\Carbon ? $income->income_date->format('Y-m-d') : $income->income_date) }}">
+                                                @error('income_date')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Numéro de référence</label>
+                                                <input type="text"
+                                                    class="form-control @error('reference_number') is-invalid @enderror"
+                                                    name="reference_number"
+                                                    value="{{ old('reference_number', $income->reference_number) }}">
+                                                @error('reference_number')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Catégorie</label>
+                                                <select class="form-select @error('category_id') is-invalid @enderror"
+                                                    name="category_id">
+                                                    <option value="">— Sélectionner —</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}"
+                                                            {{ old('category_id', $income->category_id) == $category->id ? 'selected' : '' }}>
+                                                            {{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('category_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Client</label>
+                                                <select class="form-select @error('customer_id') is-invalid @enderror"
+                                                    name="customer_id">
+                                                    <option value="">— Sélectionner —</option>
+                                                    @foreach ($customers as $customer)
+                                                        <option value="{{ $customer->id }}"
+                                                            {{ old('customer_id', $income->customer_id) == $customer->id ? 'selected' : '' }}>
+                                                            {{ $customer->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('customer_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Montant <span
+                                                        class="text-danger ms-1">*</span></label>
+                                                <input type="number" step="0.01" min="0"
+                                                    class="form-control @error('amount') is-invalid @enderror"
+                                                    name="amount" value="{{ old('amount', $income->amount) }}">
+                                                @error('amount')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Devise</label>
+                                                <input type="text" class="form-control"
+                                                    value="{{ App\Services\Tenancy\TenantContext::get()?->default_currency ?? 'MAD' }}"
+                                                    readonly disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 mt-2">
+                                        <h6 class="text-gray-9 fw-bold mb-2 d-flex">Paiement</h6>
+                                    </div>
+                                    <div class="row gx-3">
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Mode de paiement <span
+                                                        class="text-danger ms-1">*</span></label>
+                                                <select class="form-select @error('payment_mode') is-invalid @enderror"
+                                                    name="payment_mode">
+                                                    <option value="">— Sélectionner —</option>
+                                                    <option value="cash"
+                                                        {{ old('payment_mode', $income->payment_mode) === 'cash' ? 'selected' : '' }}>
+                                                        Espèces</option>
+                                                    <option value="bank_transfer"
+                                                        {{ old('payment_mode', $income->payment_mode) === 'bank_transfer' ? 'selected' : '' }}>
+                                                        Virement bancaire</option>
+                                                    <option value="card"
+                                                        {{ old('payment_mode', $income->payment_mode) === 'card' ? 'selected' : '' }}>
+                                                        Carte</option>
+                                                    <option value="cheque"
+                                                        {{ old('payment_mode', $income->payment_mode) === 'cheque' ? 'selected' : '' }}>
+                                                        Chèque</option>
+                                                    <option value="other"
+                                                        {{ old('payment_mode', $income->payment_mode) === 'other' ? 'selected' : '' }}>
+                                                        Autre</option>
+                                                </select>
+                                                @error('payment_mode')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Compte bancaire</label>
+                                                <select class="form-select @error('bank_account_id') is-invalid @enderror"
+                                                    name="bank_account_id">
+                                                    <option value="">— Sélectionner —</option>
+                                                    @foreach ($bankAccounts as $bankAccount)
+                                                        <option value="{{ $bankAccount->id }}"
+                                                            {{ old('bank_account_id', $income->bank_account_id) == $bankAccount->id ? 'selected' : '' }}>
+                                                            {{ $bankAccount->bank_name }} —
+                                                            {{ $bankAccount->account_number }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('bank_account_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="3">{{ old('description', $income->description) }}</textarea>
+                                                @error('description')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between pt-4 border-top">
+                                        <a href="{{ route('bo.finance.incomes.index') }}"
+                                            class="btn btn-outline-white">Annuler</a>
+                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    </div>
+                                </form>
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                </div><!-- end col -->
+            </div>
+            <!-- end row -->
+
+            @component('backoffice.components.footer')
+            @endcomponent
+        </div>
+        <!-- End Content -->
+
+    </div>
+
+    <!-- ========================
+                    End Page Content
+                ========================= -->
+@endsection

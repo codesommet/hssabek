@@ -3,6 +3,7 @@
 namespace App\Models\Purchases;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DebitNote extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'supplier_id',
@@ -22,7 +23,6 @@ class DebitNote extends Model
         'status',
         'debit_note_date',
         'due_date',
-        'currency',
         'enable_tax',
         'subtotal',
         'discount_total',
@@ -32,6 +32,9 @@ class DebitNote extends Model
         'total_in_words',
         'notes',
         'terms',
+        'bill_from_snapshot',
+        'bill_to_snapshot',
+        'bank_details_snapshot',
     ];
 
     protected $casts = [

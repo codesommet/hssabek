@@ -28,4 +28,13 @@ class UpdateSubscriptionRequest extends FormRequest
             'status' => 'sometimes|required|in:active,cancelled,suspended',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'plan_id.exists'  => 'Le plan sélectionné est invalide.',
+            'end_date.after'  => 'La date de fin doit être postérieure à la date de début.',
+            'status.in'       => 'Le statut est invalide.',
+        ];
+    }
 }

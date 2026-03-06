@@ -2,33 +2,45 @@
 
 namespace App\Http\Requests\Finance\Update;
 
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBankAccountRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-        $accountId = $this->route('bankAccount');
         return [
-            'account_name' => 'sometimes|required|string|max:255',
-            'account_number' => "sometimes|required|string|unique:bank_accounts,account_number,{$accountId}",
-            'bank_name' => 'sometimes|required|string|max:255',
-            'currency_id' => 'sometimes|required|exists:currencies,id',
-            'balance' => 'sometimes|required|numeric|min:0',
-            'is_active' => 'boolean',
+            'account_holder_name' => 'required|string|max:255',
+            'account_number'     => [
+                'required', 'string', 'max:50',
+                Rule::unique('bank_accounts')->where('tenant_id', TenantContext::id())
+                    ->ignore($this->route('bank_account')),
+            ],
+            'bank_name'          => 'required|string|max:255',
+            'ifsc_code'          => 'nullable|string|max:50',
+            'branch'             => 'nullable|string|max:255',
+            'account_type'       => 'required|in:current,savings,business,other',
+
+            'notes'              => 'nullable|string|max:2000',
+            'is_active'          => 'boolean',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'account_holder_name.required' => 'Le nom du titulaire est obligatoire.',
+            'account_number.required'      => 'Le numéro de compte est obligatoire.',
+            'account_number.unique'        => 'Ce numéro de compte existe déjà.',
+            'bank_name.required'           => 'Le nom de la banque est obligatoire.',
+            'account_type.required'        => 'Le type de compte est obligatoire.',
+
         ];
     }
 }

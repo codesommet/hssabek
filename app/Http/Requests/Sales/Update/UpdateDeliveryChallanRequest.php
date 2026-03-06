@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Sales\Update;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class UpdateDeliveryChallanRequest extends FormRequest
+class UpdateDeliveryChallanRequest extends TenantFormRequest
 {
     public function authorize(): bool
     {
@@ -14,19 +14,36 @@ class UpdateDeliveryChallanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ['sometimes', 'uuid', 'exists:customers,id'],
-            'quote_id' => ['sometimes', 'nullable', 'uuid', 'exists:quotes,id'],
-            'invoice_id' => ['sometimes', 'nullable', 'uuid', 'exists:invoices,id'],
-            'number' => ['sometimes', 'string', 'max:50'],
-            'status' => ['sometimes', 'in:draft,issued,delivered,cancelled'],
-            'issue_date' => ['sometimes', 'date'],
+            'customer_id'  => ['sometimes', 'uuid', $this->tenantExists('customers')],
+            'quote_id'     => ['sometimes', 'nullable', 'uuid', $this->tenantExists('quotes')],
+            'invoice_id'   => ['sometimes', 'nullable', 'uuid', $this->tenantExists('invoices')],
+            'challan_date' => ['sometimes', 'date'],
+            'due_date'     => ['sometimes', 'nullable', 'date', 'after_or_equal:challan_date'],
+            'enable_tax'   => ['sometimes', 'boolean'],
+            'reference_number' => ['sometimes', 'nullable', 'string', 'max:100'],
+            'notes'        => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'terms'        => ['sometimes', 'nullable', 'string', 'max:2000'],
             'delivered_at' => ['sometimes', 'nullable', 'date'],
-            'notes' => ['sometimes', 'nullable', 'string', 'max:2000'],
+
+            'items'                  => ['nullable', 'array'],
+            'items.*.product_id'     => ['nullable', 'uuid', $this->tenantExists('products')],
+            'items.*.label'          => ['nullable', 'string', 'max:255'],
+            'items.*.quantity'       => ['required', 'numeric', 'min:0.001'],
+            'items.*.unit_price'     => ['nullable', 'numeric', 'min:0'],
+            'items.*.tax_rate'       => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 
     public function messages(): array
     {
-        return [];
+        return [
+            'customer_id.exists'    => 'Le client sélectionné est invalide.',
+            'quote_id.exists'       => 'Le devis sélectionné est invalide.',
+            'invoice_id.exists'     => 'La facture sélectionnée est invalide.',
+            'challan_date.date'     => 'La date du bon de livraison n\'est pas valide.',
+            'due_date.after_or_equal' => 'La date d\'échéance doit être postérieure ou égale à la date du bon.',
+            'items.*.quantity.required' => 'La quantité est obligatoire pour chaque article.',
+            'items.*.quantity.min'      => 'La quantité doit être supérieure à 0.',
+        ];
     }
 }

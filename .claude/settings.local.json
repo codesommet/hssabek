@@ -2,7 +2,35 @@
   "permissions": {
     "allow": [
       "Bash(php artisan clear-compiled)",
-      "Bash(php artisan optimize:clear)"
+      "Bash(php artisan optimize:clear)",
+      "Bash(xargs grep -l \"modal\\\\|@include\")",
+      "Bash(php -l app/Services/Reports/ReportService.php)",
+      "Bash(php -l app/Jobs/ExportReportJob.php)",
+      "Bash(php -l app/Http/Controllers/Backoffice/Reports/SalesReportController.php)",
+      "Bash(php -l app/Http/Controllers/Backoffice/Reports/CustomerReportController.php)",
+      "Bash(php -l app/Http/Controllers/Backoffice/Reports/PurchaseReportController.php)",
+      "Bash(php -l app/Http/Controllers/Backoffice/Reports/FinanceReportController.php)",
+      "Bash(php -l app/Http/Controllers/Backoffice/Reports/InventoryReportController.php)",
+      "Bash(php -l routes/backoffice/reports.php)",
+      "Bash(composer require barryvdh/laravel-dompdf)",
+      "Bash(php artisan route:list --path=reports)",
+      "Bash(php artisan vendor:publish --provider=\"Barryvdh\\\\DomPDF\\\\ServiceProvider\")",
+      "Bash(php artisan route:list --path=invoices/.*download)",
+      "Bash(php artisan route:list --path=quotes/.*download)",
+      "Bash(php artisan route:list --path=purchase-orders/.*download)",
+      "Bash(php artisan route:list --name=download)",
+      "Bash(php artisan route:list --name=stream)",
+      "Bash(php artisan route:list --name=send)",
+      "Bash(php artisan route:list --name=bo.reports)",
+      "Bash(php artisan route:list --name=dashboard)",
+      "Bash(php -l app/Http/Controllers/Backoffice/DashboardController.php)",
+      "Bash(php artisan view:cache --no-ansi)",
+      "Bash(php artisan route:list --name=sa.dashboard --no-ansi)",
+      "Bash(php artisan route:list --name=sa. --no-ansi)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\ASUS\\Desktop\\Projects\\facturation\\resources\\views\\backoffice\\finance\\currencies",
+      "c:\\Users\\ASUS\\Desktop\\Projects\\facturation\\app\\Services"
     ]
   }
 }

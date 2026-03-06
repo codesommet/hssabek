@@ -29,4 +29,18 @@ class StoreSubscriptionRequest extends FormRequest
             'status' => 'required|in:active,cancelled,suspended',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'Le locataire est obligatoire.',
+            'customer_id.exists'   => 'Le locataire sélectionné est invalide.',
+            'plan_id.required'     => 'Le plan est obligatoire.',
+            'plan_id.exists'       => 'Le plan sélectionné est invalide.',
+            'start_date.required'  => 'La date de début est obligatoire.',
+            'end_date.after'       => 'La date de fin doit être postérieure à la date de début.',
+            'status.required'      => 'Le statut est obligatoire.',
+            'status.in'            => 'Le statut est invalide.',
+        ];
+    }
 }

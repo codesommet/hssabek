@@ -19,17 +19,20 @@ class StoreCustomerRequest extends FormRequest
             'type' => ['required', 'in:individual,company'],
             'name' => ['required', 'string', 'max:255'],
             'email' => [
-                'nullable', 'email', 'max:255',
+                'nullable',
+                'email',
+                'max:255',
                 Rule::unique('customers', 'email')
                     ->where('tenant_id', TenantContext::id()),
             ],
             'phone' => ['nullable', 'string', 'max:30'],
             'tax_id' => [
-                'nullable', 'string', 'max:50',
+                'nullable',
+                'string',
+                'max:50',
                 Rule::unique('customers', 'tax_id')
                     ->where('tenant_id', TenantContext::id()),
             ],
-            'currency' => ['nullable', 'string', 'size:3'],
             'payment_terms_days' => ['nullable', 'integer', 'min:0', 'max:365'],
             'status' => ['required', 'in:active,inactive'],
             'notes' => ['nullable', 'string', 'max:2000'],
@@ -48,7 +51,6 @@ class StoreCustomerRequest extends FormRequest
             'phone.max' => 'Le téléphone ne doit pas dépasser 30 caractères.',
             'tax_id.unique' => "Ce numéro d'identification fiscale est déjà utilisé.",
             'tax_id.max' => "L'identifiant fiscal ne doit pas dépasser 50 caractères.",
-            'currency.size' => 'Le code devise doit contenir exactement 3 caractères.',
             'payment_terms_days.integer' => 'Le délai de paiement doit être un nombre entier.',
             'payment_terms_days.min' => 'Le délai de paiement ne peut pas être négatif.',
             'payment_terms_days.max' => 'Le délai de paiement ne doit pas dépasser 365 jours.',

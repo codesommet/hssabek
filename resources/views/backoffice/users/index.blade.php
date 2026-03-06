@@ -131,7 +131,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($users as $user)
+                        @foreach($users as $user)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -198,11 +198,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center">Aucun utilisateur trouvé.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

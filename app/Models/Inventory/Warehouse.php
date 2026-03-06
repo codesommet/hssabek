@@ -13,12 +13,15 @@ class Warehouse extends Model
 
     protected $fillable = [
         'name',
-        'location',
+        'code',
+        'address',
         'is_default',
+        'is_active',
     ];
 
     protected $casts = [
         'is_default' => 'boolean',
+        'is_active'  => 'boolean',
     ];
 
     public function productStocks(): HasMany
@@ -26,8 +29,18 @@ class Warehouse extends Model
         return $this->hasMany(ProductStock::class);
     }
 
-    public function stockTransfers(): HasMany
+    public function outgoingTransfers(): HasMany
     {
         return $this->hasMany(StockTransfer::class, 'from_warehouse_id');
+    }
+
+    public function incomingTransfers(): HasMany
+    {
+        return $this->hasMany(StockTransfer::class, 'to_warehouse_id');
+    }
+
+    public function stockMovements(): HasMany
+    {
+        return $this->hasMany(StockMovement::class);
     }
 }

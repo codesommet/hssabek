@@ -14,18 +14,15 @@ class SubscriptionInvoice extends Model
     protected $fillable = [
         'tenant_id',
         'subscription_id',
-        'invoice_number',
         'amount',
+        'currency',
         'status',
-        'issued_at',
-        'due_at',
         'paid_at',
+        'provider_invoice_id',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'issued_at' => 'datetime',
-        'due_at' => 'datetime',
         'paid_at' => 'datetime',
     ];
 

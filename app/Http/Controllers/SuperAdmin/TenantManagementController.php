@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Billing\Subscription;
 use App\Models\Tenancy\Tenant;
 use App\Models\Tenancy\TenantDomain;
 use App\Models\User;
+use App\Services\Billing\PlanLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -199,6 +201,63 @@ class TenantManagementController extends Controller
 
         return redirect()->route('sa.tenants.index')
             ->with('success', "Le tenant « {$tenant->name} » a été activé.");
+    }
+
+    /**
+     * Show tenant usage and limits.
+     */
+    public function usage(Tenant $tenant, PlanLimitService $limitService)
+    {
+        $subscription = Subscription::withoutGlobalScopes()
+            ->where('tenant_id', $tenant->id)
+            ->whereIn('status', ['active', 'trialing'])
+            ->with('plan')
+            ->latest('starts_at')
+            ->first();
+
+        $usageData = $limitService->getAllUsageForTenant($tenant->id);
+
+        return view('backoffice.tenants.usage', compact('tenant', 'subscription', 'usageData'));
+    }
+
+    /**
+     * Update plan limits for a tenant's active subscription.
+     */
+    public function updateLimits(Request $request, Tenant $tenant)
+    {
+        $subscription = Subscription::withoutGlobalScopes()
+            ->where('tenant_id', $tenant->id)
+            ->whereIn('status', ['active', 'trialing'])
+            ->with('plan')
+            ->latest('starts_at')
+            ->first();
+
+        if (!$subscription || !$subscription->plan) {
+            return redirect()->route('sa.tenants.usage', $tenant)
+                ->with('error', 'Aucun abonnement actif trouvé pour ce tenant.');
+        }
+
+        $validated = $request->validate([
+            'max_users'              => 'nullable|integer|min:0',
+            'max_customers'          => 'nullable|integer|min:0',
+            'max_products'           => 'nullable|integer|min:0',
+            'max_invoices_per_month' => 'nullable|integer|min:0',
+            'max_quotes_per_month'   => 'nullable|integer|min:0',
+            'max_exports_per_month'  => 'nullable|integer|min:0',
+            'max_warehouses'         => 'nullable|integer|min:0',
+            'max_bank_accounts'      => 'nullable|integer|min:0',
+            'max_storage_mb'         => 'nullable|integer|min:0',
+        ]);
+
+        // Convert empty strings to null (= unlimited)
+        foreach ($validated as $key => $value) {
+            $validated[$key] = $value === null || $value === '' ? null : (int) $value;
+        }
+
+        $subscription->plan->update($validated);
+
+        return redirect()->route('sa.tenants.usage', $tenant)
+            ->with('success', "Les limites du plan « {$subscription->plan->name} » ont été mises à jour.");
     }
 
     /**

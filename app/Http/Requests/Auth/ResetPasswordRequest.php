@@ -24,10 +24,10 @@ class ResetPasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'The email address is required.',
-            'email.email' => 'The email address must be a valid email.',
-            'password.required' => 'The password is required.',
-            'password.confirmed' => 'The passwords do not match.',
+            'email.required' => 'L\'adresse e-mail est obligatoire.',
+            'email.email' => 'L\'adresse e-mail n\'est pas valide.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ];
     }
 }

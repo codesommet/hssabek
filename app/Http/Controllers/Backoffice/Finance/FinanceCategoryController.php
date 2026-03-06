@@ -10,47 +10,72 @@ use Illuminate\Http\Request;
 
 class FinanceCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = FinanceCategory::paginate(15);
-        return response()->json($categories);
+        $this->authorize('viewAny', FinanceCategory::class);
+
+        $categories = FinanceCategory::query()
+            ->when($request->search, fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
+            ->when($request->type, fn ($q, $t) => $q->where('type', $t))
+            ->orderBy('type')->orderBy('name')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('backoffice.finance.categories.index', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $this->authorize('create', FinanceCategory::class);
+
+        return view('backoffice.finance.categories.create');
+    }
+
     public function store(StoreFinanceCategoryRequest $request)
     {
-        $category = FinanceCategory::create($request->validated());
-        return response()->json($category, 201);
+        $this->authorize('create', FinanceCategory::class);
+
+        $data = $request->validated();
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        FinanceCategory::create($data);
+
+        return redirect()->route('bo.finance.categories.index')
+            ->with('success', 'Catégorie créée avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(FinanceCategory $financeCategory)
+    public function edit(FinanceCategory $financeCategory)
     {
-        return response()->json($financeCategory);
+        $this->authorize('update', $financeCategory);
+
+        return view('backoffice.finance.categories.edit', compact('financeCategory'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateFinanceCategoryRequest $request, FinanceCategory $financeCategory)
     {
-        $financeCategory->update($request->validated());
-        return response()->json($financeCategory);
+        $this->authorize('update', $financeCategory);
+
+        $data = $request->validated();
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        $financeCategory->update($data);
+
+        return redirect()->route('bo.finance.categories.index')
+            ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(FinanceCategory $financeCategory)
     {
+        $this->authorize('delete', $financeCategory);
+
+        if ($financeCategory->expenses()->exists() || $financeCategory->incomes()->exists()) {
+            return redirect()->route('bo.finance.categories.index')
+                ->with('error', 'Impossible de supprimer cette catégorie : elle est utilisée par des transactions.');
+        }
+
         $financeCategory->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('bo.finance.categories.index')
+            ->with('success', 'Catégorie supprimée avec succès.');
     }
 }

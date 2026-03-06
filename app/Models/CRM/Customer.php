@@ -3,6 +3,7 @@
 namespace App\Models\CRM;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'type',
@@ -18,7 +19,6 @@ class Customer extends Model
         'email',
         'phone',
         'tax_id',
-        'currency',
         'payment_terms_days',
         'status',
         'notes',

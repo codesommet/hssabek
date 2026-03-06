@@ -2,33 +2,62 @@
 
 namespace App\Http\Requests\Sales\Store;
 
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreQuoteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
+        $tenantId = TenantContext::id();
+
         return [
-            'customer_id' => 'required|exists:customers,id',
-            'quote_number' => 'required|string|unique:quotes',
-            'quote_date' => 'required|date',
-            'valid_until' => 'required|date|after:quote_date',
-            'total_amount' => 'required|numeric|min:0',
-            'status' => 'required|in:draft,sent,accepted,rejected,expired',
-            'notes' => 'nullable|string',
+            'customer_id' => ['required', 'uuid', Rule::exists('customers', 'id')->where('tenant_id', $tenantId)],
+            'issue_date' => ['required', 'date'],
+            'due_date' => ['nullable', 'date', 'after_or_equal:issue_date'],
+            'expiry_date' => ['nullable', 'date', 'after_or_equal:issue_date'],
+            'enable_tax' => ['nullable', 'boolean'],
+            'reference_number' => ['nullable', 'string', 'max:100'],
+            'notes' => ['nullable', 'string', 'max:2000'],
+            'terms' => ['nullable', 'string', 'max:2000'],
+
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.label' => ['required', 'string', 'max:255'],
+            'items.*.description' => ['nullable', 'string', 'max:1000'],
+            'items.*.product_id' => ['nullable', 'uuid', Rule::exists('products', 'id')->where('tenant_id', $tenantId)],
+            'items.*.quantity' => ['required', 'numeric', 'min:0.001'],
+            'items.*.unit_id' => ['nullable', 'uuid', Rule::exists('units', 'id')->where('tenant_id', $tenantId)],
+            'items.*.unit_price' => ['required', 'numeric', 'min:0'],
+            'items.*.discount_type' => ['nullable', Rule::in(['none', 'percentage', 'fixed'])],
+            'items.*.discount_value' => ['nullable', 'numeric', 'min:0'],
+            'items.*.tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'items.*.tax_group_id' => ['nullable', 'uuid', Rule::exists('tax_groups', 'id')->where('tenant_id', $tenantId)],
+
+            'charges' => ['sometimes', 'array'],
+            'charges.*.label' => ['required_with:charges', 'string', 'max:255'],
+            'charges.*.amount' => ['required_with:charges', 'numeric', 'min:0'],
+            'charges.*.tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'Le client est obligatoire.',
+            'customer_id.exists' => 'Le client sélectionné est invalide.',
+            'issue_date.required' => 'La date d\'émission est obligatoire.',
+            'expiry_date.after_or_equal' => 'La date d\'expiration doit être postérieure ou égale à la date d\'émission.',
+            'items.required' => 'Au moins un article est obligatoire.',
+            'items.min' => 'Au moins un article est obligatoire.',
+            'items.*.label.required' => 'Le libellé de l\'article est obligatoire.',
+            'items.*.quantity.required' => 'La quantité est obligatoire.',
+            'items.*.unit_price.required' => 'Le prix unitaire est obligatoire.',
         ];
     }
 }

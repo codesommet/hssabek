@@ -5,53 +5,183 @@ namespace App\Http\Controllers\Backoffice\Sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\Store\StoreInvoiceRequest;
 use App\Http\Requests\Sales\Update\UpdateInvoiceRequest;
+use App\Jobs\SendInvoiceEmailJob;
+use App\Models\Catalog\Product;
+use App\Models\Catalog\TaxGroup;
+use App\Models\Catalog\Unit;
+use App\Models\CRM\Customer;
 use App\Models\Sales\Invoice;
+use App\Models\Sales\PaymentMethod;
+use App\Services\Sales\InvoiceService;
+use App\Services\Sales\PdfService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private InvoiceService $invoiceService,
+    ) {}
+
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('customer')->paginate(15);
-        return response()->json($invoices);
+        $this->authorize('viewAny', Invoice::class);
+
+        $query = Invoice::with('customer');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', fn($c) => $c->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($from = $request->input('from')) {
+            $query->whereDate('issue_date', '>=', $from);
+        }
+
+        if ($to = $request->input('to')) {
+            $query->whereDate('issue_date', '<=', $to);
+        }
+
+        $invoices = $query->latest('issue_date')->paginate(15)->withQueryString();
+
+        return view('backoffice.sales.invoices.index', compact('invoices'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $this->authorize('create', Invoice::class);
+
+        $customers = Customer::orderBy('name')->get();
+        $products = Product::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $taxGroups = TaxGroup::with('rates')->orderBy('name')->get();
+        $paymentMethods = PaymentMethod::orderBy('name')->get();
+
+        return view('backoffice.sales.invoices.create', compact(
+            'customers',
+            'products',
+            'units',
+            'taxGroups',
+            'paymentMethods'
+        ));
+    }
+
     public function store(StoreInvoiceRequest $request)
     {
-        $invoice = Invoice::create($request->validated());
-        return response()->json($invoice, 201);
+        $this->authorize('create', Invoice::class);
+
+        $this->invoiceService->create($request->validated());
+
+        return redirect()->route('bo.sales.invoices.index')
+            ->with('success', 'Facture créée avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Invoice $invoice)
     {
-        $invoice->load('customer', 'items', 'charges', 'payments');
-        return response()->json($invoice);
+        $this->authorize('view', $invoice);
+
+        $invoice->load([
+            'customer',
+            'items.product',
+            'items.unit',
+            'items.taxGroup',
+            'charges',
+            'paymentAllocations.payment.paymentMethod',
+            'creditNoteApplications.creditNote',
+        ]);
+
+        return view('backoffice.sales.invoices.show', compact('invoice'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Invoice $invoice)
+    {
+        $this->authorize('update', $invoice);
+
+        abort_unless($invoice->status === 'draft', 403, 'Seules les factures en brouillon peuvent être modifiées.');
+
+        $invoice->load(['items', 'charges']);
+
+        $customers = Customer::orderBy('name')->get();
+        $products = Product::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $taxGroups = TaxGroup::with('rates')->orderBy('name')->get();
+
+        return view('backoffice.sales.invoices.edit', compact(
+            'invoice',
+            'customers',
+            'products',
+            'units',
+            'taxGroups'
+        ));
+    }
+
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
-        $invoice->update($request->validated());
-        return response()->json($invoice);
+        $this->authorize('update', $invoice);
+
+        abort_unless($invoice->status === 'draft', 403, 'Seules les factures en brouillon peuvent être modifiées.');
+
+        $this->invoiceService->update($invoice, $request->validated());
+
+        return redirect()->route('bo.sales.invoices.show', $invoice)
+            ->with('success', 'Facture mise à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Invoice $invoice)
     {
+        $this->authorize('delete', $invoice);
+
+        $invoice->items()->delete();
+        $invoice->charges()->delete();
         $invoice->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('bo.sales.invoices.index')
+            ->with('success', 'Facture supprimée avec succès.');
+    }
+
+    public function download(Invoice $invoice, PdfService $pdfService)
+    {
+        $this->authorize('view', $invoice);
+
+        return $pdfService->invoiceResponse($invoice, 'download');
+    }
+
+    public function stream(Invoice $invoice, PdfService $pdfService)
+    {
+        $this->authorize('view', $invoice);
+
+        return $pdfService->invoiceResponse($invoice, 'inline');
+    }
+
+    public function send(Invoice $invoice)
+    {
+        $this->authorize('update', $invoice);
+
+        $this->invoiceService->transition($invoice, 'sent');
+        $invoice->update(['sent_at' => now()]);
+
+        dispatch(new SendInvoiceEmailJob(
+            invoiceId: $invoice->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.sales.invoices.show', $invoice)
+            ->with('success', 'Facture envoyée au client par email.');
+    }
+
+    public function void(Invoice $invoice)
+    {
+        $this->authorize('update', $invoice);
+
+        $this->invoiceService->transition($invoice, 'void');
+
+        return redirect()->route('bo.sales.invoices.show', $invoice)
+            ->with('success', 'Facture annulée avec succès.');
     }
 }

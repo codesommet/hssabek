@@ -2,31 +2,36 @@
 
 namespace App\Http\Requests\Inventory\Store;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class StoreProductStockRequest extends FormRequest
+class StoreProductStockRequest extends TenantFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'product_id' => 'required|exists:products,id',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'quantity' => 'required|numeric|min:0',
-            'reorder_level' => 'nullable|numeric|min:0',
-            'reorder_quantity' => 'nullable|numeric|min:0',
+            'product_id'       => ['required', 'uuid', $this->tenantExists('products')],
+            'warehouse_id'     => ['required', 'uuid', $this->tenantExists('warehouses')],
+            'quantity'         => ['required', 'numeric', 'min:0'],
+            'reorder_level'    => ['nullable', 'numeric', 'min:0'],
+            'reorder_quantity' => ['nullable', 'numeric', 'min:0'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'product_id.required'    => 'Le produit est obligatoire.',
+            'product_id.exists'      => 'Le produit sélectionné est invalide.',
+            'warehouse_id.required'  => 'L\'entrepôt est obligatoire.',
+            'warehouse_id.exists'    => 'L\'entrepôt sélectionné est invalide.',
+            'quantity.required'      => 'La quantité est obligatoire.',
+            'quantity.numeric'       => 'La quantité doit être un nombre.',
+            'quantity.min'           => 'La quantité ne peut pas être négative.',
         ];
     }
 }

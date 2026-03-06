@@ -86,10 +86,11 @@ class AccountSettingsController extends Controller
 
         $user->update([
             'password' => Hash::make($request->password),
+            'password_changed_at' => now(),
         ]);
 
         return redirect()
-            ->route('bo.account.settings.edit')
+            ->route('bo.settings.security.index')
             ->with('success', 'Mot de passe mis à jour avec succès.');
     }
 

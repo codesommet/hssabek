@@ -2,28 +2,31 @@
 
 namespace App\Models\Pro;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InvoiceReminder extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
+
+    public $timestamps = false;
 
     protected $fillable = [
-        'tenant_id',
         'invoice_id',
-        'reminder_type',
-        'scheduled_date',
-        'is_sent',
+        'type',
+        'channel',
+        'status',
+        'scheduled_at',
         'sent_at',
+        'error',
     ];
 
     protected $casts = [
-        'scheduled_date' => 'date',
-        'sent_at' => 'datetime',
-        'is_sent' => 'boolean',
+        'scheduled_at' => 'datetime',
+        'sent_at'      => 'datetime',
+        'created_at'   => 'datetime',
     ];
 
     public function tenant(): BelongsTo

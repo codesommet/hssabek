@@ -2,30 +2,33 @@
 
 namespace App\Models\Pro;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RecurringInvoice extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'tenant_id',
         'customer_id',
         'template_invoice_id',
-        'frequency',
-        'start_date',
-        'end_date',
-        'is_active',
-        'notes',
+        'interval',
+        'every',
+        'next_run_at',
+        'end_at',
+        'status',
+        'last_generated_at',
+        'total_generated',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
-        'is_active' => 'boolean',
+        'every'             => 'integer',
+        'next_run_at'       => 'datetime',
+        'end_at'            => 'datetime',
+        'last_generated_at' => 'datetime',
+        'total_generated'   => 'integer',
     ];
 
     public function tenant(): BelongsTo

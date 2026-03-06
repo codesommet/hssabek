@@ -34,8 +34,8 @@ class PermissionUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.regex' => 'Permission name must follow the format: group.module.action (e.g., sales.invoices.create)',
-            'name.unique' => 'This permission already exists.',
+            'name.regex' => 'Le nom de la permission doit suivre le format : groupe.module.action (ex. : sales.invoices.create).',
+            'name.unique' => 'Cette permission existe déjà.',
         ];
     }
 }

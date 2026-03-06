@@ -1,0 +1,100 @@
+<?php $page = 'delivery-challans'; ?>
+@extends('backoffice.layout.mainlayout')
+@section('content')
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h6><a href="{{ route('bo.sales.delivery-challans.index') }}"><i
+                                        class="isax isax-arrow-left me-2"></i>Bons de livraison</a></h6>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h5>Bon de livraison — {{ $deliveryChallan->number }}</h5>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('bo.sales.delivery-challans.download', $deliveryChallan) }}" target="_blank"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="isax isax-document-download me-1"></i>Télécharger PDF
+                                        </a>
+                                        <a href="{{ route('bo.sales.delivery-challans.edit', $deliveryChallan) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="isax isax-edit me-1"></i>Modifier
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-4">
+                                    <div class="col-lg-4 col-md-6 mb-3">
+                                        <label class="form-label text-muted">Client</label>
+                                        <p class="fw-medium mb-0">{{ $deliveryChallan->customer->name ?? '—' }}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-3">
+                                        <label class="form-label text-muted">Date</label>
+                                        <p class="fw-medium mb-0">
+                                            {{ \Carbon\Carbon::parse($deliveryChallan->challan_date)->format('d/m/Y') }}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-3">
+                                        <label class="form-label text-muted">Référence</label>
+                                        <p class="fw-medium mb-0">{{ $deliveryChallan->reference_number ?? '—' }}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-3">
+                                        <label class="form-label text-muted">Facture liée</label>
+                                        <p class="fw-medium mb-0">{{ $deliveryChallan->invoice->number ?? '—' }}</p>
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 mb-3">
+                                        <label class="form-label text-muted">Statut</label>
+                                        <p class="mb-0">
+                                            @switch($deliveryChallan->status)
+                                                @case('draft')
+                                                    <span class="badge badge-soft-secondary">Brouillon</span>
+                                                @break
+
+                                                @case('sent')
+                                                    <span class="badge badge-soft-info">Envoyé</span>
+                                                @break
+
+                                                @case('delivered')
+                                                    <span class="badge badge-soft-success">Livré</span>
+                                                @break
+                                            @endswitch
+                                        </p>
+                                    </div>
+                                </div>
+
+                                @if ($deliveryChallan->items && $deliveryChallan->items->count())
+                                    <h6 class="mb-3">Articles</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-nowrap">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Produit</th>
+                                                    <th>Quantité</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($deliveryChallan->items as $item)
+                                                    <tr>
+                                                        <td>{{ $item->product->name ?? ($item->description ?? '—') }}</td>
+                                                        <td>{{ $item->quantity }}</td>
+                                                        <td>{{ $item->description ?? '—' }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @component('backoffice.components.footer')
+            @endcomponent
+        </div>
+    </div>
+@endsection

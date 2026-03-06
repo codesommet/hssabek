@@ -3,55 +3,28 @@
 namespace App\Http\Controllers\Backoffice\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Inventory\Store\StoreProductStockRequest;
-use App\Http\Requests\Inventory\Update\UpdateProductStockRequest;
 use App\Models\Inventory\ProductStock;
+use App\Models\Inventory\Warehouse;
 use Illuminate\Http\Request;
 
 class ProductStockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $stocks = ProductStock::with('product', 'warehouse')->paginate(15);
-        return response()->json($stocks);
-    }
+        $stocks = ProductStock::query()
+            ->with(['product', 'warehouse'])
+            ->when($request->warehouse_id, fn ($q, $w) => $q->where('warehouse_id', $w))
+            ->when($request->low_stock, fn ($q) =>
+                $q->whereNotNull('reorder_point')
+                  ->whereColumn('quantity_on_hand', '<=', 'reorder_point'))
+            ->when($request->search, fn ($q, $s) => $q->whereHas('product', fn ($pq) =>
+                $pq->where('name', 'like', "%{$s}%")
+                   ->orWhere('code', 'like', "%{$s}%")))
+            ->paginate(25)
+            ->withQueryString();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductStockRequest $request)
-    {
-        $stock = ProductStock::create($request->validated());
-        return response()->json($stock, 201);
-    }
+        $warehouses = Warehouse::orderBy('name')->get();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProductStock $productStock)
-    {
-        $productStock->load('product', 'warehouse');
-        return response()->json($productStock);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProductStockRequest $request, ProductStock $productStock)
-    {
-        $productStock->update($request->validated());
-        return response()->json($productStock);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProductStock $productStock)
-    {
-        $productStock->delete();
-        return response()->json(null, 204);
+        return view('backoffice.inventory.stock.index', compact('stocks', 'warehouses'));
     }
 }

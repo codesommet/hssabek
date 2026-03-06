@@ -2,22 +2,25 @@
 
 namespace App\Models\Sales;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CreditNoteApplication extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
         'credit_note_id',
         'invoice_id',
-        'applied_amount',
+        'amount_applied',
+        'applied_at',
     ];
 
     protected $casts = [
-        'applied_amount' => 'decimal:2',
+        'amount_applied' => 'decimal:2',
+        'applied_at' => 'datetime',
     ];
 
     public function creditNote(): BelongsTo

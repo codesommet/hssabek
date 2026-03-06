@@ -14,6 +14,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
+
         $query = User::query()
             ->where('tenant_id', TenantContext::id())
             ->with('roles');
@@ -39,7 +41,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $this->assertSameTenant($user);
+        $this->authorize('update', $user);
 
         $roles = Role::where('tenant_id', TenantContext::id())
             ->orderBy('name')
@@ -50,7 +52,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->assertSameTenant($user);
+        $this->authorize('update', $user);
 
         $user->update($request->safe()->only(['name', 'phone']));
 
@@ -68,7 +70,7 @@ class UserController extends Controller
 
     public function activate(User $user)
     {
-        $this->assertSameTenant($user);
+        $this->authorize('activate', $user);
 
         $user->update(['status' => 'active']);
 
@@ -78,17 +80,11 @@ class UserController extends Controller
 
     public function deactivate(User $user)
     {
-        $this->assertSameTenant($user);
-        abort_if($user->id === auth()->id(), 403, 'Vous ne pouvez pas vous désactiver vous-même.');
+        $this->authorize('deactivate', $user);
 
         $user->update(['status' => 'blocked']);
 
         return redirect()->route('bo.users.index')
             ->with('success', "L'utilisateur « {$user->name} » a été désactivé.");
-    }
-
-    private function assertSameTenant(User $user): void
-    {
-        abort_unless($user->tenant_id === TenantContext::id(), 403);
     }
 }

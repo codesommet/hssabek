@@ -118,7 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($products as $product)
+                        @foreach($products as $product)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -181,13 +181,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <p class="text-muted mb-0">Aucun produit trouvé.</p>
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

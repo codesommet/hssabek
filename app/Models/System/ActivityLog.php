@@ -5,23 +5,28 @@ namespace App\Models\System;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ActivityLog extends Model
 {
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'tenant_id',
         'user_id',
         'action',
-        'model_type',
-        'model_id',
-        'changes',
-        'ip_address',
+        'subject_type',
+        'subject_id',
+        'properties',
+        'ip',
+        'user_agent',
     ];
 
     protected $casts = [
-        'changes' => 'json',
+        'properties' => 'array',
+        'created_at' => 'datetime',
     ];
 
     public function tenant(): BelongsTo
@@ -32,5 +37,10 @@ class ActivityLog extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\Models\User::class);
+    }
+
+    public function subject(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

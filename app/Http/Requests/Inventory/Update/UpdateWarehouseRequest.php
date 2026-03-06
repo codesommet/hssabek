@@ -2,32 +2,45 @@
 
 namespace App\Http\Requests\Inventory\Update;
 
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateWarehouseRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-        $warehouseId = $this->route('warehouse');
+        $warehouseId = $this->route('warehouse')?->id ?? $this->route('warehouse');
+
         return [
-            'name' => "sometimes|required|string|max:255|unique:warehouses,name,{$warehouseId}",
-            'code' => "sometimes|required|string|max:50|unique:warehouses,code,{$warehouseId}",
-            'location' => 'nullable|string|max:255',
-            'capacity' => 'nullable|numeric|min:0',
-            'is_active' => 'boolean',
+            'name'       => [
+                'required', 'string', 'max:255',
+                Rule::unique('warehouses')->where('tenant_id', TenantContext::id())->ignore($warehouseId),
+            ],
+            'code'       => [
+                'nullable', 'string', 'max:50',
+                Rule::unique('warehouses')->where('tenant_id', TenantContext::id())->ignore($warehouseId),
+            ],
+            'address'    => 'nullable|string|max:500',
+            'is_default' => 'boolean',
+            'is_active'  => 'boolean',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Le nom de l\'entrepôt est obligatoire.',
+            'name.max'      => 'Le nom ne doit pas dépasser 255 caractères.',
+            'name.unique'   => 'Un entrepôt avec ce nom existe déjà.',
+            'code.max'      => 'Le code ne doit pas dépasser 50 caractères.',
+            'code.unique'   => 'Un entrepôt avec ce code existe déjà.',
+            'address.max'   => 'L\'adresse ne doit pas dépasser 500 caractères.',
         ];
     }
 }

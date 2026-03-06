@@ -26,6 +26,12 @@ class StoreBranchRequest extends FormRequest
 
     public function messages(): array
     {
-        return [];
+        return [
+            'name.required' => 'Le nom de la succursale est obligatoire.',
+            'name.max'      => 'Le nom ne doit pas dépasser 120 caractères.',
+            'code.required' => 'Le code est obligatoire.',
+            'code.max'      => 'Le code ne doit pas dépasser 50 caractères.',
+            'email.email'   => 'L\'adresse e-mail n\'est pas valide.',
+        ];
     }
 }

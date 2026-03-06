@@ -3,6 +3,7 @@
 namespace App\Models\Purchases;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,22 +11,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SupplierPayment extends Model
 {
-    use HasUuids, BelongsToTenant;
+    use HasUuids, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'supplier_id',
         'vendor_bill_id',
-        'payment_method_id',
-        'payment_number',
+        'amount',
+        'status',
         'payment_date',
-        'payment_amount',
-        'notes',
+        'paid_at',
         'reference_number',
+        'payment_method_id',
+        'notes',
     ];
 
     protected $casts = [
+        'amount'       => 'decimal:2',
         'payment_date' => 'date',
-        'payment_amount' => 'decimal:2',
+        'paid_at'      => 'datetime',
     ];
 
     public function supplier(): BelongsTo

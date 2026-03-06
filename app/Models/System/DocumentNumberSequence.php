@@ -10,16 +10,19 @@ class DocumentNumberSequence extends Model
 {
     use HasUuids, BelongsToTenant;
 
+    const CREATED_AT = null;
+    const UPDATED_AT = 'updated_at';
+
     protected $fillable = [
-        'document_type',
+        'key',
         'prefix',
-        'current_number',
-        'increment_by',
-        'suffix',
+        'next_number',
+        'format',
+        'reset_policy',
     ];
 
     protected $casts = [
-        'current_number' => 'integer',
-        'increment_by' => 'integer',
+        'next_number' => 'integer',
+        'format' => 'array',
     ];
 }

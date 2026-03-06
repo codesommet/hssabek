@@ -19,4 +19,6 @@ Route::prefix('tenants')->as('tenants.')->group(function () {
     Route::delete('/{tenant}', [TenantManagementController::class, 'destroy'])->name('destroy');
     Route::post('/{tenant}/suspend', [TenantManagementController::class, 'suspend'])->name('suspend');
     Route::post('/{tenant}/activate', [TenantManagementController::class, 'activate'])->name('activate');
+    Route::get('/{tenant}/usage', [TenantManagementController::class, 'usage'])->name('usage');
+    Route::put('/{tenant}/usage', [TenantManagementController::class, 'updateLimits'])->name('usage.update');
 });

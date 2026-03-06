@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'isSuperAdmin' => \App\Http\Middleware\IsSuperAdmin::class,
             'superAdminOnly' => \App\Http\Middleware\IsSuperAdmin::class,
             'permission' => \App\Http\Middleware\RequirePermission::class,
+            'plan.limit' => \App\Http\Middleware\CheckPlanLimit::class,
+            'subscriptionActive' => \App\Http\Middleware\EnsureActiveSubscription::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

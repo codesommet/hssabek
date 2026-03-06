@@ -70,7 +70,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($categories as $category)
+                        @foreach($categories as $category)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -117,11 +117,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center">Aucune cat&eacute;gorie trouv&eacute;e.</td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

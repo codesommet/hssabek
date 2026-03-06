@@ -10,48 +10,89 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $warehouses = Warehouse::paginate(15);
-        return response()->json($warehouses);
+        $this->authorize('viewAny', Warehouse::class);
+
+        $warehouses = Warehouse::query()
+            ->when($request->search, fn ($q, $s) => $q->where(function ($q) use ($s) {
+                $q->where('name', 'like', "%{$s}%")
+                  ->orWhere('code', 'like', "%{$s}%");
+            }))
+            ->when($request->status === 'active', fn ($q) => $q->where('is_active', true))
+            ->when($request->status === 'inactive', fn ($q) => $q->where('is_active', false))
+            ->orderBy('name')
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('backoffice.inventory.warehouses.index', compact('warehouses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $this->authorize('create', Warehouse::class);
+
+        return view('backoffice.inventory.warehouses.create');
+    }
+
     public function store(StoreWarehouseRequest $request)
     {
-        $warehouse = Warehouse::create($request->validated());
-        return response()->json($warehouse, 201);
+        $this->authorize('create', Warehouse::class);
+
+        $data = $request->validated();
+        $data['is_default'] = $request->boolean('is_default');
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        Warehouse::create($data);
+
+        return redirect()->route('bo.inventory.warehouses.index')
+            ->with('success', 'Entrepôt créé avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Warehouse $warehouse)
     {
-        $warehouse->load('stocks');
-        return response()->json($warehouse);
+        $this->authorize('view', $warehouse);
+
+        $warehouse->load(['productStocks.product', 'stockMovements' => function ($q) {
+            $q->with('product')->latest('moved_at')->limit(20);
+        }]);
+
+        return view('backoffice.inventory.warehouses.show', compact('warehouse'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Warehouse $warehouse)
+    {
+        $this->authorize('update', $warehouse);
+
+        return view('backoffice.inventory.warehouses.edit', compact('warehouse'));
+    }
+
     public function update(UpdateWarehouseRequest $request, Warehouse $warehouse)
     {
-        $warehouse->update($request->validated());
-        return response()->json($warehouse);
+        $this->authorize('update', $warehouse);
+
+        $data = $request->validated();
+        $data['is_default'] = $request->boolean('is_default');
+        $data['is_active'] = $request->boolean('is_active', true);
+
+        $warehouse->update($data);
+
+        return redirect()->route('bo.inventory.warehouses.index')
+            ->with('success', 'Entrepôt mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Warehouse $warehouse)
     {
+        $this->authorize('delete', $warehouse);
+
+        if ($warehouse->productStocks()->where('quantity_on_hand', '>', 0)->exists()) {
+            return redirect()->route('bo.inventory.warehouses.index')
+                ->with('error', 'Impossible de supprimer cet entrepôt : il contient encore du stock.');
+        }
+
         $warehouse->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('bo.inventory.warehouses.index')
+            ->with('success', 'Entrepôt supprimé avec succès.');
     }
 }

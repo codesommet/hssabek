@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Store\StoreTaxCategoryRequest;
 use App\Http\Requests\Catalog\Update\UpdateTaxCategoryRequest;
 use App\Models\Catalog\TaxCategory;
-use App\Services\Tenancy\TenantContext;
 
 class TaxCategoryController extends Controller
 {
     public function store(StoreTaxCategoryRequest $request)
     {
+        $this->authorize('create', TaxCategory::class);
+
         TaxCategory::create($request->validated());
 
         return redirect()->back()->with('success', 'Taux de taxe ajouté avec succès.');
@@ -19,7 +20,7 @@ class TaxCategoryController extends Controller
 
     public function update(UpdateTaxCategoryRequest $request, TaxCategory $taxCategory)
     {
-        $this->assertSameTenant($taxCategory);
+        $this->authorize('update', $taxCategory);
 
         $taxCategory->update($request->validated());
 
@@ -28,7 +29,7 @@ class TaxCategoryController extends Controller
 
     public function destroy(TaxCategory $taxCategory)
     {
-        $this->assertSameTenant($taxCategory);
+        $this->authorize('delete', $taxCategory);
 
         abort_if(
             $taxCategory->products()->exists(),
@@ -39,10 +40,5 @@ class TaxCategoryController extends Controller
         $taxCategory->delete();
 
         return redirect()->back()->with('success', 'Taux de taxe supprimé avec succès.');
-    }
-
-    private function assertSameTenant(TaxCategory $taxCategory): void
-    {
-        abort_unless($taxCategory->tenant_id === TenantContext::id(), 403);
     }
 }

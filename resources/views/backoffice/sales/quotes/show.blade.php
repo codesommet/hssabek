@@ -1,0 +1,249 @@
+<?php $page = 'quotation-details'; ?>
+@extends('backoffice.layout.mainlayout')
+@section('content')
+    <div class="page-wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap row-gap-3 mb-3">
+                            <h6><a href="{{ route('bo.sales.quotes.index') }}"><i class="isax isax-arrow-left me-2"></i>Devis</a></h6>
+                            <div class="d-flex align-items-center flex-wrap row-gap-3">
+                                <a href="{{ route('bo.sales.quotes.download', $quote) }}" target="_blank" class="btn btn-outline-white d-inline-flex align-items-center me-3"><i class="isax isax-document-download me-1"></i>Télécharger PDF</a>
+                                @if($quote->status === 'draft')
+                                    <a href="{{ route('bo.sales.quotes.edit', $quote) }}" class="btn btn-outline-white d-inline-flex align-items-center me-3"><i class="isax isax-edit me-1"></i>Modifier</a>
+                                @endif
+                                @if(in_array($quote->status, ['sent', 'accepted']))
+                                    <form method="POST" action="{{ route('bo.sales.quotes.convert', $quote) }}" class="me-3">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary d-inline-flex align-items-center">
+                                            <i class="isax isax-convert me-1"></i>Convertir en facture
+                                        </button>
+                                    </form>
+                                @endif
+                                <form method="POST" action="{{ route('bo.sales.quotes.destroy', $quote) }}">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger d-inline-flex align-items-center"
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce devis ?')">
+                                        <i class="isax isax-trash me-1"></i>Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="bg-light p-4 rounded position-relative mb-3">
+                                    <div class="position-absolute top-0 end-0 z-0">
+                                        <img src="{{ URL::asset('build/img/bg/card-bg.png') }}" alt="img">
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between border-bottom flex-wrap mb-3 pb-2 position-relative z-1">
+                                        <div class="mb-3">
+                                            <h4 class="mb-1">Devis</h4>
+                                            <div class="d-flex align-items-center flex-wrap row-gap-3">
+                                                <div class="me-4">
+                                                    <h6 class="fs-14 fw-semibold mb-1">{{ $quote->number }}</h6>
+                                                    <p>
+                                                        @switch($quote->status)
+                                                            @case('draft') <span class="badge badge-soft-secondary">Brouillon</span> @break
+                                                            @case('sent') <span class="badge badge-soft-info">Envoyé</span> @break
+                                                            @case('accepted') <span class="badge badge-soft-success">Accepté</span> @break
+                                                            @case('rejected') <span class="badge badge-soft-danger">Rejeté</span> @break
+                                                            @case('expired') <span class="badge badge-soft-warning">Expiré</span> @break
+                                                            @case('cancelled') <span class="badge badge-soft-danger">Annulé</span> @break
+                                                        @endswitch
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row gy-3 position-relative z-1">
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <h6 class="mb-2 fs-16 fw-semibold">Détails du devis</h6>
+                                                <div>
+                                                    <p class="mb-1">N° Devis : <span class="text-dark">{{ $quote->number }}</span></p>
+                                                    <p class="mb-1">Date d'émission : <span class="text-dark">{{ $quote->issue_date?->format('d/m/Y') }}</span></p>
+                                                    @if($quote->expiry_date)
+                                                        <p class="mb-1">Date d'expiration : <span class="text-dark">{{ $quote->expiry_date->format('d/m/Y') }}</span></p>
+                                                    @endif
+                                                    @if($quote->reference_number)
+                                                        <p class="mb-1">Référence : <span class="text-dark">{{ $quote->reference_number }}</span></p>
+                                                    @endif
+                                                    <p class="mb-1">Devise : <span class="text-dark">{{ $quote->currency }}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <h6 class="mb-2 fs-16 fw-semibold">Client</h6>
+                                                <div>
+                                                    <h6 class="fs-14 fw-semibold mb-1">{{ $quote->customer->name ?? '—' }}</h6>
+                                                    @if($quote->customer?->email)
+                                                        <p class="mb-1">Email : {{ $quote->customer->email }}</p>
+                                                    @endif
+                                                    @if($quote->customer?->phone)
+                                                        <p class="mb-1">Tél : {{ $quote->customer->phone }}</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div>
+                                                <h6 class="mb-2 fs-16 fw-semibold">Total</h6>
+                                                <div>
+                                                    <p class="mb-1">Total : <span class="text-dark fw-semibold">{{ number_format($quote->total, 2, ',', ' ') }} {{ $quote->currency }}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <h6 class="mb-3">Articles</h6>
+                                    <div class="table-responsive rounded border-bottom-0 border table-nowrap">
+                                        <table class="table m-0">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Libellé</th>
+                                                    <th>Quantité</th>
+                                                    <th>Unité</th>
+                                                    <th>Prix unitaire</th>
+                                                    <th>Remise</th>
+                                                    <th>Taxe</th>
+                                                    <th>Montant</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($quote->items as $item)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td class="text-dark">
+                                                            {{ $item->label }}
+                                                            @if($item->description)
+                                                                <br><small class="text-muted">{{ $item->description }}</small>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->quantity }}</td>
+                                                        <td>{{ $item->unit?->short_name ?? '—' }}</td>
+                                                        <td>{{ number_format($item->unit_price, 2, ',', ' ') }}</td>
+                                                        <td>
+                                                            @if($item->discount_type === 'percentage')
+                                                                {{ $item->discount_value }}%
+                                                            @elseif($item->discount_type === 'fixed')
+                                                                {{ number_format($item->discount_value, 2, ',', ' ') }}
+                                                            @else
+                                                                —
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $item->tax_rate > 0 ? number_format($item->tax_rate, 2) . '%' : '—' }}</td>
+                                                        <td>{{ number_format($item->line_total, 2, ',', ' ') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="border-bottom mb-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            @if($quote->notes || $quote->terms)
+                                                <div class="mb-3 p-4">
+                                                    @if($quote->terms)
+                                                        <div class="mb-3">
+                                                            <h6 class="fs-14 fw-semibold mb-1">Conditions générales</h6>
+                                                            <p>{{ $quote->terms }}</p>
+                                                        </div>
+                                                    @endif
+                                                    @if($quote->notes)
+                                                        <div>
+                                                            <h6 class="fs-14 fw-semibold mb-1">Notes</h6>
+                                                            <p>{{ $quote->notes }}</p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3 p-4">
+                                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                                    <h6 class="fs-14 fw-semibold">Sous-total</h6>
+                                                    <h6 class="fs-14 fw-semibold">{{ number_format($quote->subtotal, 2, ',', ' ') }}</h6>
+                                                </div>
+                                                @if($quote->discount_total > 0)
+                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                        <h6 class="fs-14 fw-semibold">Remise</h6>
+                                                        <h6 class="fs-14 fw-semibold text-danger">-{{ number_format($quote->discount_total, 2, ',', ' ') }}</h6>
+                                                    </div>
+                                                @endif
+                                                @if($quote->tax_total > 0)
+                                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                                        <h6 class="fs-14 fw-semibold">Taxe</h6>
+                                                        <h6 class="fs-14 fw-semibold">{{ number_format($quote->tax_total, 2, ',', ' ') }}</h6>
+                                                    </div>
+                                                @endif
+                                                <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                                                    <h6>Total ({{ $quote->currency }})</h6>
+                                                    <h6>{{ number_format($quote->total, 2, ',', ' ') }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if($quote->invoices->count() > 0)
+                                    <div class="mb-3">
+                                        <h6 class="mb-3">Factures liées</h6>
+                                        <div class="table-responsive rounded border-bottom-0 border table-nowrap">
+                                            <table class="table m-0">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>N° Facture</th>
+                                                        <th>Date</th>
+                                                        <th>Total</th>
+                                                        <th>Statut</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($quote->invoices as $inv)
+                                                        <tr>
+                                                            <td><a href="{{ route('bo.sales.invoices.show', $inv) }}">{{ $inv->number }}</a></td>
+                                                            <td>{{ $inv->issue_date?->format('d/m/Y') }}</td>
+                                                            <td>{{ number_format($inv->total, 2, ',', ' ') }} {{ $inv->currency }}</td>
+                                                            <td>
+                                                                @switch($inv->status)
+                                                                    @case('draft') <span class="badge badge-soft-secondary">Brouillon</span> @break
+                                                                    @case('sent') <span class="badge badge-soft-info">Envoyée</span> @break
+                                                                    @case('paid') <span class="badge badge-soft-success">Payée</span> @break
+                                                                    @default <span class="badge badge-soft-warning">{{ ucfirst($inv->status) }}</span>
+                                                                @endswitch
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @component('backoffice.components.footer')
+            @endcomponent
+        </div>
+    </div>
+@endsection

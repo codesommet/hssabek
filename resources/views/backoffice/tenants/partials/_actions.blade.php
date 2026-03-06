@@ -13,6 +13,10 @@
                 data-bs-toggle="modal" data-bs-target="#edit_tenant_{{ $tenant->id }}"><i
                     class="isax isax-edit me-2"></i>Modifier</a>
         </li>
+        <li>
+            <a href="{{ route('sa.tenants.usage', $tenant) }}" class="dropdown-item d-flex align-items-center"><i
+                    class="isax isax-chart me-2"></i>Utilisation & Limites</a>
+        </li>
         @if($tenant->status === 'active')
             <li>
                 <form method="POST" action="{{ route('sa.tenants.suspend', $tenant) }}">

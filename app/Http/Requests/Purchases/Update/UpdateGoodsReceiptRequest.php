@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Purchases\Update;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class UpdateGoodsReceiptRequest extends FormRequest
+class UpdateGoodsReceiptRequest extends TenantFormRequest
 {
     public function authorize(): bool
     {
@@ -14,17 +14,26 @@ class UpdateGoodsReceiptRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'purchase_order_id' => ['sometimes', 'nullable', 'uuid', 'exists:purchase_orders,id'],
-            'warehouse_id' => ['sometimes', 'uuid', 'exists:warehouses,id'],
-            'number' => ['sometimes', 'string', 'max:50'],
-            'status' => ['sometimes', 'in:draft,received,cancelled'],
-            'received_at' => ['sometimes', 'nullable', 'date'],
-            'notes' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'purchase_order_id' => ['sometimes', 'nullable', 'uuid', $this->tenantExists('purchase_orders')],
+            'warehouse_id'      => ['sometimes', 'uuid', $this->tenantExists('warehouses')],
+            'received_at'       => ['sometimes', 'nullable', 'date'],
+            'notes'             => ['sometimes', 'nullable', 'string', 'max:2000'],
+
+            'items'                  => ['sometimes', 'array', 'min:1'],
+            'items.*.product_id'     => ['required_with:items', 'uuid', $this->tenantExists('products')],
+            'items.*.quantity'       => ['required_with:items', 'numeric', 'min:0.001'],
+            'items.*.note'           => ['nullable', 'string', 'max:500'],
         ];
     }
 
     public function messages(): array
     {
-        return [];
+        return [
+            'purchase_order_id.exists'         => 'Le bon de commande sélectionné est invalide.',
+            'warehouse_id.exists'              => 'L\'entrepôt sélectionné est invalide.',
+            'items.*.product_id.required_with' => 'Le produit est obligatoire.',
+            'items.*.product_id.exists'        => 'Le produit sélectionné est invalide.',
+            'items.*.quantity.required_with'   => 'La quantité est obligatoire.',
+        ];
     }
 }

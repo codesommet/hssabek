@@ -2,33 +2,42 @@
 
 namespace App\Http\Requests\Purchases\Update;
 
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateVendorBillRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
-        $billId = $this->route('vendorBill');
+        $tenantId = TenantContext::id();
+
         return [
-            'supplier_id' => 'sometimes|required|exists:suppliers,id',
-            'bill_number' => "sometimes|required|string|unique:vendor_bills,bill_number,{$billId}",
-            'bill_date' => 'sometimes|required|date',
-            'due_date' => 'sometimes|required|date|after_or_equal:bill_date',
-            'total_amount' => 'sometimes|required|numeric|min:0',
-            'status' => 'sometimes|required|in:draft,received,approved,paid,cancelled',
+            'supplier_id'       => ['required', 'uuid', Rule::exists('suppliers', 'id')->where('tenant_id', $tenantId)],
+            'reference_number'  => 'nullable|string|max:100',
+            'issue_date'        => 'required|date',
+            'due_date'          => 'nullable|date|after_or_equal:issue_date',
+            'subtotal'          => 'required|numeric|min:0',
+            'tax_total'         => 'nullable|numeric|min:0',
+            'total'             => 'required|numeric|min:0',
+            'notes'             => 'nullable|string|max:2000',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'supplier_id.required'    => 'Le fournisseur est obligatoire.',
+            'supplier_id.exists'      => 'Le fournisseur sélectionné est invalide.',
+            'issue_date.required'     => 'La date d\'émission est obligatoire.',
+            'due_date.after_or_equal' => 'La date d\'échéance doit être postérieure ou égale à la date d\'émission.',
+            'subtotal.required'       => 'Le sous-total est obligatoire.',
+            'total.required'          => 'Le total est obligatoire.',
         ];
     }
 }

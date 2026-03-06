@@ -9,8 +9,6 @@ use App\Models\Catalog\Product;
 use App\Models\Catalog\ProductCategory;
 use App\Models\Catalog\TaxCategory;
 use App\Models\Catalog\Unit;
-use App\Models\Finance\Currency;
-use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,6 +16,8 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Product::class);
+
         $query = Product::query()
             ->with(['category', 'unit', 'taxCategory']);
 
@@ -48,18 +48,23 @@ class ProductController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Product::class);
+
         $categories = ProductCategory::where('is_active', true)->orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
         $taxCategories = TaxCategory::where('is_active', true)->orderBy('name')->get();
-        $currencies = Currency::orderBy('code')->get();
 
         return view('backoffice.catalog.products.create', compact(
-            'categories', 'units', 'taxCategories', 'currencies'
+            'categories',
+            'units',
+            'taxCategories'
         ));
     }
 
     public function store(StoreProductRequest $request)
     {
+        $this->authorize('create', Product::class);
+
         $data = $request->validated();
         unset($data['product_image']);
 
@@ -80,21 +85,23 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $this->assertSameTenant($product);
+        $this->authorize('update', $product);
 
         $categories = ProductCategory::where('is_active', true)->orderBy('name')->get();
         $units = Unit::orderBy('name')->get();
         $taxCategories = TaxCategory::where('is_active', true)->orderBy('name')->get();
-        $currencies = Currency::orderBy('code')->get();
 
         return view('backoffice.catalog.products.edit', compact(
-            'product', 'categories', 'units', 'taxCategories', 'currencies'
+            'product',
+            'categories',
+            'units',
+            'taxCategories'
         ));
     }
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $this->assertSameTenant($product);
+        $this->authorize('update', $product);
 
         $data = $request->validated();
         unset($data['product_image']);
@@ -116,16 +123,11 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        $this->assertSameTenant($product);
+        $this->authorize('delete', $product);
 
         $product->delete();
 
         return redirect()->route('bo.catalog.products.index')
             ->with('success', 'Produit supprimé avec succès.');
-    }
-
-    private function assertSameTenant(Product $product): void
-    {
-        abort_unless($product->tenant_id === TenantContext::id(), 403);
     }
 }

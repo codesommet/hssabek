@@ -13,17 +13,15 @@ class Refund extends Model
 
     protected $fillable = [
         'payment_id',
-        'refund_number',
-        'refund_date',
-        'refund_amount',
-        'reason',
+        'amount',
         'status',
-        'notes',
+        'provider_refund_id',
+        'refunded_at',
     ];
 
     protected $casts = [
-        'refund_date' => 'date',
-        'refund_amount' => 'decimal:2',
+        'amount' => 'decimal:2',
+        'refunded_at' => 'datetime',
     ];
 
     public function payment(): BelongsTo

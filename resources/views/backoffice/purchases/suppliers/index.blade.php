@@ -1,0 +1,173 @@
+<?php $page = 'suppliers'; ?>
+@extends('backoffice.layout.mainlayout')
+@section('content')
+    <!-- ========================
+      Start Page Content
+     ========================= -->
+
+    <div class="page-wrapper">
+
+        <!-- Start Content -->
+        <div class="content content-two">
+
+            <!-- Page Header -->
+            <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
+                <div>
+                    <h6>Fournisseurs</h6>
+                </div>
+                <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
+                    <div>
+                        <a href="{{ route('bo.purchases.suppliers.create') }}" class="btn btn-primary d-flex align-items-center">
+                            <i class="isax isax-add-circle5 me-1"></i>Nouveau fournisseur
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- End Page Header -->
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            <!-- Table Search Start -->
+            <div class="mb-3">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <form action="{{ route('bo.purchases.suppliers.index') }}" method="GET" class="table-search d-flex align-items-center mb-0">
+                            <div class="search-input">
+                                <input type="text" name="search" class="form-control" placeholder="Rechercher un fournisseur..." value="{{ request('search') }}">
+                                <a href="javascript:void(0);" class="btn-searchset" onclick="this.closest('form').submit()"><i
+                                        class="isax isax-search-normal fs-12"></i></a>
+                                @if(request('status'))
+                                    <input type="hidden" name="status" value="{{ request('status') }}">
+                                @endif
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        <div class="dropdown">
+                            <a href="javascript:void(0);"
+                                class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
+                                data-bs-toggle="dropdown">
+                                <i class="isax isax-filter me-1"></i>Statut : <span class="fw-normal ms-1">{{ request('status') === 'active' ? 'Actif' : (request('status') === 'inactive' ? 'Inactif' : 'Tous') }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a href="{{ route('bo.purchases.suppliers.index', array_merge(request()->except('status', 'page'))) }}" class="dropdown-item">Tous</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('bo.purchases.suppliers.index', array_merge(request()->except('page'), ['status' => 'active'])) }}" class="dropdown-item">Actif</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('bo.purchases.suppliers.index', array_merge(request()->except('page'), ['status' => 'inactive'])) }}" class="dropdown-item">Inactif</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table Search End -->
+
+            <!-- Table List -->
+            <div class="table-responsive">
+                <table class="table table-nowrap datatable">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="no-sort">
+                                <div class="form-check form-check-md">
+                                    <input class="form-check-input" type="checkbox" id="select-all">
+                                </div>
+                            </th>
+                            <th>Fournisseur</th>
+                            <th>Téléphone</th>
+                            <th class="no-sort">Bons de commande</th>
+                            <th class="no-sort">Factures</th>
+                            <th>Créé le</th>
+                            <th class="no-sort">Statut</th>
+                            <th class="no-sort"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($suppliers as $supplier)
+                            <tr>
+                                <td>
+                                    <div class="form-check form-check-md">
+                                        <input class="form-check-input" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('bo.purchases.suppliers.show', $supplier) }}"
+                                            class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                            <span class="avatar avatar-sm rounded-circle bg-primary text-white d-flex align-items-center justify-content-center">
+                                                {{ strtoupper(substr($supplier->name, 0, 1)) }}
+                                            </span>
+                                        </a>
+                                        <div>
+                                            <h6 class="fs-14 fw-medium mb-0"><a href="{{ route('bo.purchases.suppliers.show', $supplier) }}">{{ $supplier->name }}</a></h6>
+                                            <span class="fs-12 text-muted">{{ $supplier->email ?? '—' }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ $supplier->phone ?? '—' }}</td>
+                                <td>{{ $supplier->purchase_orders_count }}</td>
+                                <td>{{ $supplier->vendor_bills_count }}</td>
+                                <td>{{ $supplier->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    @if($supplier->status === 'active')
+                                        <span class="badge badge-soft-success d-inline-flex align-items-center">Actif <i
+                                                class="isax isax-tick-circle ms-1"></i></span>
+                                    @else
+                                        <span class="badge badge-soft-danger d-inline-flex align-items-center">Inactif<i
+                                                class="isax isax-close-circle ms-1"></i></span>
+                                    @endif
+                                </td>
+                                <td class="action-item">
+                                    <a href="javascript:void(0);" data-bs-toggle="dropdown">
+                                        <i class="isax isax-more"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ route('bo.purchases.suppliers.show', $supplier) }}"
+                                                class="dropdown-item d-flex align-items-center"><i
+                                                    class="isax isax-eye me-2"></i>Voir</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('bo.purchases.suppliers.edit', $supplier) }}"
+                                                class="dropdown-item d-flex align-items-center"><i
+                                                    class="isax isax-edit me-2"></i>Modifier</a>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="{{ route('bo.purchases.suppliers.destroy', $supplier) }}">
+                                                @csrf @method('DELETE')
+                                                <button class="dropdown-item d-flex align-items-center text-danger" type="submit"
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce fournisseur ?')">
+                                                    <i class="isax isax-trash me-2"></i>Supprimer
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- End Table List -->
+
+            {{ $suppliers->links() }}
+
+            @component('backoffice.components.footer')
+            @endcomponent
+        </div>
+        <!-- End Content -->
+
+    </div>
+
+    <!-- ========================
+      End Page Content
+     ========================= -->
+@endsection

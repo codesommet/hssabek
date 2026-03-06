@@ -21,13 +21,17 @@ class UpdateProductRequest extends FormRequest
             'item_type'       => ['required', 'in:product,service'],
             'name'            => ['required', 'string', 'max:255'],
             'code'            => [
-                'required', 'string', 'max:50',
+                'required',
+                'string',
+                'max:50',
                 Rule::unique('products', 'code')
                     ->where('tenant_id', TenantContext::id())
                     ->ignore($productId),
             ],
             'sku'             => [
-                'nullable', 'string', 'max:50',
+                'nullable',
+                'string',
+                'max:50',
                 Rule::unique('products', 'sku')
                     ->where('tenant_id', TenantContext::id())
                     ->ignore($productId),
@@ -43,9 +47,13 @@ class UpdateProductRequest extends FormRequest
                     ->where('tenant_id', TenantContext::id()),
             ],
             'description'     => ['nullable', 'string', 'max:5000'],
+            // Service-specific fields
+            'billing_type'    => ['nullable', 'in:one_time,hourly,daily,weekly,monthly,yearly,per_project'],
+            'hourly_rate'     => ['nullable', 'numeric', 'min:0'],
+            'estimated_hours' => ['nullable', 'integer', 'min:0'],
+            'sac_code'        => ['nullable', 'string', 'max:50'],
             'selling_price'   => ['required', 'numeric', 'min:0'],
             'purchase_price'  => ['nullable', 'numeric', 'min:0'],
-            'currency'        => ['nullable', 'string', 'size:3'],
             'track_inventory' => ['nullable', 'boolean'],
             'quantity'        => ['nullable', 'numeric', 'min:0'],
             'alert_quantity'  => ['nullable', 'numeric', 'min:0'],
@@ -79,7 +87,6 @@ class UpdateProductRequest extends FormRequest
             'selling_price.min'       => 'Le prix de vente ne peut pas être négatif.',
             'purchase_price.numeric'  => "Le prix d'achat doit être un nombre.",
             'purchase_price.min'      => "Le prix d'achat ne peut pas être négatif.",
-            'currency.size'           => 'Le code devise doit contenir exactement 3 caractères.',
             'quantity.numeric'        => 'La quantité doit être un nombre.',
             'quantity.min'            => 'La quantité ne peut pas être négative.',
             'alert_quantity.numeric'  => "La quantité d'alerte doit être un nombre.",
@@ -89,6 +96,12 @@ class UpdateProductRequest extends FormRequest
             'discount_value.numeric'  => 'La valeur de remise doit être un nombre.',
             'discount_value.min'      => 'La valeur de remise ne peut pas être négative.',
             'tax_category_id.exists'  => 'La catégorie de taxe sélectionnée est invalide.',
+            'billing_type.in'         => 'Le type de facturation est invalide.',
+            'hourly_rate.numeric'     => 'Le taux horaire doit être un nombre.',
+            'hourly_rate.min'         => 'Le taux horaire ne peut pas être négatif.',
+            'estimated_hours.integer' => 'Les heures estimées doivent être un entier.',
+            'estimated_hours.min'     => 'Les heures estimées ne peuvent pas être négatives.',
+            'sac_code.max'            => 'Le code SAC ne doit pas dépasser 50 caractères.',
             'product_image.image'     => 'Le fichier doit être une image.',
             'product_image.mimes'     => "L'image doit être au format JPEG, PNG ou WebP.",
             'product_image.max'       => "L'image ne doit pas dépasser 2 Mo.",

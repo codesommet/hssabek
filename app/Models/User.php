@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmailNotification;
 use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -34,6 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'last_login_at',
         'last_login_ip',
         'password',
+        'password_changed_at',
         'email_verified_at',
     ];
 
@@ -44,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password_changed_at' => 'datetime',
         'last_login_at' => 'datetime',
         'date_of_birth' => 'date',
         'password' => 'hashed',
@@ -57,6 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public function loginLogs(): HasMany
     {
         return $this->hasMany(\App\Models\System\LoginLog::class);
+    }
+
+    /**
+     * Send the email verification notification with a 1-hour expiring link.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 
     /**

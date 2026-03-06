@@ -13,26 +13,28 @@ class BankAccount extends Model
     use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'account_name',
+        'account_holder_name',
         'account_number',
         'bank_name',
-        'branch_code',
-        'currency_id',
+        'ifsc_code',
+        'branch',
         'account_type',
-        'initial_balance',
+        'currency',
+        'opening_balance',
         'current_balance',
+        'notes',
         'is_active',
     ];
 
     protected $casts = [
-        'initial_balance' => 'decimal:2',
+        'opening_balance' => 'decimal:2',
         'current_balance' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 
-    public function currency(): BelongsTo
+    public function currencyRelation(): BelongsTo
     {
-        return $this->belongsTo(Currency::class);
+        return $this->belongsTo(Currency::class, 'currency', 'code');
     }
 
     public function expenses(): HasMany
@@ -45,8 +47,13 @@ class BankAccount extends Model
         return $this->hasMany(Income::class);
     }
 
-    public function transfers(): HasMany
+    public function outgoingTransfers(): HasMany
     {
         return $this->hasMany(MoneyTransfer::class, 'from_bank_account_id');
+    }
+
+    public function incomingTransfers(): HasMany
+    {
+        return $this->hasMany(MoneyTransfer::class, 'to_bank_account_id');
     }
 }

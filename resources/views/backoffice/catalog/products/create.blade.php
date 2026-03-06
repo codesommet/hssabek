@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+                        Start Page Content
+                    ========================= -->
 
     <div class="page-wrapper">
 
@@ -15,15 +15,63 @@
                 <div class="col-md-10 mx-auto">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <h6><a href="{{ route('bo.catalog.products.index') }}"><i class="isax isax-arrow-left me-2"></i>Produits</a></h6>
+                            <h6><a href="{{ route('bo.catalog.products.index') }}"><i
+                                        class="isax isax-arrow-left me-2"></i>Produits</a></h6>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="mb-3">Informations de base</h6>
-                                <form action="{{ route('bo.catalog.products.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('bo.catalog.products.store') }}" method="POST" enctype="multipart/form-data"
+                            id="product-form">
+                            @csrf
+
+                            {{-- ═══════════════════════════════════════════════
+                                 SECTION 1: Type d'article (Product / Service)
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="mb-3">Type d'article</h6>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('item_type') is-invalid @enderror"
+                                                type="radio" name="item_type" id="item-type-product" value="product"
+                                                {{ old('item_type', 'product') === 'product' ? 'checked' : '' }}>
+                                            <label class="form-check-label fw-medium" for="item-type-product">
+                                                <i class="isax isax-box-15 me-1"></i> Produit
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input @error('item_type') is-invalid @enderror"
+                                                type="radio" name="item_type" id="item-type-service" value="service"
+                                                {{ old('item_type') === 'service' ? 'checked' : '' }}>
+                                            <label class="form-check-label fw-medium" for="item-type-service">
+                                                <i class="isax isax-setting-25 me-1"></i> Service
+                                            </label>
+                                        </div>
+                                    </div>
+                                    @error('item_type')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            {{-- ═══════════════════════════════════════════════
+                                 SECTION 2: Informations de base
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="mb-3">Informations de base</h6>
                                     <div class="mb-3">
-                                        <span class="text-gray-9 fw-bold mb-2 d-flex">Image du produit</span>
+                                        <span class="text-gray-9 fw-bold mb-2 d-flex">Image</span>
                                         <div class="d-flex align-items-center">
                                             <div class="avatar avatar-xxl border border-dashed bg-light me-3 flex-shrink-0">
                                                 <i class="isax isax-image text-primary fs-24"></i>
@@ -31,232 +79,366 @@
                                             <div class="d-inline-flex flex-column align-items-start">
                                                 <div class="drag-upload-btn btn btn-sm btn-primary position-relative mb-2">
                                                     <i class="isax isax-image me-1"></i>Importer une image
-                                                    <input type="file" class="form-control image-sign @error('product_image') is-invalid @enderror" name="product_image" accept="image/*">
+                                                    <input type="file"
+                                                        class="form-control image-sign @error('product_image') is-invalid @enderror"
+                                                        name="product_image" accept="image/*">
                                                 </div>
-                                                <span class="text-gray-9 fs-12">Format JPG ou PNG, ne d&eacute;passant pas 5 Mo.</span>
+                                                <span class="text-gray-9 fs-12">Format JPG ou PNG, max 5 Mo.</span>
                                                 @error('product_image')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    <label class="form-label">Type d'article<span class="text-danger ms-1">*</span></label>
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="form-check me-3">
-                                            <input class="form-check-input @error('item_type') is-invalid @enderror" type="radio" name="item_type" id="item-type-product"
-                                                value="product" {{ old('item_type', 'product') === 'product' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="item-type-product">
-                                                Produit
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input @error('item_type') is-invalid @enderror" type="radio" name="item_type" id="item-type-service"
-                                                value="service" {{ old('item_type') === 'service' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="item-type-service">
-                                                Service
-                                            </label>
-                                        </div>
-                                        @error('item_type')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <!-- start row -->
                                     <div class="row gx-3">
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Nom<span
-                                                        class="text-danger ms-1">*</span></label>
-                                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}">
+                                                <label class="form-label">Nom<span class="text-danger ms-1">*</span></label>
+                                                <input type="text"
+                                                    class="form-control @error('name') is-invalid @enderror" name="name"
+                                                    value="{{ old('name') }}" placeholder="Nom du produit / service">
                                                 @error('name')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">Code<span
                                                         class="text-danger ms-1">*</span></label>
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}">
-                                                    @error('code')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
+                                                <input type="text"
+                                                    class="form-control @error('code') is-invalid @enderror" name="code"
+                                                    value="{{ old('code') }}" placeholder="CODE-001">
+                                                @error('code')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label">SKU</label>
-                                                <input type="text" class="form-control @error('sku') is-invalid @enderror" name="sku" value="{{ old('sku') }}">
+                                                <input type="text"
+                                                    class="form-control @error('sku') is-invalid @enderror" name="sku"
+                                                    value="{{ old('sku') }}" placeholder="SKU (optionnel)">
                                                 @error('sku')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Cat&eacute;gorie<span
-                                                        class="text-danger ms-1">*</span></label>
-                                                <select class="select @error('category_id') is-invalid @enderror" name="category_id">
-                                                    <option value="">S&eacute;lectionner</option>
-                                                    @foreach($categories as $category)
-                                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <label class="form-label">Catégorie</label>
+                                                <select class="select @error('category_id') is-invalid @enderror"
+                                                    name="category_id">
+                                                    <option value="">Sélectionner</option>
+                                                    @foreach ($categories as $category)
+                                                        <option value="{{ $category->id }}"
+                                                            {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                                            {{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('category_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Prix de vente<span
-                                                        class="text-danger ms-1">*</span></label>
-                                                <input type="number" step="0.01" min="0" class="form-control @error('selling_price') is-invalid @enderror" name="selling_price" value="{{ old('selling_price') }}">
-                                                @error('selling_price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Prix d'achat</label>
-                                                <input type="number" step="0.01" min="0" class="form-control @error('purchase_price') is-invalid @enderror" name="purchase_price" value="{{ old('purchase_price') }}">
-                                                @error('purchase_price')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Quantit&eacute;</label>
-                                                <input type="number" step="1" min="0" class="form-control @error('quantity') is-invalid @enderror" name="quantity" value="{{ old('quantity') }}">
-                                                @error('quantity')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Unit&eacute;</label>
-                                                <select class="select @error('unit_id') is-invalid @enderror" name="unit_id">
-                                                    <option value="">S&eacute;lectionner</option>
-                                                    @foreach($units as $unit)
-                                                        <option value="{{ $unit->id }}" {{ old('unit_id') == $unit->id ? 'selected' : '' }}>{{ $unit->name }} ({{ $unit->short_name }})</option>
+                                                <label class="form-label">Unité</label>
+                                                <select class="select @error('unit_id') is-invalid @enderror"
+                                                    name="unit_id">
+                                                    <option value="">Sélectionner</option>
+                                                    @foreach ($units as $unit)
+                                                        <option value="{{ $unit->id }}"
+                                                            {{ old('unit_id') == $unit->id ? 'selected' : '' }}>
+                                                            {{ $unit->name }} ({{ $unit->short_name }})</option>
                                                     @endforeach
                                                 </select>
                                                 @error('unit_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label">Type de remise</label>
-                                                <select class="select @error('discount_type') is-invalid @enderror" name="discount_type">
-                                                    <option value="none" {{ old('discount_type', 'none') === 'none' ? 'selected' : '' }}>Aucune</option>
-                                                    <option value="percentage" {{ old('discount_type') === 'percentage' ? 'selected' : '' }}>Pourcentage (%)</option>
-                                                    <option value="fixed" {{ old('discount_type') === 'fixed' ? 'selected' : '' }}>Fixe</option>
-                                                </select>
-                                                @error('discount_type')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Valeur de la remise</label>
-                                                <input type="number" step="0.01" min="0" class="form-control @error('discount_value') is-invalid @enderror" name="discount_value" value="{{ old('discount_value') }}">
-                                                @error('discount_value')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Code-barres</label>
-                                                <div class="position-relative">
-                                                    <input type="text" class="form-control @error('barcode') is-invalid @enderror" name="barcode" value="{{ old('barcode') }}">
-                                                    @error('barcode')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Quantit&eacute; d'alerte</label>
-                                                <input type="number" step="1" min="0" class="form-control @error('alert_quantity') is-invalid @enderror" name="alert_quantity" value="{{ old('alert_quantity') }}">
-                                                @error('alert_quantity')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Cat&eacute;gorie de taxe</label>
-                                                <select class="select @error('tax_category_id') is-invalid @enderror" name="tax_category_id">
-                                                    <option value="">S&eacute;lectionner</option>
-                                                    @foreach($taxCategories as $taxCategory)
-                                                        <option value="{{ $taxCategory->id }}" {{ old('tax_category_id') == $taxCategory->id ? 'selected' : '' }}>{{ $taxCategory->name }} ({{ $taxCategory->rate }}%)</option>
+                                                <label class="form-label">Taxe</label>
+                                                <select class="select @error('tax_category_id') is-invalid @enderror"
+                                                    name="tax_category_id">
+                                                    <option value="">Sélectionner</option>
+                                                    @foreach ($taxCategories as $taxCategory)
+                                                        <option value="{{ $taxCategory->id }}"
+                                                            {{ old('tax_category_id') == $taxCategory->id ? 'selected' : '' }}>
+                                                            {{ $taxCategory->name }} ({{ $taxCategory->rate }}%)</option>
                                                     @endforeach
                                                 </select>
                                                 @error('tax_category_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- ═══════════════════════════════════════════════
+                                 SECTION 3: Tarification
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="mb-3">Tarification</h6>
+                                    <div class="row gx-3">
+                                        {{-- Service-only: Billing Type --}}
+                                        <div class="col-lg-4 col-md-6 service-field"
+                                            style="{{ old('item_type', 'product') === 'product' ? 'display:none' : '' }}">
                                             <div class="mb-3">
-                                                <label class="form-label">Devise</label>
-                                                <select class="select @error('currency') is-invalid @enderror" name="currency">
-                                                    <option value="">S&eacute;lectionner</option>
-                                                    @foreach($currencies as $curr)
-                                                        <option value="{{ $curr->code }}" {{ old('currency') == $curr->code ? 'selected' : '' }}>{{ $curr->name }} ({{ $curr->symbol }})</option>
-                                                    @endforeach
+                                                <label class="form-label">Type de facturation<span
+                                                        class="text-danger ms-1">*</span></label>
+                                                <select class="form-select @error('billing_type') is-invalid @enderror"
+                                                    name="billing_type">
+                                                    <option value="one_time"
+                                                        {{ old('billing_type', 'one_time') === 'one_time' ? 'selected' : '' }}>
+                                                        Unique (forfait)</option>
+                                                    <option value="hourly"
+                                                        {{ old('billing_type') === 'hourly' ? 'selected' : '' }}>À l'heure
+                                                    </option>
+                                                    <option value="daily"
+                                                        {{ old('billing_type') === 'daily' ? 'selected' : '' }}>À la
+                                                        journée</option>
+                                                    <option value="weekly"
+                                                        {{ old('billing_type') === 'weekly' ? 'selected' : '' }}>À la
+                                                        semaine</option>
+                                                    <option value="monthly"
+                                                        {{ old('billing_type') === 'monthly' ? 'selected' : '' }}>Au mois
+                                                    </option>
+                                                    <option value="yearly"
+                                                        {{ old('billing_type') === 'yearly' ? 'selected' : '' }}>À l'année
+                                                    </option>
+                                                    <option value="per_project"
+                                                        {{ old('billing_type') === 'per_project' ? 'selected' : '' }}>Par
+                                                        projet</option>
                                                 </select>
-                                                @error('currency')
+                                                @error('billing_type')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
+
+                                        {{-- Service-only: Hourly Rate --}}
+                                        <div class="col-lg-4 col-md-6 service-field hourly-field"
+                                            style="{{ old('item_type', 'product') === 'product' || !in_array(old('billing_type'), ['hourly', 'daily']) ? 'display:none' : '' }}">
+                                            <div class="mb-3">
+                                                <label class="form-label">Taux horaire</label>
+                                                <input type="number" step="0.01" min="0"
+                                                    class="form-control @error('hourly_rate') is-invalid @enderror"
+                                                    name="hourly_rate" value="{{ old('hourly_rate') }}"
+                                                    placeholder="0.00">
+                                                @error('hourly_rate')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Service-only: Estimated Hours --}}
+                                        <div class="col-lg-4 col-md-6 service-field hourly-field"
+                                            style="{{ old('item_type', 'product') === 'product' || !in_array(old('billing_type'), ['hourly', 'daily']) ? 'display:none' : '' }}">
+                                            <div class="mb-3">
+                                                <label class="form-label">Heures estimées</label>
+                                                <input type="number" step="1" min="0"
+                                                    class="form-control @error('estimated_hours') is-invalid @enderror"
+                                                    name="estimated_hours" value="{{ old('estimated_hours') }}"
+                                                    placeholder="0">
+                                                @error('estimated_hours')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Prix de vente<span
+                                                        class="text-danger ms-1">*</span></label>
+                                                <input type="number" step="0.01" min="0"
+                                                    class="form-control @error('selling_price') is-invalid @enderror"
+                                                    name="selling_price" value="{{ old('selling_price') }}"
+                                                    placeholder="0.00">
+                                                @error('selling_price')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Prix d'achat</label>
+                                                <input type="number" step="0.01" min="0"
+                                                    class="form-control @error('purchase_price') is-invalid @enderror"
+                                                    name="purchase_price" value="{{ old('purchase_price') }}"
+                                                    placeholder="0.00">
+                                                @error('purchase_price')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Devise</label>
+                                                <input type="text" class="form-control"
+                                                    value="{{ App\Services\Tenancy\TenantContext::get()?->default_currency ?? 'MAD' }}"
+                                                    readonly disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Discount row --}}
+                                    <div class="row gx-3">
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Type de remise</label>
+                                                <select class="select @error('discount_type') is-invalid @enderror"
+                                                    name="discount_type">
+                                                    <option value="none"
+                                                        {{ old('discount_type', 'none') === 'none' ? 'selected' : '' }}>
+                                                        Aucune</option>
+                                                    <option value="percentage"
+                                                        {{ old('discount_type') === 'percentage' ? 'selected' : '' }}>
+                                                        Pourcentage (%)</option>
+                                                    <option value="fixed"
+                                                        {{ old('discount_type') === 'fixed' ? 'selected' : '' }}>Fixe
+                                                    </option>
+                                                </select>
+                                                @error('discount_type')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Valeur de la remise</label>
+                                                <input type="number" step="0.01" min="0"
+                                                    class="form-control @error('discount_value') is-invalid @enderror"
+                                                    name="discount_value" value="{{ old('discount_value') }}"
+                                                    placeholder="0.00">
+                                                @error('discount_value')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Service-only: SAC Code --}}
+                                        <div class="col-lg-4 col-md-6 service-field"
+                                            style="{{ old('item_type', 'product') === 'product' ? 'display:none' : '' }}">
+                                            <div class="mb-3">
+                                                <label class="form-label">Code SAC</label>
+                                                <input type="text"
+                                                    class="form-control @error('sac_code') is-invalid @enderror"
+                                                    name="sac_code" value="{{ old('sac_code') }}"
+                                                    placeholder="Code comptable service">
+                                                @error('sac_code')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- ═══════════════════════════════════════════════
+                                 SECTION 4: Inventaire (Product only)
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="card mb-3 product-field"
+                                style="{{ old('item_type') === 'service' ? 'display:none' : '' }}">
+                                <div class="card-body">
+                                    <h6 class="mb-3"><i class="isax isax-building-45 me-1"></i>Inventaire</h6>
+                                    <div class="row gx-3">
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Quantité</label>
+                                                <input type="number" step="1" min="0"
+                                                    class="form-control @error('quantity') is-invalid @enderror"
+                                                    name="quantity" value="{{ old('quantity') }}" placeholder="0">
+                                                @error('quantity')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Quantité d'alerte</label>
+                                                <input type="number" step="1" min="0"
+                                                    class="form-control @error('alert_quantity') is-invalid @enderror"
+                                                    name="alert_quantity" value="{{ old('alert_quantity') }}"
+                                                    placeholder="10">
+                                                @error('alert_quantity')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Code-barres</label>
+                                                <input type="text"
+                                                    class="form-control @error('barcode') is-invalid @enderror"
+                                                    name="barcode" value="{{ old('barcode') }}" placeholder="EAN / UPC">
+                                                @error('barcode')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3 d-flex flex-column justify-content-end h-100">
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" name="track_inventory" id="track-inventory" value="1" {{ old('track_inventory') ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="track-inventory">Suivre l'inventaire</label>
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="track_inventory" id="track-inventory" value="1"
+                                                        {{ old('track_inventory') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="track-inventory">Suivre
+                                                        l'inventaire</label>
                                                 </div>
                                             </div>
-                                        </div><!-- end col -->
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="mb-3 d-flex flex-column justify-content-end h-100">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" name="is_active" id="is-active" value="1" {{ old('is_active', '1') ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="is-active">Actif</label>
-                                                </div>
-                                            </div>
-                                        </div><!-- end col -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- ═══════════════════════════════════════════════
+                                 SECTION 5: Description & Status
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="mb-3">Description & Statut</h6>
+                                    <div class="row gx-3">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Description du produit</label>
-                                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="5">{{ old('description') }}</textarea>
+                                                <label class="form-label">Description</label>
+                                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="4"
+                                                    placeholder="Décrivez votre produit ou service...">{{ old('description') }}</textarea>
                                                 @error('description')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
-                                        </div><!-- end col -->
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3 d-flex flex-column justify-content-end h-100">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" name="is_active"
+                                                        id="is-active" value="1"
+                                                        {{ old('is_active', '1') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="is-active">Actif</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <!-- end row -->
+                                </div>
+                            </div>
 
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <a href="{{ route('bo.catalog.products.index') }}" class="btn btn-outline-white">Annuler</a>
-                                        <button type="submit" class="btn btn-primary">Cr&eacute;er</button>
-                                    </div>
+                            {{-- ═══════════════════════════════════════════════
+                                 ACTIONS
+                                 ═══════════════════════════════════════════════ --}}
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <a href="{{ route('bo.catalog.products.index') }}"
+                                    class="btn btn-outline-white">Annuler</a>
+                                <button type="submit" class="btn btn-primary">Créer</button>
+                            </div>
 
-                                </form>
-                            </div><!-- end card body -->
-                        </div><!-- end card -->
+                        </form>
                     </div>
                 </div><!-- end col -->
             </div>
@@ -268,6 +450,51 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+                        End Page Content
+                    ========================= -->
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productRadio = document.getElementById('item-type-product');
+            const serviceRadio = document.getElementById('item-type-service');
+            const productFields = document.querySelectorAll('.product-field');
+            const serviceFields = document.querySelectorAll('.service-field');
+            const hourlyFields = document.querySelectorAll('.hourly-field');
+            const billingType = document.querySelector('[name="billing_type"]');
+
+            function toggleFields() {
+                const isService = serviceRadio.checked;
+
+                productFields.forEach(el => {
+                    el.style.display = isService ? 'none' : '';
+                });
+                serviceFields.forEach(el => {
+                    el.style.display = isService ? '' : 'none';
+                });
+
+                if (isService) {
+                    toggleHourlyFields();
+                }
+            }
+
+            function toggleHourlyFields() {
+                const val = billingType?.value;
+                const showHourly = (val === 'hourly' || val === 'daily');
+                hourlyFields.forEach(el => {
+                    el.style.display = showHourly ? '' : 'none';
+                });
+            }
+
+            productRadio?.addEventListener('change', toggleFields);
+            serviceRadio?.addEventListener('change', toggleFields);
+            billingType?.addEventListener('change', function() {
+                if (serviceRadio.checked) toggleHourlyFields();
+            });
+
+            // Initialize on page load
+            toggleFields();
+        });
+    </script>
+@endpush

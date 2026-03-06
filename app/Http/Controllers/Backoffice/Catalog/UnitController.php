@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Store\StoreUnitRequest;
 use App\Http\Requests\Catalog\Update\UpdateUnitRequest;
 use App\Models\Catalog\Unit;
-use App\Services\Tenancy\TenantContext;
 
 class UnitController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Unit::class);
+
         $units = Unit::withCount('products')
             ->latest()
             ->paginate(15);
@@ -21,6 +22,8 @@ class UnitController extends Controller
 
     public function store(StoreUnitRequest $request)
     {
+        $this->authorize('create', Unit::class);
+
         Unit::create($request->validated());
 
         return redirect()->back()->with('success', 'Unité ajoutée avec succès.');
@@ -28,7 +31,7 @@ class UnitController extends Controller
 
     public function update(UpdateUnitRequest $request, Unit $unit)
     {
-        $this->assertSameTenant($unit);
+        $this->authorize('update', $unit);
 
         $unit->update($request->validated());
 
@@ -37,7 +40,7 @@ class UnitController extends Controller
 
     public function destroy(Unit $unit)
     {
-        $this->assertSameTenant($unit);
+        $this->authorize('delete', $unit);
 
         abort_if(
             $unit->products()->exists(),
@@ -48,10 +51,5 @@ class UnitController extends Controller
         $unit->delete();
 
         return redirect()->back()->with('success', 'Unité supprimée avec succès.');
-    }
-
-    private function assertSameTenant(Unit $unit): void
-    {
-        abort_unless($unit->tenant_id === TenantContext::id(), 403);
     }
 }

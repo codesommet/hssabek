@@ -112,7 +112,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($customers as $customer)
+                        @foreach($customers as $customer)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -177,13 +177,7 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <p class="text-muted mb-0">Aucun client trouvé.</p>
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -22,17 +22,17 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
 
-        return redirect(route('dashboard'))->with('status', 'Email verified successfully!');
+        return redirect(route('dashboard'))->with('success', 'Adresse e-mail vérifiée avec succès.');
     }
 
     public function resend(ResendVerificationRequest $request)
     {
         if (auth()->check() && auth()->user()->hasVerifiedEmail()) {
-            return redirect(route('dashboard'));
+            return back()->with('success', 'Votre adresse e-mail est déjà vérifiée.');
         }
 
         auth()->user()->sendEmailVerificationNotification();
 
-        return back()->with('status', 'Verification link sent! Check your email.');
+        return back()->with('success', 'Un lien de vérification a été envoyé à votre adresse e-mail. Il expire dans 1 heure.');
     }
 }

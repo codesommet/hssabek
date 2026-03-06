@@ -36,6 +36,23 @@
                                             ])
                                         </div>
                                     </div>
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-8 col-sm-12">
+                                            <label class="form-label fw-medium">Modèle PDF</label>
+                                            <p class="text-muted fs-12 mb-0">Le modèle utilisé pour générer les PDF de vos documents.</p>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 text-end">
+                                            @php
+                                                $currentTemplate = $settings->invoice_settings['pdf_template'] ?? 'default';
+                                                $templates = \App\Services\Sales\PdfService::TEMPLATES;
+                                                $currentName = $templates[$currentTemplate]['name'] ?? 'Standard';
+                                            @endphp
+                                            <span class="badge bg-primary-transparent text-primary fs-12 me-2">{{ $currentName }}</span>
+                                            <a href="{{ route('bo.settings.invoice-templates.index') }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="isax isax-document-text me-1"></i>Gérer les modèles
+                                            </a>
+                                        </div>
+                                    </div>
                                     <div class="row align-items-center">
                                         <div class="col-md-8 col-sm-12">
                                             <label class="form-label fw-medium">Préfixe de facture</label>
@@ -141,3 +158,4 @@
            End Page Content
           ========================= -->
 @endsection
+

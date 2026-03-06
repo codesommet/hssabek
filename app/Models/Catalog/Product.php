@@ -3,6 +3,7 @@
 namespace App\Models\Catalog;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
 {
-    use HasUuids, SoftDeletes, BelongsToTenant, InteractsWithMedia;
+    use HasUuids, SoftDeletes, BelongsToTenant, InteractsWithMedia, UsesTenantCurrency;
 
     protected $fillable = [
         'item_type',
@@ -24,9 +25,14 @@ class Product extends Model implements HasMedia
         'category_id',
         'unit_id',
         'description',
+        // Service-specific fields
+        'billing_type',
+        'hourly_rate',
+        'estimated_hours',
+        'sac_code',
+        // Prices
         'selling_price',
         'purchase_price',
-        'currency',
         'track_inventory',
         'quantity',
         'alert_quantity',
@@ -40,11 +46,13 @@ class Product extends Model implements HasMedia
     protected $casts = [
         'selling_price'   => 'decimal:2',
         'purchase_price'  => 'decimal:2',
+        'hourly_rate'     => 'decimal:2',
         'quantity'        => 'decimal:3',
         'alert_quantity'  => 'decimal:3',
         'discount_value'  => 'decimal:4',
         'track_inventory' => 'boolean',
         'is_active'       => 'boolean',
+        'estimated_hours' => 'integer',
     ];
 
     public function registerMediaCollections(): void

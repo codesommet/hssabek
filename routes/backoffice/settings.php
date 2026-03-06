@@ -4,6 +4,7 @@ use App\Http\Controllers\Backoffice\AccountSettingsController;
 use App\Http\Controllers\Backoffice\Settings\AppearanceSettingsController;
 use App\Http\Controllers\Backoffice\Settings\BarcodeSettingsController;
 use App\Http\Controllers\Backoffice\Settings\CompanySettingsController;
+use App\Http\Controllers\Backoffice\Settings\DeleteAccountController;
 use App\Http\Controllers\Backoffice\Settings\CurrencySettingsController;
 use App\Http\Controllers\Backoffice\Settings\EmailTemplateSettingsController;
 use App\Http\Controllers\Backoffice\Settings\InvoiceSettingsController;
@@ -11,9 +12,9 @@ use App\Http\Controllers\Backoffice\Settings\InvoiceTemplateSettingsController;
 use App\Http\Controllers\Backoffice\Settings\LocalizationSettingsController;
 use App\Http\Controllers\Backoffice\Settings\NotificationSettingsController;
 use App\Http\Controllers\Backoffice\Settings\PlansBillingsController;
+use App\Http\Controllers\Backoffice\Settings\PaymentMethodController;
 use App\Http\Controllers\Backoffice\Settings\SecuritySettingsController;
 use App\Http\Controllers\Backoffice\Settings\SignatureSettingsController;
-use App\Http\Controllers\Backoffice\Settings\TaxRateSettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,7 +63,8 @@ Route::prefix('settings/signatures')->as('settings.signatures.')->group(function
 Route::prefix('settings/invoice-templates')->as('settings.invoice-templates.')->group(function () {
     Route::get('/', [InvoiceTemplateSettingsController::class, 'index'])->name('index');
     Route::post('/{template}/activate', [InvoiceTemplateSettingsController::class, 'activate'])->name('activate');
-    Route::post('/{template}/deactivate', [InvoiceTemplateSettingsController::class, 'deactivate'])->name('deactivate');
+    Route::get('/{template}/preview', [InvoiceTemplateSettingsController::class, 'preview'])->name('preview');
+    Route::post('/{templateId}/purchase', [InvoiceTemplateSettingsController::class, 'purchase'])->name('purchase');
 });
 
 // Currencies / Exchange Rates Settings
@@ -75,22 +77,10 @@ Route::prefix('settings/currencies')->as('settings.currencies.')->group(function
     Route::post('/{currency}/set-default', [CurrencySettingsController::class, 'setDefault'])->name('set-default');
 });
 
-// Tax Rates Settings
-Route::prefix('settings/tax-rates')->as('settings.tax-rates.')->group(function () {
-    Route::get('/', [TaxRateSettingsController::class, 'index'])->name('index');
-
-    // Tax Categories (individual rates)
-    Route::post('/category', [TaxRateSettingsController::class, 'storeTaxCategory'])->name('category.store');
-    Route::put('/category/{taxCategory}', [TaxRateSettingsController::class, 'updateTaxCategory'])->name('category.update');
-    Route::put('/category/{taxCategory}/toggle', [TaxRateSettingsController::class, 'toggleTaxCategory'])->name('category.toggle');
-    Route::delete('/category/{taxCategory}', [TaxRateSettingsController::class, 'destroyTaxCategory'])->name('category.destroy');
-
-    // Tax Groups
-    Route::post('/group', [TaxRateSettingsController::class, 'storeTaxGroup'])->name('group.store');
-    Route::put('/group/{taxGroup}', [TaxRateSettingsController::class, 'updateTaxGroup'])->name('group.update');
-    Route::put('/group/{taxGroup}/toggle', [TaxRateSettingsController::class, 'toggleTaxGroup'])->name('group.toggle');
-    Route::delete('/group/{taxGroup}', [TaxRateSettingsController::class, 'destroyTaxGroup'])->name('group.destroy');
-});
+// Tax Rates Settings — REDIRECTED to Catalog module (canonical location)
+// All tax CRUD is handled at bo.catalog.tax-rates / bo.catalog.tax-categories / bo.catalog.tax-groups
+Route::get('settings/tax-rates', fn () => redirect()->route('bo.catalog.tax-rates.index'))
+    ->name('settings.tax-rates.index');
 
 // Barcode Settings
 Route::prefix('settings/barcode')->as('settings.barcode.')->group(function () {
@@ -124,7 +114,21 @@ Route::prefix('settings/appearance')->as('settings.appearance.')->group(function
     Route::put('/', [AppearanceSettingsController::class, 'update'])->name('update');
 });
 
+// Payment Methods Settings
+Route::prefix('settings/payment-methods')->as('settings.payment-methods.')->group(function () {
+    Route::get('/', [PaymentMethodController::class, 'index'])->name('index');
+    Route::post('/', [PaymentMethodController::class, 'store'])->name('store');
+    Route::put('/{paymentMethod}', [PaymentMethodController::class, 'update'])->name('update');
+    Route::delete('/{paymentMethod}', [PaymentMethodController::class, 'destroy'])->name('destroy');
+});
+
 // Security Settings
 Route::prefix('settings/security')->as('settings.security.')->group(function () {
     Route::get('/', [SecuritySettingsController::class, 'index'])->name('index');
+    Route::delete('/sessions/{sessionId}', [SecuritySettingsController::class, 'revokeSession'])->name('revoke-session');
+    Route::post('/deactivate', [SecuritySettingsController::class, 'deactivate'])->name('deactivate');
 });
+
+// Delete Account Request
+Route::post('settings/delete-account', [DeleteAccountController::class, 'store'])
+    ->name('settings.delete-account.store');

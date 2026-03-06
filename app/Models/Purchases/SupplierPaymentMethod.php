@@ -11,16 +11,16 @@ class SupplierPaymentMethod extends Model
 {
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
-        'supplier_id',
-        'payment_method_name',
-        'account_number',
-        'bank_name',
-        'is_default',
+        'name',
+        'provider',
+        'is_active',
     ];
 
     protected $casts = [
-        'is_default' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     public function supplier(): BelongsTo

@@ -2,28 +2,33 @@
 
 namespace App\Models\Finance;
 
+use App\Models\Purchases\Supplier;
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expense extends Model
 {
-    use HasUuids, BelongsToTenant;
+    use HasUuids, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
-        'bank_account_id',
-        'finance_category_id',
-        'amount',
-        'date',
-        'description',
+        'expense_number',
         'reference_number',
-        'receipt',
+        'amount',
+        'expense_date',
+        'payment_mode',
+        'payment_status',
+        'bank_account_id',
+        'supplier_id',
+        'category_id',
+        'description',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'date' => 'date',
+        'expense_date' => 'date',
     ];
 
     public function bankAccount(): BelongsTo
@@ -31,8 +36,13 @@ class Expense extends Model
         return $this->belongsTo(BankAccount::class);
     }
 
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
     public function category(): BelongsTo
     {
-        return $this->belongsTo(FinanceCategory::class, 'finance_category_id');
+        return $this->belongsTo(FinanceCategory::class, 'category_id');
     }
 }

@@ -22,11 +22,11 @@ Route::prefix('catalog')->as('catalog.')->group(function () {
             ->name('index');
 
         Route::get('/create', [ProductController::class, 'create'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware(['permission:inventory.products.create', 'plan.limit:products'])
             ->name('create');
 
         Route::post('/', [ProductController::class, 'store'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware(['permission:inventory.products.create', 'plan.limit:products'])
             ->name('store');
 
         Route::get('/{product}/edit', [ProductController::class, 'edit'])

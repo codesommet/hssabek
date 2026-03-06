@@ -5,23 +5,27 @@ namespace App\Models\System;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 class EmailLog extends Model
 {
     use HasUuids;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'tenant_id',
-        'recipient_email',
-        'email_subject',
-        'email_body',
+        'to',
+        'subject',
+        'type',
+        'entity_id',
         'status',
+        'error',
         'sent_at',
-        'error_message',
+        'created_at',
     ];
 
     protected $casts = [
-        'sent_at' => 'datetime',
+        'sent_at'    => 'datetime',
+        'created_at' => 'datetime',
     ];
 
     public function tenant(): BelongsTo

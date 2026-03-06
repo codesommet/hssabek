@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Pro\Store;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class StoreInvoiceReminderRequest extends FormRequest
+class StoreInvoiceReminderRequest extends TenantFormRequest
 {
     public function authorize(): bool
     {
@@ -14,18 +14,23 @@ class StoreInvoiceReminderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'invoice_id' => ['required', 'uuid', 'exists:invoices,id'],
-            'type' => ['required', 'in:before_due,on_due,after_due'],
-            'channel' => ['required', 'in:email,sms,whatsapp'],
-            'status' => ['required', 'in:scheduled,sent,failed,cancelled'],
+            'invoice_id'   => ['required', 'uuid', $this->tenantExists('invoices')],
+            'type'         => ['required', 'in:before_due,on_due,after_due'],
+            'channel'      => ['required', 'in:email,sms,whatsapp,in_app'],
             'scheduled_at' => ['required', 'date'],
-            'sent_at' => ['nullable', 'date'],
-            'meta' => ['nullable', 'array'],
         ];
     }
 
     public function messages(): array
     {
-        return [];
+        return [
+            'invoice_id.required'   => 'La facture est obligatoire.',
+            'invoice_id.exists'     => 'La facture sélectionnée est invalide.',
+            'type.required'         => 'Le type de rappel est obligatoire.',
+            'type.in'               => 'Le type de rappel est invalide.',
+            'channel.required'      => 'Le canal de notification est obligatoire.',
+            'channel.in'            => 'Le canal de notification est invalide.',
+            'scheduled_at.required' => 'La date de planification est obligatoire.',
+        ];
     }
 }

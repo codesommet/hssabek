@@ -25,6 +25,11 @@ class RequirePermission
             return $next($request);
         }
 
+        // Tenant Admin bypass — admin role has full access
+        if ($user->hasRole('admin')) {
+            return $next($request);
+        }
+
         // Check if user has any of the required permissions
         foreach ($permissions as $permission) {
             if ($user->can($permission)) {

@@ -3,6 +3,7 @@
 namespace App\Models\Sales;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,26 +12,29 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
-        'invoice_id',
+        'customer_id',
         'payment_method_id',
-        'payment_number',
+        'amount',
+        'status',
         'payment_date',
-        'payment_amount',
-        'notes',
+        'paid_at',
         'reference_number',
+        'provider_payment_id',
+        'notes',
     ];
 
     protected $casts = [
         'payment_date' => 'date',
-        'payment_amount' => 'decimal:2',
+        'paid_at' => 'datetime',
+        'amount' => 'decimal:2',
     ];
 
-    public function invoice(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(\App\Models\CRM\Customer::class);
     }
 
     public function paymentMethod(): BelongsTo
@@ -41,5 +45,10 @@ class Payment extends Model
     public function allocations(): HasMany
     {
         return $this->hasMany(PaymentAllocation::class);
+    }
+
+    public function refunds(): HasMany
+    {
+        return $this->hasMany(Refund::class);
     }
 }

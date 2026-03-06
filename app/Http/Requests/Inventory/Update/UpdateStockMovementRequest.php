@@ -2,31 +2,37 @@
 
 namespace App\Http\Requests\Inventory\Update;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class UpdateStockMovementRequest extends FormRequest
+class UpdateStockMovementRequest extends TenantFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'type' => 'sometimes|required|in:in,out,adjustment',
-            'quantity' => 'sometimes|required|numeric|min:0.01',
-            'reference' => 'nullable|string|max:100',
-            'notes' => 'nullable|string',
-            'movement_date' => 'sometimes|required|date',
+            'product_id'    => ['sometimes', 'uuid', $this->tenantExists('products')],
+            'warehouse_id'  => ['sometimes', 'uuid', $this->tenantExists('warehouses')],
+            'movement_type' => ['sometimes', 'in:stock_in,stock_out,adjustment_in,adjustment_out'],
+            'quantity'      => ['sometimes', 'numeric', 'min:0.001'],
+            'note'          => ['nullable', 'string', 'max:1000'],
+            'moved_at'      => ['sometimes', 'date'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'product_id.exists'      => 'Le produit sélectionné est invalide.',
+            'warehouse_id.exists'    => 'L\'entrepôt sélectionné est invalide.',
+            'movement_type.in'       => 'Le type de mouvement est invalide.',
+            'quantity.numeric'       => 'La quantité doit être un nombre.',
+            'quantity.min'           => 'La quantité doit être supérieure à zéro.',
+            'note.max'               => 'La note ne doit pas dépasser 1000 caractères.',
+            'moved_at.date'          => 'La date du mouvement n\'est pas valide.',
         ];
     }
 }

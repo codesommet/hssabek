@@ -3,6 +3,7 @@
 namespace App\Models\Sales;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,25 +12,57 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quote extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'customer_id',
-        'quote_number',
-        'quote_date',
-        'valid_until',
-        'notes',
+        'number',
+        'reference_number',
         'status',
+        'issue_date',
+        'due_date',
+        'expiry_date',
+        'enable_tax',
+        'bill_from_snapshot',
+        'bill_to_snapshot',
+        'subtotal',
+        'discount_total',
+        'tax_total',
+        'round_off',
+        'total',
+        'total_in_words',
+        'notes',
+        'terms',
+        'bank_details_snapshot',
+        'sent_at',
+        'accepted_at',
     ];
 
     protected $casts = [
-        'quote_date' => 'date',
-        'valid_until' => 'date',
+        'issue_date' => 'date',
+        'due_date' => 'date',
+        'expiry_date' => 'date',
+        'enable_tax' => 'boolean',
+        'bill_from_snapshot' => 'array',
+        'bill_to_snapshot' => 'array',
+        'bank_details_snapshot' => 'array',
+        'subtotal' => 'decimal:2',
+        'discount_total' => 'decimal:2',
+        'tax_total' => 'decimal:2',
+        'round_off' => 'decimal:2',
+        'total' => 'decimal:2',
+        'sent_at' => 'datetime',
+        'accepted_at' => 'datetime',
     ];
 
     public function customer(): BelongsTo
     {
         return $this->belongsTo(\App\Models\CRM\Customer::class);
+    }
+
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 
     public function items(): HasMany

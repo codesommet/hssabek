@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Catalog\Store\StoreProductCategoryRequest;
 use App\Http\Requests\Catalog\Update\UpdateProductCategoryRequest;
 use App\Models\Catalog\ProductCategory;
-use App\Services\Tenancy\TenantContext;
 use Illuminate\Support\Str;
 
 class ProductCategoryController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', ProductCategory::class);
+
         $categories = ProductCategory::withCount('products')
             ->latest()
             ->paginate(15);
@@ -22,6 +23,8 @@ class ProductCategoryController extends Controller
 
     public function store(StoreProductCategoryRequest $request)
     {
+        $this->authorize('create', ProductCategory::class);
+
         $data = $request->validated();
 
         if (empty($data['slug'])) {
@@ -35,7 +38,7 @@ class ProductCategoryController extends Controller
 
     public function update(UpdateProductCategoryRequest $request, ProductCategory $category)
     {
-        $this->assertSameTenant($category);
+        $this->authorize('update', $category);
 
         $data = $request->validated();
 
@@ -50,7 +53,7 @@ class ProductCategoryController extends Controller
 
     public function destroy(ProductCategory $category)
     {
-        $this->assertSameTenant($category);
+        $this->authorize('delete', $category);
 
         abort_if(
             $category->products()->exists(),
@@ -61,10 +64,5 @@ class ProductCategoryController extends Controller
         $category->delete();
 
         return redirect()->back()->with('success', 'Catégorie supprimée avec succès.');
-    }
-
-    private function assertSameTenant(ProductCategory $category): void
-    {
-        abort_unless($category->tenant_id === TenantContext::id(), 403);
     }
 }

@@ -74,7 +74,7 @@
                                             <span class="input-group-text border-end-0">
                                                 <i class="isax isax-lock"></i>
                                             </span>
-                                            <span class="isax toggle-password isax-eye-slash"></span>
+                                            <span class="isax toggle-passwords isax-eye-slash"></span>
                                             <input type="password" name="password"
                                                 class="pass-inputs form-control border-start-0 ps-0 @error('password') is-invalid @enderror"
                                                 placeholder="****************" required>
@@ -103,31 +103,7 @@
                                             connecter</button>
                                     </div>
 
-                                    <div class="login-or">
-                                        <span class="span-or">Ou</span>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex align-items-center justify-content-center flex-wrap">
-                                            <div class="text-center me-2 flex-fill">
-                                                <a href="javascript:void(0);"
-                                                    class="br-10 p-1 btn btn-light d-flex align-items-center justify-content-center">
-                                                    <img class="img-fluid m-1"
-                                                        src="{{ URL::asset('build/img/icons/facebook-logo.svg') }}"
-                                                        alt="Facebook">
-                                                </a>
-                                            </div>
-                                            <div class="text-center me-2 flex-fill">
-                                                <a href="javascript:void(0);"
-                                                    class="br-10 p-1 btn btn-light d-flex align-items-center justify-content-center">
-                                                    <img class="img-fluid m-1"
-                                                        src="{{ URL::asset('build/img/icons/google-logo.svg') }}"
-                                                        alt="Google">
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    
                                     <div class="text-center">
                                         <h6 class="fw-normal fs-14 text-dark mb-0">Vous n'avez pas encore de compte?
                                             <a href="{{ route('register') }}" class="hover-a"> S'inscrire</a>

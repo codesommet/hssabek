@@ -5,53 +5,119 @@ namespace App\Http\Controllers\Backoffice\Sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\Store\StorePaymentRequest;
 use App\Http\Requests\Sales\Update\UpdatePaymentRequest;
+use App\Models\CRM\Customer;
+use App\Models\Sales\Invoice;
 use App\Models\Sales\Payment;
+use App\Models\Sales\PaymentMethod;
+use App\Services\Sales\PaymentService;
+use App\Services\Sales\PdfService;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private PaymentService $paymentService,
+    ) {}
+
+    public function index(Request $request)
     {
-        $payments = Payment::with('customer', 'paymentMethod')->paginate(15);
-        return response()->json($payments);
+        $this->authorize('viewAny', Payment::class);
+
+        $query = Payment::with(['customer', 'paymentMethod']);
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('reference_number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', fn($c) => $c->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($from = $request->input('from')) {
+            $query->whereDate('payment_date', '>=', $from);
+        }
+
+        if ($to = $request->input('to')) {
+            $query->whereDate('payment_date', '<=', $to);
+        }
+
+        $payments = $query->latest('payment_date')->paginate(15)->withQueryString();
+
+        return view('backoffice.sales.payments.index', compact('payments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $this->authorize('create', Payment::class);
+
+        $customers = Customer::orderBy('name')->get();
+        $invoices = Invoice::where('amount_due', '>', 0)
+            ->whereIn('status', ['sent', 'partial', 'overdue'])
+            ->with('customer')
+            ->orderBy('issue_date')
+            ->get();
+        $paymentMethods = PaymentMethod::orderBy('name')->get();
+
+        return view('backoffice.sales.payments.create', compact(
+            'customers',
+            'invoices',
+            'paymentMethods'
+        ));
+    }
+
     public function store(StorePaymentRequest $request)
     {
-        $payment = Payment::create($request->validated());
-        return response()->json($payment, 201);
+        $this->authorize('create', Payment::class);
+
+        $this->paymentService->create($request->validated());
+
+        return redirect()->route('bo.sales.payments.index')
+            ->with('success', 'Paiement enregistré avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Payment $payment)
     {
-        $payment->load('customer', 'paymentMethod', 'allocations');
-        return response()->json($payment);
+        $this->authorize('view', $payment);
+
+        $payment->load(['customer', 'paymentMethod', 'allocations.invoice']);
+
+        return view('backoffice.sales.payments.show', compact('payment'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Payment $payment)
+    {
+        $this->authorize('update', $payment);
+
+        return view('backoffice.sales.payments.edit', compact('payment'));
+    }
+
     public function update(UpdatePaymentRequest $request, Payment $payment)
     {
+        $this->authorize('update', $payment);
+
         $payment->update($request->validated());
-        return response()->json($payment);
+
+        return redirect()->route('bo.sales.payments.index')
+            ->with('success', 'Paiement modifié avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Payment $payment)
     {
-        $payment->delete();
-        return response()->json(null, 204);
+        $this->authorize('delete', $payment);
+
+        $this->paymentService->delete($payment);
+
+        return redirect()->route('bo.sales.payments.index')
+            ->with('success', 'Paiement supprimé avec succès.');
+    }
+
+    public function download(Payment $payment, PdfService $pdfService)
+    {
+        abort_unless(auth()->user()->can('sales.invoices.view'), 403);
+
+        return $pdfService->paymentReceiptResponse($payment, 'download');
     }
 }

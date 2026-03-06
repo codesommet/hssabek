@@ -6,28 +6,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePaymentRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'amount' => 'sometimes|required|numeric|min:0.01',
-            'payment_date' => 'sometimes|required|date',
-            'payment_method_id' => 'sometimes|required|exists:payment_methods,id',
-            'reference' => 'nullable|string|max:100',
-            'notes' => 'nullable|string',
-            'status' => 'sometimes|required|in:pending,completed,failed,cancelled',
+            'notes' => ['nullable', 'string', 'max:2000'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'notes.string' => 'Les notes doivent être une chaîne de caractères.',
+            'notes.max' => 'Les notes ne doivent pas dépasser 2000 caractères.',
         ];
     }
 }

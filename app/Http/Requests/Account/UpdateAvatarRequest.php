@@ -26,7 +26,7 @@ class UpdateAvatarRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if (!$this->filled('cropped_image') && !$this->hasFile('avatar')) {
-                $validator->errors()->add('avatar', 'Please select an image to upload.');
+                $validator->errors()->add('avatar', 'Veuillez sélectionner une image à télécharger.');
             }
         });
     }
@@ -34,9 +34,9 @@ class UpdateAvatarRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'avatar.image' => 'The file must be an image.',
-            'avatar.mimes' => 'Only JPG, PNG and WEBP formats are accepted.',
-            'avatar.max'   => 'The image must not exceed 5MB.',
+            'avatar.image' => 'Le fichier doit être une image.',
+            'avatar.mimes' => 'Seuls les formats JPG, PNG et WEBP sont acceptés.',
+            'avatar.max'   => 'L\'image ne doit pas dépasser 5 Mo.',
         ];
     }
 }

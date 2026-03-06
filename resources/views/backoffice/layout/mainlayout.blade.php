@@ -20,7 +20,7 @@
     ];
 
     // Error / status pages: white bg, no header/sidebar
-    $statusPages = ['error-404', 'error-500', 'under-construction', 'under-maintenance', 'coming-soon'];
+    $statusPages = ['error-403', 'error-404', 'error-500', 'under-construction', 'under-maintenance', 'coming-soon'];
 
     // Invoice print pages: no header/sidebar
     $invoicePages = [

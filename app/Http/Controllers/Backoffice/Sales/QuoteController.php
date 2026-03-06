@@ -5,53 +5,185 @@ namespace App\Http\Controllers\Backoffice\Sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\Store\StoreQuoteRequest;
 use App\Http\Requests\Sales\Update\UpdateQuoteRequest;
+use App\Jobs\SendQuoteEmailJob;
+use App\Models\Catalog\Product;
+use App\Models\Catalog\TaxGroup;
+use App\Models\Catalog\Unit;
+use App\Models\CRM\Customer;
 use App\Models\Sales\Quote;
+use App\Services\Sales\PdfService;
+use App\Services\Sales\QuoteService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private QuoteService $quoteService,
+    ) {}
+
+    public function index(Request $request)
     {
-        $quotes = Quote::with('customer')->paginate(15);
-        return response()->json($quotes);
+        $this->authorize('viewAny', Quote::class);
+
+        $query = Quote::with('customer');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', fn($c) => $c->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($from = $request->input('from')) {
+            $query->whereDate('issue_date', '>=', $from);
+        }
+
+        if ($to = $request->input('to')) {
+            $query->whereDate('issue_date', '<=', $to);
+        }
+
+        $quotes = $query->latest('issue_date')->paginate(15)->withQueryString();
+
+        return view('backoffice.sales.quotes.index', compact('quotes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $this->authorize('create', Quote::class);
+
+        $customers = Customer::orderBy('name')->get();
+        $products = Product::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $taxGroups = TaxGroup::with('rates')->orderBy('name')->get();
+
+        return view('backoffice.sales.quotes.create', compact(
+            'customers',
+            'products',
+            'units',
+            'taxGroups'
+        ));
+    }
+
     public function store(StoreQuoteRequest $request)
     {
-        $quote = Quote::create($request->validated());
-        return response()->json($quote, 201);
+        $this->authorize('create', Quote::class);
+
+        $this->quoteService->create($request->validated());
+
+        return redirect()->route('bo.sales.quotes.index')
+            ->with('success', 'Devis créé avec succès.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Quote $quote)
     {
-        $quote->load('customer', 'items', 'charges');
-        return response()->json($quote);
+        $this->authorize('view', $quote);
+
+        $quote->load([
+            'customer',
+            'items.product',
+            'items.unit',
+            'items.taxGroup',
+            'charges',
+            'invoices',
+        ]);
+
+        return view('backoffice.sales.quotes.show', compact('quote'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function edit(Quote $quote)
+    {
+        $this->authorize('update', $quote);
+
+        abort_unless($quote->status === 'draft', 403, 'Seuls les devis en brouillon peuvent être modifiés.');
+
+        $quote->load(['items', 'charges']);
+
+        $customers = Customer::orderBy('name')->get();
+        $products = Product::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
+        $taxGroups = TaxGroup::with('rates')->orderBy('name')->get();
+
+        return view('backoffice.sales.quotes.edit', compact(
+            'quote',
+            'customers',
+            'products',
+            'units',
+            'taxGroups'
+        ));
+    }
+
     public function update(UpdateQuoteRequest $request, Quote $quote)
     {
-        $quote->update($request->validated());
-        return response()->json($quote);
+        $this->authorize('update', $quote);
+
+        abort_unless($quote->status === 'draft', 403, 'Seuls les devis en brouillon peuvent être modifiés.');
+
+        $this->quoteService->update($quote, $request->validated());
+
+        return redirect()->route('bo.sales.quotes.show', $quote)
+            ->with('success', 'Devis mis à jour avec succès.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Quote $quote)
     {
+        $this->authorize('delete', $quote);
+
+        $quote->items()->delete();
+        $quote->charges()->delete();
         $quote->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('bo.sales.quotes.index')
+            ->with('success', 'Devis supprimé avec succès.');
+    }
+
+    public function download(Quote $quote, PdfService $pdfService)
+    {
+        $this->authorize('view', $quote);
+
+        return $pdfService->quoteResponse($quote, 'download');
+    }
+
+    public function stream(Quote $quote, PdfService $pdfService)
+    {
+        $this->authorize('view', $quote);
+
+        return $pdfService->quoteResponse($quote, 'inline');
+    }
+
+    public function send(Quote $quote)
+    {
+        $this->authorize('update', $quote);
+
+        $this->quoteService->transition($quote, 'sent');
+        $quote->update(['sent_at' => now()]);
+
+        dispatch(new SendQuoteEmailJob(
+            quoteId: $quote->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.sales.quotes.show', $quote)
+            ->with('success', 'Devis envoyé au client par email.');
+    }
+
+    public function convertToInvoice(Quote $quote)
+    {
+        $this->authorize('update', $quote);
+
+        abort_unless(
+            in_array($quote->status, ['sent', 'accepted']),
+            403,
+            'Seuls les devis envoyés ou acceptés peuvent être convertis en facture.'
+        );
+
+        $invoice = $this->quoteService->convertToInvoice($quote);
+
+        return redirect()->route('bo.sales.invoices.show', $invoice)
+            ->with('success', 'Devis converti en facture avec succès.');
     }
 }

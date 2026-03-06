@@ -2,27 +2,32 @@
 
 namespace App\Models\Finance;
 
+use App\Models\CRM\Customer;
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Income extends Model
 {
-    use HasUuids, BelongsToTenant;
+    use HasUuids, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
-        'bank_account_id',
-        'finance_category_id',
-        'amount',
-        'date',
-        'description',
+        'income_number',
         'reference_number',
+        'amount',
+        'income_date',
+        'payment_mode',
+        'bank_account_id',
+        'customer_id',
+        'category_id',
+        'description',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'date' => 'date',
+        'income_date' => 'date',
     ];
 
     public function bankAccount(): BelongsTo
@@ -30,8 +35,13 @@ class Income extends Model
         return $this->belongsTo(BankAccount::class);
     }
 
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     public function category(): BelongsTo
     {
-        return $this->belongsTo(FinanceCategory::class, 'finance_category_id');
+        return $this->belongsTo(FinanceCategory::class, 'category_id');
     }
 }

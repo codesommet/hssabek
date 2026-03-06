@@ -5,20 +5,25 @@
                 <th>Plan</th>
                 <th>Code</th>
                 <th>Intervalle</th>
-                <th>Abonnés</th>
                 <th>Prix</th>
+                <th>Utilisateurs</th>
+                <th>Factures/mois</th>
+                <th>Exports/mois</th>
+                <th>Abonnés</th>
                 <th>Essai</th>
-                <th>Créé le</th>
                 <th>Statut</th>
                 <th class="no-sort"></th>
             </tr>
         </thead>
         <tbody>
-            @foreach($plans as $plan)
+            @forelse($plans as $plan)
                 <tr>
                     <td>
-                        <a href="javascript:void(0);" class="text-dark" data-bs-toggle="modal" data-bs-target="#view_plan_{{ $plan->id }}">
+                        <a href="javascript:void(0);" class="text-dark fw-medium" data-bs-toggle="modal" data-bs-target="#view_plan_{{ $plan->id }}">
                             {{ $plan->name }}
+                            @if($plan->is_popular)
+                                <span class="badge bg-success ms-1">Populaire</span>
+                            @endif
                         </a>
                     </td>
                     <td><code>{{ $plan->code }}</code></td>
@@ -30,10 +35,30 @@
                             @default {{ $plan->interval }}
                         @endswitch
                     </td>
-                    <td>{{ $plan->subscriptions_count ?? 0 }}</td>
                     <td>{{ number_format($plan->price, 2, ',', ' ') }} {{ $plan->currency }}</td>
+                    <td>
+                        @if($plan->max_users === null)
+                            <span class="badge badge-soft-info">Illimité</span>
+                        @else
+                            {{ $plan->max_users }}
+                        @endif
+                    </td>
+                    <td>
+                        @if($plan->max_invoices_per_month === null)
+                            <span class="badge badge-soft-info">Illimité</span>
+                        @else
+                            {{ $plan->max_invoices_per_month }}
+                        @endif
+                    </td>
+                    <td>
+                        @if($plan->max_exports_per_month === null)
+                            <span class="badge badge-soft-info">Illimité</span>
+                        @else
+                            {{ $plan->max_exports_per_month }}
+                        @endif
+                    </td>
+                    <td>{{ $plan->subscriptions_count ?? 0 }}</td>
                     <td>{{ $plan->trial_days ? $plan->trial_days . ' jours' : '—' }}</td>
-                    <td>{{ $plan->created_at->format('d/m/Y') }}</td>
                     <td>
                         @if($plan->is_active)
                             <span class="badge badge-soft-success d-inline-flex align-items-center">Actif
@@ -47,7 +72,11 @@
                     </td>
                     @include('backoffice.plans.partials._actions', ['plan' => $plan])
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="11" class="text-center">Aucun plan trouvé.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

@@ -42,6 +42,11 @@ class Tenant extends Model implements HasMedia
         return $this->hasOne(TenantSetting::class);
     }
 
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(\App\Models\Billing\Subscription::class);
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')

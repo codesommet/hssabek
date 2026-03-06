@@ -10,6 +10,8 @@ class TemplateCatalog extends Model
 {
     use HasUuids;
 
+    protected $table = 'template_catalog';
+
     protected $fillable = [
         'name',
         'description',

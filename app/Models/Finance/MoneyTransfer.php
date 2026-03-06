@@ -14,10 +14,11 @@ class MoneyTransfer extends Model
     protected $fillable = [
         'from_bank_account_id',
         'to_bank_account_id',
-        'amount',
-        'transfer_date',
         'reference_number',
+        'transfer_date',
+        'amount',
         'notes',
+        'status',
     ];
 
     protected $casts = [

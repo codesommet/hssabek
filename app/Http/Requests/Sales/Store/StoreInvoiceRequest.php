@@ -2,33 +2,67 @@
 
 namespace App\Http\Requests\Sales\Store;
 
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreInvoiceRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
+        $tenantId = TenantContext::id();
+
         return [
-            'customer_id' => 'required|exists:customers,id',
-            'invoice_number' => 'required|string|unique:invoices',
-            'invoice_date' => 'required|date',
-            'due_date' => 'required|date|after_or_equal:invoice_date',
-            'total_amount' => 'required|numeric|min:0',
-            'status' => 'required|in:draft,sent,paid,overdue,cancelled',
-            'notes' => 'nullable|string',
+            'customer_id' => ['required', 'uuid', Rule::exists('customers', 'id')->where('tenant_id', $tenantId)],
+            'issue_date' => ['required', 'date'],
+            'due_date' => ['nullable', 'date', 'after_or_equal:issue_date'],
+            'enable_tax' => ['nullable', 'boolean'],
+            'reference_number' => ['nullable', 'string', 'max:100'],
+            'notes' => ['nullable', 'string', 'max:2000'],
+            'terms' => ['nullable', 'string', 'max:2000'],
+
+            // Line items — required, min 1
+            'items' => ['required', 'array', 'min:1'],
+            'items.*.label' => ['required', 'string', 'max:255'],
+            'items.*.description' => ['nullable', 'string', 'max:1000'],
+            'items.*.product_id' => ['nullable', 'uuid', Rule::exists('products', 'id')->where('tenant_id', $tenantId)],
+            'items.*.quantity' => ['required', 'numeric', 'min:0.001'],
+            'items.*.unit_id' => ['nullable', 'uuid', Rule::exists('units', 'id')->where('tenant_id', $tenantId)],
+            'items.*.unit_price' => ['required', 'numeric', 'min:0'],
+            'items.*.discount_type' => ['nullable', Rule::in(['none', 'percentage', 'fixed'])],
+            'items.*.discount_value' => ['nullable', 'numeric', 'min:0'],
+            'items.*.tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'items.*.tax_group_id' => ['nullable', 'uuid', Rule::exists('tax_groups', 'id')->where('tenant_id', $tenantId)],
+
+            // Additional charges — optional
+            'charges' => ['sometimes', 'array'],
+            'charges.*.label' => ['required_with:charges', 'string', 'max:255'],
+            'charges.*.amount' => ['required_with:charges', 'numeric', 'min:0'],
+            'charges.*.tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'customer_id.required' => 'Le client est obligatoire.',
+            'customer_id.exists' => 'Le client sélectionné est invalide.',
+            'issue_date.required' => 'La date d\'émission est obligatoire.',
+            'due_date.after_or_equal' => 'La date d\'échéance doit être postérieure ou égale à la date d\'émission.',
+            'items.required' => 'Au moins un article est obligatoire.',
+            'items.min' => 'Au moins un article est obligatoire.',
+            'items.*.label.required' => 'Le libellé de l\'article est obligatoire.',
+            'items.*.quantity.required' => 'La quantité est obligatoire.',
+            'items.*.quantity.min' => 'La quantité doit être supérieure à 0.',
+            'items.*.unit_price.required' => 'Le prix unitaire est obligatoire.',
+            'items.*.unit_price.min' => 'Le prix unitaire doit être positif.',
+            'charges.*.label.required_with' => 'Le libellé du frais est obligatoire.',
+            'charges.*.amount.required_with' => 'Le montant du frais est obligatoire.',
         ];
     }
 }

@@ -2,22 +2,23 @@
 
 namespace App\Models\Sales;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PaymentAllocation extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
         'payment_id',
         'invoice_id',
-        'allocated_amount',
+        'amount_applied',
     ];
 
     protected $casts = [
-        'allocated_amount' => 'decimal:2',
+        'amount_applied' => 'decimal:2',
     ];
 
     public function payment(): BelongsTo

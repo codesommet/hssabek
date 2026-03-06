@@ -2,24 +2,27 @@
 
 namespace App\Models\Sales;
 
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuoteCharge extends Model
 {
-    use HasUuids;
+    use HasUuids, BelongsToTenant;
 
     protected $fillable = [
         'quote_id',
-        'charge_name',
-        'charge_amount',
-        'is_taxable',
+        'label',
+        'amount',
+        'tax_rate',
+        'position',
     ];
 
     protected $casts = [
-        'charge_amount' => 'decimal:2',
-        'is_taxable' => 'boolean',
+        'amount' => 'decimal:2',
+        'tax_rate' => 'decimal:4',
+        'position' => 'integer',
     ];
 
     public function quote(): BelongsTo

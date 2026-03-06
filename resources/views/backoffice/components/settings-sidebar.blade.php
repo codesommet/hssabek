@@ -52,7 +52,7 @@
                                         {{-- Paramètres de l'application --}}
                                         <li class="submenu">
                                             <a href="javascript:void(0);"
-                                                class="{{ request()->routeIs('bo.settings.invoice.*', 'bo.settings.invoice-templates.*', 'bo.settings.email-templates.*', 'bo.settings.tax-rates.*', 'bo.settings.signatures.*', 'bo.settings.barcode.*') ? 'active subdrop' : '' }}">
+                                                class="{{ request()->routeIs('bo.settings.invoice.*', 'bo.settings.invoice-templates.*', 'bo.settings.email-templates.*', 'bo.catalog.tax-rates.*', 'bo.catalog.tax-categories.*', 'bo.catalog.tax-groups.*', 'bo.settings.signatures.*', 'bo.settings.barcode.*', 'bo.settings.payment-methods.*') ? 'active subdrop' : '' }}">
                                                 <i class="isax isax-shapes fs-18"></i>
                                                 <span class="fs-14 fw-medium ms-2">Paramètres de l'application</span>
                                                 <span class="isax isax-arrow-down-1 arrow-menu ms-auto"></span>
@@ -62,14 +62,16 @@
                                                         class="{{ request()->routeIs('bo.settings.invoice.*') ? 'active' : '' }}">Paramètres de facturation</a></li>
                                                 <li><a href="{{ route('bo.settings.invoice-templates.index') }}"
                                                         class="{{ request()->routeIs('bo.settings.invoice-templates.*') ? 'active' : '' }}">Modèles de factures</a></li>
-                                                <li><a href="{{ route('bo.settings.tax-rates.index') }}"
-                                                        class="{{ request()->routeIs('bo.settings.tax-rates.*') ? 'active' : '' }}">Taux de taxes</a></li>
+                                                <li><a href="{{ route('bo.catalog.tax-rates.index') }}"
+                                                        class="{{ request()->routeIs('bo.catalog.tax-rates.*', 'bo.catalog.tax-categories.*', 'bo.catalog.tax-groups.*') ? 'active' : '' }}">Taux de taxes</a></li>
                                                 <li><a href="{{ route('bo.settings.email-templates.index') }}"
                                                         class="{{ request()->routeIs('bo.settings.email-templates.*') ? 'active' : '' }}">Modèles d'email</a></li>
                                                 <li><a href="{{ route('bo.settings.signatures.index') }}"
                                                         class="{{ request()->routeIs('bo.settings.signatures.*') ? 'active' : '' }}">Signatures électroniques</a></li>
                                                 <li><a href="{{ route('bo.settings.barcode.edit') }}"
                                                         class="{{ request()->routeIs('bo.settings.barcode.*') ? 'active' : '' }}">Code-barres</a></li>
+                                                <li><a href="{{ route('bo.settings.payment-methods.index') }}"
+                                                        class="{{ request()->routeIs('bo.settings.payment-methods.*') ? 'active' : '' }}">Modes de paiement</a></li>
                                             </ul>
                                         </li>
 

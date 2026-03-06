@@ -33,11 +33,11 @@ Route::prefix('users')->as('users.')->group(function () {
 
     // Invitations
     Route::get('/invite', [UserInvitationController::class, 'create'])
-        ->middleware('permission:access.users.create')
+        ->middleware(['permission:access.users.create', 'plan.limit:users'])
         ->name('invite');
 
     Route::post('/invite', [UserInvitationController::class, 'store'])
-        ->middleware('permission:access.users.create')
+        ->middleware(['permission:access.users.create', 'plan.limit:users'])
         ->name('invite.store');
 
     Route::delete('/invite/{invitation}', [UserInvitationController::class, 'destroy'])

@@ -156,16 +156,56 @@ class DemoTenantSeeder extends Seeder
 
         $managerPermissions = Permission::whereNull('tenant_id')
             ->whereIn('name', [
+                // Dashboard
+                'dashboard.view',
+                // Sales (full)
                 'sales.invoices.view',
                 'sales.invoices.create',
                 'sales.invoices.edit',
+                'sales.invoices.delete',
+                'sales.quotes.view',
+                'sales.quotes.create',
+                'sales.quotes.edit',
+                'sales.quotes.delete',
+                'sales.credit_notes.view',
+                'sales.credit_notes.create',
+                'sales.credit_notes.edit',
+                'sales.delivery_challans.view',
+                'sales.delivery_challans.create',
+                'sales.delivery_challans.edit',
+                'sales.refunds.view',
+                'sales.refunds.create',
+                // CRM
                 'crm.customers.view',
                 'crm.customers.create',
                 'crm.customers.edit',
+                // Inventory (view + create)
                 'inventory.products.view',
                 'inventory.products.create',
                 'inventory.products.edit',
+                'inventory.warehouses.view',
+                'inventory.stock_movements.view',
+                'inventory.stock_movements.create',
+                // Purchases (view + create)
+                'purchases.suppliers.view',
+                'purchases.suppliers.create',
+                'purchases.purchase-orders.view',
+                'purchases.purchase-orders.create',
+                'purchases.vendor-bills.view',
+                'purchases.vendor-bills.create',
+                // Finance (view + create)
+                'finance.bank_accounts.view',
+                'finance.expenses.view',
+                'finance.expenses.create',
+                'finance.incomes.view',
+                'finance.incomes.create',
+                'finance.categories.view',
+                // Reports (all)
                 'reports.sales.view',
+                'reports.customers.view',
+                'reports.purchases.view',
+                'reports.inventory.view',
+                'reports.finance.view',
             ])
             ->get();
 
@@ -197,14 +237,15 @@ class DemoTenantSeeder extends Seeder
 
         $receptionistPermissions = Permission::whereNull('tenant_id')
             ->whereIn('name', [
+                'dashboard.view',
                 'sales.invoices.view',
                 'sales.invoices.create',
                 'sales.quotes.view',
                 'sales.quotes.create',
                 'crm.customers.view',
                 'crm.customers.create',
-                'crm.customer_contacts.view',
-                'crm.customer_contacts.create',
+                'inventory.products.view',
+                'reports.sales.view',
             ])
             ->get();
 

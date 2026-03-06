@@ -1527,11 +1527,17 @@
 
 
                     <!-- Notification -->
+                    @php
+                        $headerNotifications = auth()->user()->unreadNotifications()->latest()->take(5)->get();
+                        $unreadCount = auth()->user()->unreadNotifications()->count();
+                    @endphp
                     <div class="notification_item me-2">
                         <a href="#" class="btn btn-menubar position-relative" id="notification_popup"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside">
                             <i class="isax isax-notification-bing5"></i>
-                            <span class="position-absolute badge bg-success border border-white"></span>
+                            @if($unreadCount > 0)
+                                <span class="position-absolute badge bg-success border border-white"></span>
+                            @endif
                         </a>
                         <div class="dropdown-menu p-0 dropdown-menu-end dropdown-menu-lg"
                             style="min-height: 300px;">
@@ -1539,7 +1545,7 @@
                             <div class="p-2 border-bottom">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h6 class="m-0 fs-16 fw-semibold"> Notifications</h6>
+                                        <h6 class="m-0 fs-16 fw-semibold"> Notifications @if($unreadCount > 0)<span class="badge bg-primary ms-1">{{ $unreadCount }}</span>@endif</h6>
                                     </div>
                                     <div class="col-auto">
                                         <div class="dropdown">
@@ -1550,11 +1556,17 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <!-- item-->
-                                                <a href="javascript:void(0);" class="dropdown-item"><i
-                                                        class="ti ti-bell-check me-1"></i>Mark as Read</a>
+                                                <form method="POST" action="{{ route('bo.notifications.markAllRead') }}">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item"><i
+                                                            class="ti ti-bell-check me-1"></i>Tout marquer comme lu</button>
+                                                </form>
                                                 <!-- item-->
-                                                <a href="javascript:void(0);" class="dropdown-item"><i
-                                                        class="ti ti-trash me-1"></i>Delete All</a>
+                                                <form method="POST" action="{{ route('bo.notifications.destroyAll') }}">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item"><i
+                                                            class="ti ti-trash me-1"></i>Tout supprimer</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -1564,187 +1576,59 @@
                             <!-- Notification Dropdown -->
                             <div class="notification-body position-relative z-2 rounded-0" data-simplebar>
 
-                                <!-- Item-->
-                                <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
-                                    id="notification-1">
-                                    <div class="d-flex">
-                                        <div class="me-2 position-relative flex-shrink-0">
-                                            <img src="{{ URL::asset('build/img/profiles/avatar-05.jpg') }}"
-                                                class="avatar-md rounded-circle" alt="">
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 fw-semibold text-dark">John Smith</p>
-                                            <p class="mb-1 text-wrap fs-14">
-                                                A <span class="fw-semibold">new sale</span> has been recorded.
-                                            </p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-12"><i class="isax isax-clock me-1"></i>4 min
-                                                    ago</span>
-                                                <div
-                                                    class="notification-action d-flex align-items-center float-end gap-2">
-                                                    <a href="javascript:void(0);"
-                                                        class="notification-read rounded-circle bg-info"
-                                                        data-bs-toggle="tooltip" title=""
-                                                        data-bs-original-title="Make as Read"
-                                                        aria-label="Make as Read"></a>
-                                                    <button class="btn rounded-circle text-danger p-0"
-                                                        data-dismissible="#notification-1">
-                                                        <i class="isax isax-close-circle fs-12"></i>
-                                                    </button>
+                                @forelse($headerNotifications as $notification)
+                                    <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
+                                        id="notification-{{ $notification->id }}">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <div class="avatar-sm me-2">
+                                                    <span class="avatar-title bg-soft-{{ $notification->data['color'] ?? 'info' }} text-{{ $notification->data['color'] ?? 'info' }} fs-18 rounded-circle">
+                                                        <i class="isax isax-{{ $notification->data['icon'] ?? 'notification' }}"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                @if(!empty($notification->data['title']))
+                                                    <p class="mb-0 fw-semibold text-dark">{{ $notification->data['title'] }}</p>
+                                                @endif
+                                                <p class="mb-0 text-wrap fs-14">
+                                                    {{ $notification->data['message'] ?? '' }}
+                                                </p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="fs-12"><i class="isax isax-clock me-1"></i>{{ $notification->created_at->diffForHumans() }}</span>
+                                                    <div class="notification-action d-flex align-items-center float-end gap-2">
+                                                        <form method="POST" action="{{ route('bo.notifications.markAsRead', $notification->id) }}" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn p-0 border-0 bg-transparent"
+                                                                data-bs-toggle="tooltip" title="Marquer comme lu">
+                                                                <span class="notification-read rounded-circle bg-info d-inline-block"></span>
+                                                            </button>
+                                                        </form>
+                                                        <form method="POST" action="{{ route('bo.notifications.destroy', $notification->id) }}" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn rounded-circle text-danger p-0">
+                                                                <i class="isax isax-close-circle fs-12"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Item-->
-                                <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
-                                    id="notification-2">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar-sm me-2">
-                                                <span
-                                                    class="avatar-title bg-soft-info text-info fs-18 rounded-circle">
-                                                    D
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 fw-semibold text-dark">Donoghue Susan</p>
-                                            <p class="mb-0 text-wrap fs-14">
-                                                Switched to a lower-tier package
-                                            </p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-12"><i class="isax isax-clock me-1"></i>4 min
-                                                    ago</span>
-                                                <div
-                                                    class="notification-action d-flex align-items-center float-end gap-2">
-                                                    <a href="javascript:void(0);"
-                                                        class="notification-read rounded-circle bg-info"
-                                                        data-bs-toggle="tooltip" title=""
-                                                        data-bs-original-title="Make as Read"
-                                                        aria-label="Make as Read"></a>
-                                                    <button class="btn rounded-circle text-danger p-0"
-                                                        data-dismissible="#notification-2">
-                                                        <i class="isax isax-close-circle fs-12"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                @empty
+                                    <div class="dropdown-item py-4 text-center text-muted">
+                                        <i class="isax isax-notification fs-24 d-block mb-2"></i>
+                                        <p class="mb-0 fs-14">Aucune notification</p>
                                     </div>
-                                </div>
-
-                                <!-- Item-->
-                                <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
-                                    id="notification-3">
-                                    <div class="d-flex">
-                                        <div class="me-2 position-relative flex-shrink-0">
-                                            <img src="{{ URL::asset('build/img/profiles/avatar-03.jpg') }}"
-                                                class="avatar-md rounded-circle" alt="">
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 fw-semibold text-dark">Robert Fox </p>
-                                            <p class="mb-1 text-wrap fs-14">
-                                                Completed payment for <span class="fw-semibold">#INV00025</span>
-                                            </p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-12"><i class="isax isax-clock me-1"></i>4 min
-                                                    ago</span>
-                                                <div
-                                                    class="notification-action d-flex align-items-center float-end gap-2">
-                                                    <a href="javascript:void(0);"
-                                                        class="notification-read rounded-circle bg-info"
-                                                        data-bs-toggle="tooltip" title=""
-                                                        data-bs-original-title="Make as Read"
-                                                        aria-label="Make as Read"></a>
-                                                    <button class="btn rounded-circle text-danger p-0"
-                                                        data-dismissible="#notification-3">
-                                                        <i class="isax isax-close-circle fs-12"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Item-->
-                                <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
-                                    id="notification-4">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <div class="avatar-sm me-2">
-                                                <span
-                                                    class="avatar-title bg-soft-warning text-warning fs-18 rounded-circle">
-                                                    <i class="isax isax-message"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 text-wrap fs-14">You have received <span
-                                                    class="fw-semibold">20</span> new messages in the conversation</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-12"><i class="isax isax-clock me-1"></i>3 min
-                                                    ago</span>
-                                                <div
-                                                    class="notification-action d-flex align-items-center float-end gap-2">
-                                                    <a href="javascript:void(0);"
-                                                        class="notification-read rounded-circle bg-info"
-                                                        data-bs-toggle="tooltip" title=""
-                                                        data-bs-original-title="Make as Read"
-                                                        aria-label="Make as Read"></a>
-                                                    <button class="btn rounded-circle text-danger p-0"
-                                                        data-dismissible="#notification-4">
-                                                        <i class="isax isax-close-circle fs-12"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Item-->
-                                <div class="dropdown-item notification-item py-2 text-wrap border-bottom"
-                                    id="notification-5">
-                                    <div class="d-flex">
-                                        <div class="me-2 position-relative flex-shrink-0">
-                                            <img src="{{ URL::asset('build/img/profiles/avatar-17.jpg') }}"
-                                                class="avatar-md rounded-circle" alt="">
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="mb-0 fw-semibold text-dark">Charlotte Brown</p>
-                                            <p class="mb-1 text-wrap fs-14">
-                                                New invoice generated <span class="fw-semibold"> #INV00028</span>
-                                            </p>
-                                            <div class="mb-1">
-                                                <a class="badge bg-success p-2 py-1 me-1" href="#">Approve</a>
-                                                <a class="badge bg-danger p-2 py-1" href="#">Deny</a>
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fs-12"><i class="isax isax-clock me-1"></i>45 min
-                                                    ago</span>
-                                                <div
-                                                    class="notification-action d-flex align-items-center float-end gap-2">
-                                                    <a href="javascript:void(0);"
-                                                        class="notification-read rounded-circle bg-info"
-                                                        data-bs-toggle="tooltip" title=""
-                                                        data-bs-original-title="Make as Read"
-                                                        aria-label="Make as Read"></a>
-                                                    <button class="btn rounded-circle text-danger p-0"
-                                                        data-dismissible="#notification-5">
-                                                        <i class="isax isax-close-circle fs-12"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforelse
 
                             </div>
 
                             <!-- View All-->
                             <div class="p-2 rounded-bottom border-top text-center">
-                                <a href="{{ url('notifications') }}" class="text-center fw-medium fs-14 mb-0">
-                                    View All
+                                <a href="{{ route('bo.notifications.index') }}" class="text-center fw-medium fs-14 mb-0">
+                                    Voir tout
                                 </a>
                             </div>
 

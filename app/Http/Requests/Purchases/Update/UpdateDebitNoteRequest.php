@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Purchases\Update;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class UpdateDebitNoteRequest extends FormRequest
+class UpdateDebitNoteRequest extends TenantFormRequest
 {
     public function authorize(): bool
     {
@@ -14,22 +14,38 @@ class UpdateDebitNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplier_id' => ['sometimes', 'uuid', 'exists:suppliers,id'],
-            'purchase_order_id' => ['sometimes', 'nullable', 'uuid', 'exists:purchase_orders,id'],
-            'vendor_bill_id' => ['sometimes', 'nullable', 'uuid', 'exists:vendor_bills,id'],
-            'number' => ['sometimes', 'string', 'max:50'],
-            'status' => ['sometimes', 'in:draft,issued,applied,cancelled'],
-            'issue_date' => ['sometimes', 'date'],
-            'due_date' => ['sometimes', 'nullable', 'date', 'after_or_equal:issue_date'],
-            'currency' => ['sometimes', 'string', 'size:3', 'exists:currencies,code'],
-            'subtotal' => ['sometimes', 'numeric', 'min:0'],
-            'tax_total' => ['sometimes', 'numeric', 'min:0'],
-            'total' => ['sometimes', 'numeric', 'min:0'],
+            'supplier_id'       => ['sometimes', 'uuid', $this->tenantExists('suppliers')],
+            'purchase_order_id' => ['sometimes', 'nullable', 'uuid', $this->tenantExists('purchase_orders')],
+            'vendor_bill_id'    => ['sometimes', 'nullable', 'uuid', $this->tenantExists('vendor_bills')],
+            'debit_note_date'   => ['sometimes', 'date'],
+            'due_date'          => ['sometimes', 'nullable', 'date', 'after_or_equal:debit_note_date'],
+            'enable_tax'        => ['sometimes', 'boolean'],
+            'reference_number'  => ['sometimes', 'nullable', 'string', 'max:100'],
+            'notes'             => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'terms'             => ['sometimes', 'nullable', 'string', 'max:2000'],
+
+            'items'                    => ['sometimes', 'array', 'min:1'],
+            'items.*.label'            => ['required_with:items', 'string', 'max:255'],
+            'items.*.description'      => ['nullable', 'string', 'max:1000'],
+            'items.*.quantity'         => ['required_with:items', 'numeric', 'min:0.001'],
+            'items.*.unit_price'       => ['required_with:items', 'numeric', 'min:0'],
+            'items.*.discount_type'    => ['nullable', 'in:none,percentage,fixed'],
+            'items.*.discount_value'   => ['nullable', 'numeric', 'min:0'],
+            'items.*.tax_rate'         => ['nullable', 'numeric', 'min:0', 'max:100'],
         ];
     }
 
     public function messages(): array
     {
-        return [];
+        return [
+            'supplier_id.exists'          => 'Le fournisseur sélectionné est invalide.',
+            'purchase_order_id.exists'    => 'Le bon de commande sélectionné est invalide.',
+            'vendor_bill_id.exists'       => 'La facture fournisseur sélectionnée est invalide.',
+            'debit_note_date.date'        => 'La date de la note de débit n\'est pas valide.',
+            'due_date.after_or_equal'     => 'La date d\'échéance doit être postérieure ou égale à la date de la note.',
+            'items.*.label.required_with' => 'Le libellé de l\'article est obligatoire.',
+            'items.*.quantity.required_with' => 'La quantité est obligatoire.',
+            'items.*.unit_price.required_with' => 'Le prix unitaire est obligatoire.',
+        ];
     }
 }

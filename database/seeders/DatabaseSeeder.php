@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
- 
+
     public function run(): void
     {
         $this->call([
@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
 
             // 4) Demo tenant with users, role assignments, subscription (dev only)
             DemoTenantSeeder::class,
+
+            // 5) Fake data for all CRUD operations (customers, products, invoices, etc.)
+            FakeDataSeeder::class,
         ]);
     }
 }

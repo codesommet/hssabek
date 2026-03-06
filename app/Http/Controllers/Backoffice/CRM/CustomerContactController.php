@@ -7,13 +7,12 @@ use App\Http\Requests\CRM\Store\StoreCustomerContactRequest;
 use App\Http\Requests\CRM\Update\UpdateCustomerContactRequest;
 use App\Models\CRM\Customer;
 use App\Models\CRM\CustomerContact;
-use App\Services\Tenancy\TenantContext;
 
 class CustomerContactController extends Controller
 {
     public function store(StoreCustomerContactRequest $request, Customer $customer)
     {
-        $this->assertSameTenant($customer);
+        $this->authorize('update', $customer);
 
         $customer->contacts()->create($request->safe()->except('customer_id'));
 
@@ -23,7 +22,8 @@ class CustomerContactController extends Controller
 
     public function update(UpdateCustomerContactRequest $request, CustomerContact $contact)
     {
-        abort_unless($contact->tenant_id === TenantContext::id(), 403);
+        $customer = Customer::findOrFail($contact->customer_id);
+        $this->authorize('update', $customer);
 
         $contact->update($request->validated());
 
@@ -33,17 +33,13 @@ class CustomerContactController extends Controller
 
     public function destroy(CustomerContact $contact)
     {
-        abort_unless($contact->tenant_id === TenantContext::id(), 403);
+        $customer = Customer::findOrFail($contact->customer_id);
+        $this->authorize('update', $customer);
 
         $customerId = $contact->customer_id;
         $contact->delete();
 
         return redirect()->route('bo.crm.customers.show', $customerId)
             ->with('success', 'Contact supprimé avec succès.');
-    }
-
-    private function assertSameTenant(Customer $customer): void
-    {
-        abort_unless($customer->tenant_id === TenantContext::id(), 403);
     }
 }

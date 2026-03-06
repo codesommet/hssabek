@@ -3,31 +3,29 @@
 namespace App\Models\Purchases;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Supplier extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'name',
         'email',
         'phone',
         'tax_id',
-        'currency_id',
-        'payment_terms',
+        'payment_terms_days',
         'status',
         'notes',
     ];
 
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\Finance\Currency::class);
-    }
+    protected $casts = [
+        'payment_terms_days' => 'integer',
+    ];
 
     public function purchaseOrders(): HasMany
     {

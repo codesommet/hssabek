@@ -3,6 +3,7 @@
 namespace App\Models\Purchases;
 
 use App\Traits\BelongsToTenant;
+use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,31 +12,45 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VendorBill extends Model
 {
-    use HasUuids, SoftDeletes, BelongsToTenant;
+    use HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
 
     protected $fillable = [
         'supplier_id',
-        'bill_number',
-        'bill_date',
+        'purchase_order_id',
+        'goods_receipt_id',
+        'number',
+        'reference_number',
+        'status',
+        'issue_date',
         'due_date',
         'subtotal',
-        'tax_amount',
-        'total_amount',
-        'status',
+        'tax_total',
+        'round_off',
+        'total',
+        'amount_paid',
+        'amount_due',
         'notes',
     ];
 
     protected $casts = [
-        'bill_date' => 'date',
-        'due_date' => 'date',
-        'subtotal' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'total_amount' => 'decimal:2',
+        'issue_date'   => 'date',
+        'due_date'     => 'date',
+        'subtotal'     => 'decimal:2',
+        'tax_total'    => 'decimal:2',
+        'round_off'    => 'decimal:2',
+        'total'        => 'decimal:2',
+        'amount_paid'  => 'decimal:2',
+        'amount_due'   => 'decimal:2',
     ];
 
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function purchaseOrder(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseOrder::class);
     }
 
     public function debitNotes(): HasMany
@@ -46,5 +61,15 @@ class VendorBill extends Model
     public function payments(): HasMany
     {
         return $this->hasMany(SupplierPayment::class);
+    }
+
+    public function supplierPaymentAllocations(): HasMany
+    {
+        return $this->hasMany(SupplierPaymentAllocation::class);
+    }
+
+    public function debitNoteApplications(): HasMany
+    {
+        return $this->hasMany(DebitNoteApplication::class);
     }
 }

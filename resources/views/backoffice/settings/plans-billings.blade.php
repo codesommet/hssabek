@@ -39,6 +39,21 @@
                                     </div>
                                 @endif
 
+                                @if($isOnTrial)
+                                <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                                    <i class="isax isax-clock fs-20 me-2"></i>
+                                    <div>
+                                        <strong>Période d'essai gratuit</strong> —
+                                        @if($trialDaysLeft > 0)
+                                            Il vous reste <strong>{{ $trialDaysLeft }} {{ $trialDaysLeft > 1 ? 'jours' : 'jour' }}</strong>
+                                            (expire le {{ $tenant->trial_ends_at->translatedFormat('d M Y') }}).
+                                        @else
+                                            Votre essai gratuit expire <strong>aujourd'hui</strong>.
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+
                                 <div class="d-flex align-items-center mb-3">
                                     <span class="bg-dark avatar avatar-sm me-2 flex-shrink-0"><i
                                             class="isax isax-info-circle fs-14"></i></span>
@@ -54,13 +69,18 @@
                                                             <h6 class="fw-bold mb-2 fs-14">{{ $currentSubscription->plan->name }}</h6>
                                                             <div class="progress-container">
                                                                 @php
-                                                                    $daysLeft = $currentSubscription->ends_at
-                                                                        ? now()->diffInDays($currentSubscription->ends_at, false)
+                                                                    $endDate = ($isOnTrial && $tenant->trial_ends_at)
+                                                                        ? $tenant->trial_ends_at
+                                                                        : $currentSubscription->ends_at;
+
+                                                                    $daysLeft = $endDate
+                                                                        ? now()->diffInDays($endDate, false)
                                                                         : 0;
                                                                     $daysLeft = max(0, (int) $daysLeft);
 
-                                                                    $totalDays = $currentSubscription->starts_at && $currentSubscription->ends_at
-                                                                        ? $currentSubscription->starts_at->diffInDays($currentSubscription->ends_at)
+                                                                    $startDate = $currentSubscription->starts_at ?? now();
+                                                                    $totalDays = $endDate
+                                                                        ? $startDate->diffInDays($endDate)
                                                                         : 1;
                                                                     $totalDays = max(1, $totalDays);
 
@@ -97,6 +117,57 @@
                                         </div><!-- end card body -->
                                     </div><!-- end card -->
                                 </div>
+                                @if($currentSubscription && $currentSubscription->plan)
+                                <div class="mb-3 border-top pt-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <span class="bg-dark avatar avatar-sm me-2 flex-shrink-0"><i
+                                                class="isax isax-chart fs-14"></i></span>
+                                        <h6 class="fs-16 fw-semibold mb-0">Utilisation et limites</h6>
+                                    </div>
+                                    <div class="row g-3 mb-3">
+                                        @foreach($usageData as $key => $item)
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="card shadow-none border mb-0">
+                                                    <div class="card-body p-3">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="isax {{ $item['icon'] }} fs-18 me-2 text-primary"></i>
+                                                            <span class="fs-13 fw-semibold">{{ $item['label'] }}</span>
+                                                            @if($item['monthly'])
+                                                                <span class="badge badge-soft-secondary ms-auto fs-10">Mensuel</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                                            <span class="fs-13 text-muted">
+                                                                {{ $item['usage'] }} / {{ $item['limit'] !== null ? $item['limit'] : 'Illimité' }}
+                                                            </span>
+                                                            @if($item['limit'] !== null)
+                                                                <span class="fs-12 fw-semibold {{ $item['percent'] >= 90 ? 'text-danger' : ($item['percent'] >= 70 ? 'text-warning' : 'text-success') }}">
+                                                                    {{ $item['percent'] }}%
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        @if($item['limit'] !== null)
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar {{ $item['percent'] >= 90 ? 'bg-danger' : ($item['percent'] >= 70 ? 'bg-warning' : 'bg-success') }}"
+                                                                    role="progressbar"
+                                                                    style="width: {{ $item['percent'] }}%"
+                                                                    aria-valuenow="{{ $item['percent'] }}"
+                                                                    aria-valuemin="0"
+                                                                    aria-valuemax="100"></div>
+                                                            </div>
+                                                        @else
+                                                            <div class="progress" style="height: 6px;">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%"></div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
+
                                 <div class="mb-3 border-top pt-4">
                                     <div class="d-flex align-items-center mb-3">
                                         <span class="bg-dark avatar avatar-sm me-2 flex-shrink-0"><i

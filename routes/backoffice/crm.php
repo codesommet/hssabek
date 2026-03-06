@@ -20,11 +20,11 @@ Route::prefix('crm')->as('crm.')->group(function () {
             ->name('index');
 
         Route::get('/create', [CustomerController::class, 'create'])
-            ->middleware('permission:crm.customers.create')
+            ->middleware(['permission:crm.customers.create', 'plan.limit:customers'])
             ->name('create');
 
         Route::post('/', [CustomerController::class, 'store'])
-            ->middleware('permission:crm.customers.create')
+            ->middleware(['permission:crm.customers.create', 'plan.limit:customers'])
             ->name('store');
 
         Route::get('/{customer}', [CustomerController::class, 'show'])

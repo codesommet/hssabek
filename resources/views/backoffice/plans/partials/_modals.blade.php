@@ -1,6 +1,5 @@
 {{-- ============================================
     Add Plan Modal
-    Based on #add_plans from packages.blade.php
 ============================================= --}}
 <div id="add_plan" class="modal fade">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -13,6 +12,8 @@
                 @csrf
                 <input type="hidden" name="_modal" value="add_plan">
                 <div class="modal-body">
+                    {{-- Basic Info --}}
+                    <h6 class="fs-14 fw-bold mb-3">Informations générales</h6>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -28,7 +29,14 @@
                                 @error('code')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="2" placeholder="Description courte du plan...">{{ old('description') }}</textarea>
+                                @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Intervalle<span class="text-danger ms-1">*</span></label>
                                 <select class="form-select @error('interval') is-invalid @enderror" name="interval">
@@ -40,30 +48,30 @@
                                 @error('interval')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Prix<span class="text-danger ms-1">*</span></label>
                                 <input type="number" step="0.01" min="0" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" placeholder="0.00">
                                 @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Devise</label>
                                 <input type="text" class="form-control @error('currency') is-invalid @enderror" name="currency" value="{{ old('currency', 'MAD') }}" maxlength="3">
                                 @error('currency')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label class="form-label">Jours d'essai</label>
                                 <input type="number" min="0" class="form-control @error('trial_days') is-invalid @enderror" name="trial_days" value="{{ old('trial_days', 0) }}" placeholder="0">
                                 @error('trial_days')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center justify-content-between h-100 pt-4">
                                     <label class="form-label mb-0">Actif</label>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch" name="is_active" value="1" {{ old('is_active', '1') ? 'checked' : '' }}>
@@ -71,13 +79,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label class="form-label">Fonctionnalités (JSON)</label>
-                                <textarea class="form-control @error('features') is-invalid @enderror" name="features_json" rows="3" placeholder='{"max_users": 5, "max_invoices": 100}'>{{ old('features_json') }}</textarea>
-                                @error('features')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <div class="d-flex align-items-center justify-content-between h-100 pt-4">
+                                    <label class="form-label mb-0">Populaire</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" name="is_popular" value="1" {{ old('is_popular') ? 'checked' : '' }}>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    {{-- Limits Section --}}
+                    <hr class="my-3">
+                    <h6 class="fs-14 fw-bold mb-3">Limites et quotas</h6>
+                    <p class="text-muted fs-13 mb-3">Cochez « Illimité » pour ne pas imposer de limite sur cette ressource.</p>
+                    <div class="row">
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_users', 'label' => 'Utilisateurs max', 'icon' => 'isax-people', 'value' => old('max_users'), 'unlimited' => old('max_users_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_customers', 'label' => 'Clients max', 'icon' => 'isax-profile-2user', 'value' => old('max_customers'), 'unlimited' => old('max_customers_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_products', 'label' => 'Produits max', 'icon' => 'isax-box', 'value' => old('max_products'), 'unlimited' => old('max_products_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_invoices_per_month', 'label' => 'Factures / mois', 'icon' => 'isax-receipt-item', 'value' => old('max_invoices_per_month'), 'unlimited' => old('max_invoices_per_month_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_quotes_per_month', 'label' => 'Devis / mois', 'icon' => 'isax-document-text', 'value' => old('max_quotes_per_month'), 'unlimited' => old('max_quotes_per_month_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_exports_per_month', 'label' => 'Exports / mois', 'icon' => 'isax-export-1', 'value' => old('max_exports_per_month'), 'unlimited' => old('max_exports_per_month_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_warehouses', 'label' => 'Entrepôts max', 'icon' => 'isax-buildings', 'value' => old('max_warehouses'), 'unlimited' => old('max_warehouses_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_bank_accounts', 'label' => 'Comptes bancaires max', 'icon' => 'isax-bank', 'value' => old('max_bank_accounts'), 'unlimited' => old('max_bank_accounts_unlimited')])
+                        @include('backoffice.plans.partials._limit_field', ['field' => 'max_storage_mb', 'label' => 'Stockage (Mo)', 'icon' => 'isax-cloud', 'value' => old('max_storage_mb'), 'unlimited' => old('max_storage_mb_unlimited')])
                     </div>
                 </div>
                 <div class="modal-footer d-flex align-items-center justify-content-between gap-1">
@@ -107,6 +134,8 @@
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
+                        {{-- Basic Info --}}
+                        <h6 class="fs-14 fw-bold mb-3">Informations générales</h6>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -120,7 +149,13 @@
                                     <input type="text" class="form-control" name="code" value="{{ old('code', $plan->code) }}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" name="description" rows="2">{{ old('description', $plan->description) }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Intervalle<span class="text-danger ms-1">*</span></label>
                                     <select class="form-select" name="interval">
@@ -130,27 +165,27 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Prix<span class="text-danger ms-1">*</span></label>
                                     <input type="number" step="0.01" min="0" class="form-control" name="price" value="{{ old('price', $plan->price) }}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Devise</label>
                                     <input type="text" class="form-control" name="currency" value="{{ old('currency', $plan->currency) }}" maxlength="3">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Jours d'essai</label>
                                     <input type="number" min="0" class="form-control" name="trial_days" value="{{ old('trial_days', $plan->trial_days) }}">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="mb-3">
-                                    <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-between h-100 pt-4">
                                         <label class="form-label mb-0">Actif</label>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" role="switch" name="is_active" value="1" {{ $plan->is_active ? 'checked' : '' }}>
@@ -158,12 +193,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label class="form-label">Fonctionnalités (JSON)</label>
-                                    <textarea class="form-control" name="features_json" rows="3">{{ $plan->features ? json_encode($plan->features, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '' }}</textarea>
+                                    <div class="d-flex align-items-center justify-content-between h-100 pt-4">
+                                        <label class="form-label mb-0">Populaire</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" name="is_popular" value="1" {{ $plan->is_popular ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {{-- Limits Section --}}
+                        <hr class="my-3">
+                        <h6 class="fs-14 fw-bold mb-3">Limites et quotas</h6>
+                        <p class="text-muted fs-13 mb-3">Cochez « Illimité » pour ne pas imposer de limite sur cette ressource.</p>
+                        <div class="row">
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_users', 'label' => 'Utilisateurs max', 'icon' => 'isax-people', 'value' => old('max_users', $plan->max_users), 'unlimited' => $plan->max_users === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_customers', 'label' => 'Clients max', 'icon' => 'isax-profile-2user', 'value' => old('max_customers', $plan->max_customers), 'unlimited' => $plan->max_customers === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_products', 'label' => 'Produits max', 'icon' => 'isax-box', 'value' => old('max_products', $plan->max_products), 'unlimited' => $plan->max_products === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_invoices_per_month', 'label' => 'Factures / mois', 'icon' => 'isax-receipt-item', 'value' => old('max_invoices_per_month', $plan->max_invoices_per_month), 'unlimited' => $plan->max_invoices_per_month === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_quotes_per_month', 'label' => 'Devis / mois', 'icon' => 'isax-document-text', 'value' => old('max_quotes_per_month', $plan->max_quotes_per_month), 'unlimited' => $plan->max_quotes_per_month === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_exports_per_month', 'label' => 'Exports / mois', 'icon' => 'isax-export-1', 'value' => old('max_exports_per_month', $plan->max_exports_per_month), 'unlimited' => $plan->max_exports_per_month === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_warehouses', 'label' => 'Entrepôts max', 'icon' => 'isax-buildings', 'value' => old('max_warehouses', $plan->max_warehouses), 'unlimited' => $plan->max_warehouses === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_bank_accounts', 'label' => 'Comptes bancaires max', 'icon' => 'isax-bank', 'value' => old('max_bank_accounts', $plan->max_bank_accounts), 'unlimited' => $plan->max_bank_accounts === null])
+                            @include('backoffice.plans.partials._limit_field', ['field' => 'max_storage_mb', 'label' => 'Stockage (Mo)', 'icon' => 'isax-cloud', 'value' => old('max_storage_mb', $plan->max_storage_mb), 'unlimited' => $plan->max_storage_mb === null])
                         </div>
                     </div>
                     <div class="modal-footer d-flex align-items-center justify-content-between gap-1">
@@ -196,8 +251,16 @@
                                                     <i class="isax isax-box5 fs-24"></i>
                                                 </span>
                                                 <div class="ms-2">
-                                                    <h6 class="fw-bold fs-14 mb-1">{{ $plan->name }}</h6>
+                                                    <h6 class="fw-bold fs-14 mb-1">
+                                                        {{ $plan->name }}
+                                                        @if($plan->is_popular)
+                                                            <span class="badge bg-success ms-2">Populaire</span>
+                                                        @endif
+                                                    </h6>
                                                     <span class="text-muted"><code>{{ $plan->code }}</code></span>
+                                                    @if($plan->description)
+                                                        <p class="text-muted fs-13 mb-0 mt-1">{{ $plan->description }}</p>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div>
@@ -261,9 +324,98 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- Limits Display --}}
+                    <div class="mb-3">
+                        <h6 class="fs-14 fw-bold mb-3">Limites et quotas</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-people me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Utilisateurs</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_users) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-profile-2user me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Clients</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_customers) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-box me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Produits</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_products) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-receipt-item me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Factures / mois</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_invoices_per_month) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-document-text me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Devis / mois</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_quotes_per_month) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-export-1 me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Exports / mois</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_exports_per_month) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-buildings me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Entrepôts</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_warehouses) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-bank me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Comptes bancaires</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->formatLimit($plan->max_bank_accounts) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3 d-flex align-items-center">
+                                    <i class="isax isax-cloud me-2 fs-16"></i>
+                                    <div>
+                                        <span class="fs-13 text-muted">Stockage</span>
+                                        <h6 class="fs-14 fw-medium mb-0">{{ $plan->max_storage_mb === null ? 'Illimité' : $plan->max_storage_mb . ' Mo' }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     @if($plan->features)
                         <div class="mb-3">
-                            <h6 class="fs-14 fw-bold mb-2">Fonctionnalités</h6>
+                            <h6 class="fs-14 fw-bold mb-2">Fonctionnalités supplémentaires</h6>
                             <div class="bg-transparent-light rounded p-3">
                                 <pre class="mb-0 fs-13">{{ json_encode($plan->features, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
                             </div>

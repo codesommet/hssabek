@@ -15,14 +15,16 @@ class GoodsReceipt extends Model
     protected $fillable = [
         'purchase_order_id',
         'warehouse_id',
-        'receipt_number',
-        'receipt_date',
+        'number',
+        'reference_number',
         'status',
+        'received_at',
         'notes',
+        'created_by',
     ];
 
     protected $casts = [
-        'receipt_date' => 'date',
+        'received_at' => 'datetime',
     ];
 
     public function purchaseOrder(): BelongsTo
@@ -38,5 +40,10 @@ class GoodsReceipt extends Model
     public function items(): HasMany
     {
         return $this->hasMany(GoodsReceiptItem::class);
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 }

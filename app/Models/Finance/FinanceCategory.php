@@ -5,24 +5,29 @@ namespace App\Models\Finance;
 use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FinanceCategory extends Model
 {
     use HasUuids, BelongsToTenant;
 
     protected $fillable = [
-        'name',
         'type',
-        'description',
+        'name',
+        'is_active',
     ];
 
-    public function expenses()
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function expenses(): HasMany
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(Expense::class, 'category_id');
     }
 
-    public function incomes()
+    public function incomes(): HasMany
     {
-        return $this->hasMany(Income::class);
+        return $this->hasMany(Income::class, 'category_id');
     }
 }

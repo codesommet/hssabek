@@ -109,7 +109,7 @@ Route::prefix('backoffice')
             ->name('invitation.accept.store');
 
         // Protected routes
-        Route::middleware('auth')->group(function () {
+        Route::middleware(['auth', 'subscriptionActive'])->group(function () {
 
             require __DIR__ . '/backoffice/dashboard.php';
             require __DIR__ . '/backoffice/settings.php';
@@ -121,7 +121,10 @@ Route::prefix('backoffice')
             require __DIR__ . '/backoffice/sales.php';
             require __DIR__ . '/backoffice/purchases.php';
             require __DIR__ . '/backoffice/finance.php';
+            require __DIR__ . '/backoffice/pro.php';
             require __DIR__ . '/backoffice/reports.php';
+            require __DIR__ . '/backoffice/notifications.php';
+            require __DIR__ . '/backoffice/trash.php';
         });
     });
 
@@ -153,6 +156,7 @@ Route::prefix('admin')
         require __DIR__ . '/superadmin/templates.php';
         require __DIR__ . '/superadmin/settings.php';
         require __DIR__ . '/superadmin/access.php';
+        require __DIR__ . '/superadmin/announcements.php';
     });
 
 // this route for testing the theming system, can be removed later

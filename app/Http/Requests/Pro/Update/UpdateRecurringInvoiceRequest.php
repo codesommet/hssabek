@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Pro\Update;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\TenantFormRequest;
 
-class UpdateRecurringInvoiceRequest extends FormRequest
+class UpdateRecurringInvoiceRequest extends TenantFormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class UpdateRecurringInvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ['sometimes', 'uuid', 'exists:customers,id'],
+            'customer_id' => ['sometimes', 'uuid', $this->tenantExists('customers')],
             'interval' => ['sometimes', 'in:weekly,monthly,quarterly,yearly'],
             'next_run_at' => ['sometimes', 'date'],
             'end_at' => ['sometimes', 'nullable', 'date', 'after_or_equal:next_run_at'],
@@ -25,6 +25,11 @@ class UpdateRecurringInvoiceRequest extends FormRequest
 
     public function messages(): array
     {
-        return [];
+        return [
+            'customer_id.exists'         => 'Le client sélectionné est invalide.',
+            'template_invoice_id.exists' => 'La facture modèle sélectionnée est invalide.',
+            'interval.in'               => 'L\'intervalle doit être : semaine, mois ou année.',
+            'end_at.after_or_equal'      => 'La date de fin doit être postérieure ou égale à la prochaine exécution.',
+        ];
     }
 }

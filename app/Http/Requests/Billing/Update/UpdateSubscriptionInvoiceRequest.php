@@ -27,4 +27,13 @@ class UpdateSubscriptionInvoiceRequest extends FormRequest
             'status' => 'sometimes|required|in:draft,sent,paid,overdue,cancelled',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'amount.numeric' => 'Le montant doit être un nombre.',
+            'due_date.date'  => 'La date d\'échéance n\'est pas valide.',
+            'status.in'      => 'Le statut est invalide.',
+        ];
+    }
 }
