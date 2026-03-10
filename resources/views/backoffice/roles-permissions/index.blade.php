@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                   Start Page Content
-                  ========================= -->
+                       Start Page Content
+                      ========================= -->
 
     <div class="page-wrapper">
 
@@ -69,6 +69,11 @@
                         </div>
                     </form>
                 </div><!-- end col -->
+                <div class="col-md-9 d-flex justify-content-end">
+                    @include('backoffice.components.column-toggle', [
+                        'columns' => ['Role', 'Create On'],
+                    ])
+                </div>
             </div>
             <!-- end row -->
 
@@ -133,8 +138,8 @@
     </div>
 
     <!-- ========================
-                   End Page Content
-                  ========================= -->
+                       End Page Content
+                      ========================= -->
 
     <!-- Add Role Modal -->
     <div class="modal fade" id="add_modal" tabindex="-1" aria-hidden="true">

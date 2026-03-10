@@ -8,7 +8,9 @@
                     <h6>Paiements fournisseurs</h6>
                 </div>
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
-                    @include('backoffice.components.export-dropdown', ['exportType' => 'supplier-payments'])
+                    @include('backoffice.components.export-dropdown', [
+                        'exportType' => 'supplier-payments',
+                    ])
                     <div>
                         <a href="{{ route('bo.purchases.supplier-payments.create') }}"
                             class="btn btn-primary d-flex align-items-center">
@@ -45,6 +47,18 @@
                                         class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </form>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Référence',
+                                'Fournisseur',
+                                'Facture',
+                                'Montant',
+                                'Date de paiement',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>

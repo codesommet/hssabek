@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-      Start Page Content
-     ========================= -->
+          Start Page Content
+         ========================= -->
 
     <div class="page-wrapper">
 
@@ -25,7 +25,7 @@
             </div>
             <!-- End Page Header -->
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -36,33 +36,43 @@
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <form action="{{ route('bo.pro.rapports.index') }}" method="GET" class="table-search d-flex align-items-center mb-0">
+                        <form action="{{ route('bo.pro.rapports.index') }}" method="GET"
+                            class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <input type="text" name="search" class="form-control" placeholder="Rechercher un rapport..." value="{{ request('search') }}">
-                                <a href="javascript:void(0);" class="btn-searchset" onclick="this.closest('form').submit()"><i
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Rechercher un rapport..." value="{{ request('search') }}">
+                                <a href="javascript:void(0);" class="btn-searchset"
+                                    onclick="this.closest('form').submit()"><i
                                         class="isax isax-search-normal fs-12"></i></a>
-                                @if(request('status'))
+                                @if (request('status'))
                                     <input type="hidden" name="status" value="{{ request('status') }}">
                                 @endif
                             </div>
                         </form>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Titre', 'Catégorie', 'Statut', 'Créé par', 'Créé le'],
+                        ])
                         <div class="dropdown">
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
                                 data-bs-toggle="dropdown">
-                                <i class="isax isax-filter me-1"></i>Statut : <span class="fw-normal ms-1">{{ request('status') === 'draft' ? 'Brouillon' : (request('status') === 'published' ? 'Publié' : 'Tous') }}</span>
+                                <i class="isax isax-filter me-1"></i>Statut : <span
+                                    class="fw-normal ms-1">{{ request('status') === 'draft' ? 'Brouillon' : (request('status') === 'published' ? 'Publié' : 'Tous') }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('status', 'page'))) }}" class="dropdown-item">Tous</a>
+                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('status', 'page'))) }}"
+                                        class="dropdown-item">Tous</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('page'), ['status' => 'draft'])) }}" class="dropdown-item">Brouillon</a>
+                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('page'), ['status' => 'draft'])) }}"
+                                        class="dropdown-item">Brouillon</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('page'), ['status' => 'published'])) }}" class="dropdown-item">Publié</a>
+                                    <a href="{{ route('bo.pro.rapports.index', array_merge(request()->except('page'), ['status' => 'published'])) }}"
+                                        class="dropdown-item">Publié</a>
                                 </li>
                             </ul>
                         </div>
@@ -104,10 +114,12 @@
                                 </td>
                                 <td>{{ $report->category ?? '—' }}</td>
                                 <td>
-                                    @if($report->status === 'published')
-                                        <span class="badge badge-soft-success d-inline-flex align-items-center">Publié <i class="isax isax-tick-circle ms-1"></i></span>
+                                    @if ($report->status === 'published')
+                                        <span class="badge badge-soft-success d-inline-flex align-items-center">Publié <i
+                                                class="isax isax-tick-circle ms-1"></i></span>
                                     @else
-                                        <span class="badge badge-soft-secondary d-inline-flex align-items-center">Brouillon</span>
+                                        <span
+                                            class="badge badge-soft-secondary d-inline-flex align-items-center">Brouillon</span>
                                     @endif
                                 </td>
                                 <td>{{ $report->creator->name ?? '—' }}</td>
@@ -140,7 +152,8 @@
                                         <li>
                                             <form method="POST" action="{{ route('bo.pro.rapports.destroy', $report) }}">
                                                 @csrf @method('DELETE')
-                                                <button class="dropdown-item d-flex align-items-center text-danger" type="submit"
+                                                <button class="dropdown-item d-flex align-items-center text-danger"
+                                                    type="submit"
                                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport ?')">
                                                     <i class="isax isax-trash me-2"></i>Supprimer
                                                 </button>
@@ -169,6 +182,6 @@
     </div>
 
     <!-- ========================
-      End Page Content
-     ========================= -->
+          End Page Content
+         ========================= -->
 @endsection

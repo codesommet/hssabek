@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-          Start Page Content
-         ========================= -->
+              Start Page Content
+             ========================= -->
 
     <div class="page-wrapper">
 
@@ -82,6 +82,17 @@
                                 </li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Titulaire',
+                                'N° de compte',
+                                'Banque',
+                                'Type',
+                                'Devise',
+                                'Solde actuel',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>
@@ -207,6 +218,6 @@
     </div>
 
     <!-- ========================
-          End Page Content
-         ========================= -->
+              End Page Content
+             ========================= -->
 @endsection

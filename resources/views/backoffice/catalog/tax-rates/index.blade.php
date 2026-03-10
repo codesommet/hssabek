@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                        Start Page Content
-                    ========================= -->
+                            Start Page Content
+                        ========================= -->
 
     <div class="page-wrapper">
         <div class="content">
@@ -40,6 +40,9 @@
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center flex-wrap gap-2">
+                                            @include('backoffice.components.column-toggle', [
+                                                'columns' => ['Nom', 'Taux', 'Type', 'Créé le', 'Statut'],
+                                            ])
                                             <a href="javascript:void(0);" data-bs-toggle="modal"
                                                 data-bs-target="#add_tax_category_modal"
                                                 class="btn btn-primary d-flex align-items-center"><i
@@ -267,8 +270,8 @@
     </div>
 
     <!-- ========================
-                        End Page Content
-                    ========================= -->
+                            End Page Content
+                        ========================= -->
 
     {{-- ============================================================= --}}
     {{-- MODALS : Tax Categories (Taux de taxes)                       --}}

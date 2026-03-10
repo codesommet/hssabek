@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-               Start Page Content
-              ========================= -->
+                   Start Page Content
+                  ========================= -->
 
     <div class="page-wrapper">
         <div class="content content-two">
@@ -51,6 +51,9 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Titre', 'Type', 'Statut', 'Publié le', 'Expire le', 'Auteur'],
+                        ])
                         <div class="dropdown">
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
@@ -166,7 +169,8 @@
                             </div>
                             <h6 class="mb-1">Supprimer l'annonce</h6>
                             <p class="mb-3">Êtes-vous sûr de vouloir supprimer l'annonce «
-                                <strong>{{ $ann->title }}</strong> » ?</p>
+                                <strong>{{ $ann->title }}</strong> » ?
+                            </p>
                             <form method="POST" action="{{ route('sa.announcements.destroy', $ann) }}">
                                 @csrf
                                 @method('DELETE')
@@ -183,6 +187,6 @@
         @endforeach
 
         <!-- ========================
-                   End Page Content
-                  ========================= -->
+                           End Page Content
+                          ========================= -->
     @endsection

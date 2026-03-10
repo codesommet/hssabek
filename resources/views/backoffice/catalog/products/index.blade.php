@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                           Start Page Content
-                          ========================= -->
+                                       Start Page Content
+                                      ========================= -->
 
     <div class="page-wrapper">
         <!-- Start Container  -->
@@ -129,6 +129,17 @@
                                 </li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Produit / Service',
+                                'Type',
+                                'Catégorie',
+                                'Unité',
+                                'Quantité',
+                                'Prix de vente',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
 
@@ -180,7 +191,7 @@
                                         </a>
                                         <div>
                                             <h6 class="fs-14 fw-medium mb-0"><a
-                                                    href="{{ route('bo.catalog.products.edit', $product) }}">{{ $product->name }}</a>
+                                                    href="{{ route('bo.catalog.products.show', $product) }}">{{ $product->name }}</a>
                                             </h6>
                                             <span
                                                 class="fs-12 text-muted">{{ $product->code ?? ($product->sku ?? '—') }}</span>
@@ -200,7 +211,7 @@
                                 </td>
                                 <td>{{ $product->category?->name ?? '—' }}</td>
                                 <td class="text-dark">{{ $product->unit?->name ?? '—' }}</td>
-                                <td>{{ $product->item_type === 'service' ? '—' : ($product->quantity ?? 0) }}</td>
+                                <td>{{ $product->item_type === 'service' ? '—' : $product->quantity ?? 0 }}</td>
                                 <td class="text-dark">{{ number_format($product->selling_price, 2, ',', ' ') }}</td>
                                 <td>
                                     @if ($product->is_active)
@@ -253,6 +264,11 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
+                                            <a href="{{ route('bo.catalog.products.show', $product) }}"
+                                                class="dropdown-item d-flex align-items-center"><i
+                                                    class="isax isax-eye me-2"></i>Voir</a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('bo.catalog.products.edit', $product) }}"
                                                 class="dropdown-item d-flex align-items-center"><i
                                                     class="isax isax-edit me-2"></i>Modifier</a>
@@ -293,8 +309,8 @@
 
     </div>
     <!-- ========================
-                       End Page Content
-                      ========================= -->
+                                   End Page Content
+                                  ========================= -->
 
     <!-- Start View History Modal -->
     <div id="view_history" class="modal fade">

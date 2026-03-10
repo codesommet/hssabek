@@ -38,29 +38,38 @@
             <!-- Search & Filters -->
             <div class="mb-3">
                 <form method="GET" action="{{ route('sa.template-catalog.index') }}">
-                    <div class="d-flex align-items-center flex-wrap gap-2">
-                        <div class="table-search d-flex align-items-center mb-0">
-                            <div class="search-input">
-                                <input type="text" name="search" value="{{ request('search') }}"
-                                    placeholder="Rechercher..." class="form-control form-control-sm">
-                                <a href="javascript:void(0);" class="btn-searchset">
-                                    <i class="isax isax-search-normal fs-12"></i>
-                                </a>
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <div class="table-search d-flex align-items-center mb-0">
+                                <div class="search-input">
+                                    <input type="text" name="search" value="{{ request('search') }}"
+                                        placeholder="Rechercher..." class="form-control form-control-sm">
+                                    <a href="javascript:void(0);" class="btn-searchset">
+                                        <i class="isax isax-search-normal fs-12"></i>
+                                    </a>
+                                </div>
                             </div>
+                            <select name="document_type" class="form-select form-select-sm" style="width: auto;"
+                                onchange="this.form.submit()">
+                                <option value="">Tous les types</option>
+                                @foreach ($documentTypeLabels as $key => $label)
+                                    <option value="{{ $key }}"
+                                        {{ request('document_type') === $key ? 'selected' : '' }}>{{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if (request('search') || request('document_type'))
+                                <a href="{{ route('sa.template-catalog.index') }}"
+                                    class="btn btn-sm btn-outline-secondary">
+                                    <i class="isax isax-close-circle me-1"></i>Réinitialiser
+                                </a>
+                            @endif
                         </div>
-                        <select name="document_type" class="form-select form-select-sm" style="width: auto;"
-                            onchange="this.form.submit()">
-                            <option value="">Tous les types</option>
-                            @foreach ($documentTypeLabels as $key => $label)
-                                <option value="{{ $key }}"
-                                    {{ request('document_type') === $key ? 'selected' : '' }}>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                        @if (request('search') || request('document_type'))
-                            <a href="{{ route('sa.template-catalog.index') }}" class="btn btn-sm btn-outline-secondary">
-                                <i class="isax isax-close-circle me-1"></i>Réinitialiser
-                            </a>
-                        @endif
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            @include('backoffice.components.column-toggle', [
+                                'columns' => ['Nom', 'Code', 'Type de document', 'Vue', 'Prix', 'Statut', 'Ordre'],
+                            ])
+                        </div>
                     </div>
                 </form>
             </div>
@@ -159,7 +168,8 @@
                         </div>
                         <h6 class="mb-1">Supprimer le modèle</h6>
                         <p class="mb-3">Êtes-vous sûr de vouloir supprimer le modèle «
-                            <strong>{{ $tpl->name }}</strong> » ?</p>
+                            <strong>{{ $tpl->name }}</strong> » ?
+                        </p>
                         <form method="POST" action="{{ route('sa.template-catalog.destroy', $tpl) }}">
                             @csrf
                             @method('DELETE')

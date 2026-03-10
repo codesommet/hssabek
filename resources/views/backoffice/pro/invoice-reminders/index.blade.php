@@ -8,7 +8,9 @@
                     <h6>Rappels de factures</h6>
                 </div>
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
-                    @include('backoffice.components.export-dropdown', ['exportType' => 'invoice-reminders'])
+                    @include('backoffice.components.export-dropdown', [
+                        'exportType' => 'invoice-reminders',
+                    ])
                     <div>
                         <a href="{{ route('bo.pro.invoice-reminders.create') }}"
                             class="btn btn-primary d-flex align-items-center">
@@ -40,6 +42,11 @@
                                         class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </form>
+                    </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Facture', 'Client', 'Type', 'Canal', 'Planifié le', 'Statut'],
+                        ])
                     </div>
                 </div>
             </div>

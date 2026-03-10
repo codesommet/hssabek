@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+                Start Page Content
+            ========================= -->
 
     <div class="page-wrapper">
 
@@ -29,10 +29,13 @@
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <form action="{{ route('bo.users.index') }}" method="GET" class="table-search d-flex align-items-center mb-0">
+                        <form action="{{ route('bo.users.index') }}" method="GET"
+                            class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <input type="text" name="search" class="form-control" placeholder="Rechercher..." value="{{ request('search') }}">
-                                <a href="javascript:void(0);" class="btn-searchset" onclick="this.closest('form').submit()"><i
+                                <input type="text" name="search" class="form-control" placeholder="Rechercher..."
+                                    value="{{ request('search') }}">
+                                <a href="javascript:void(0);" class="btn-searchset"
+                                    onclick="this.closest('form').submit()"><i
                                         class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </form>
@@ -42,7 +45,8 @@
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center fw-medium"
                                 data-bs-toggle="dropdown">
-                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus récent</span>
+                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus
+                                    récent</span>
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end">
                                 <li>
@@ -53,12 +57,22 @@
                                 </li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Utilisateur',
+                                'Téléphone',
+                                'Rôle',
+                                'Dernière connexion',
+                                'Créé le',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>
 
             {{-- Pending Invitations --}}
-            @if($pendingInvitations->count() > 0)
+            @if ($pendingInvitations->count() > 0)
                 <div class="card mb-3">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <h6 class="fs-14 fw-semibold mb-0">Invitations en attente ({{ $pendingInvitations->count() }})</h6>
@@ -75,16 +89,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($pendingInvitations as $invitation)
+                                    @foreach ($pendingInvitations as $invitation)
                                         <tr>
                                             <td>{{ $invitation->email }}</td>
                                             <td>{{ $invitation->role?->name ?? '—' }}</td>
                                             <td>{{ $invitation->expires_at->format('d/m/Y à H:i') }}</td>
                                             <td class="action-item">
-                                                <form method="POST" action="{{ route('bo.users.invite.destroy', $invitation) }}" class="d-inline">
+                                                <form method="POST"
+                                                    action="{{ route('bo.users.invite.destroy', $invitation) }}"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Annuler cette invitation ?')">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        onclick="return confirm('Annuler cette invitation ?')">
                                                         <i class="isax isax-trash me-1"></i>Annuler
                                                     </button>
                                                 </form>
@@ -118,7 +135,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach ($users as $user)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -133,7 +150,9 @@
                                                 alt="{{ $user->name }}">
                                         </a>
                                         <div>
-                                            <h6 class="fs-14 fw-medium mb-0"><a href="{{ route('bo.users.edit', $user) }}">{{ $user->name }}</a></h6>
+                                            <h6 class="fs-14 fw-medium mb-0"><a
+                                                    href="{{ route('bo.users.edit', $user) }}">{{ $user->name }}</a>
+                                            </h6>
                                             <span class="fs-12 text-muted">{{ $user->email }}</span>
                                         </div>
                                     </div>
@@ -143,7 +162,7 @@
                                 <td class="text-dark">{{ $user->last_login_at?->diffForHumans() ?? '—' }}</td>
                                 <td>{{ $user->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    @if($user->status === 'active')
+                                    @if ($user->status === 'active')
                                         <span class="badge badge-soft-success d-inline-flex align-items-center">Actif
                                             <i class="isax isax-tick-circle ms-1"></i>
                                         </span>
@@ -159,15 +178,17 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ route('bo.users.edit', $user) }}" class="dropdown-item d-flex align-items-center">
+                                            <a href="{{ route('bo.users.edit', $user) }}"
+                                                class="dropdown-item d-flex align-items-center">
                                                 <i class="isax isax-edit me-2"></i>Modifier
                                             </a>
                                         </li>
-                                        @if($user->status === 'active' && $user->id !== auth()->id())
+                                        @if ($user->status === 'active' && $user->id !== auth()->id())
                                             <li>
                                                 <form method="POST" action="{{ route('bo.users.deactivate', $user) }}">
                                                     @csrf
-                                                    <button class="dropdown-item d-flex align-items-center text-warning" type="submit">
+                                                    <button class="dropdown-item d-flex align-items-center text-warning"
+                                                        type="submit">
                                                         <i class="isax isax-slash me-2"></i>Désactiver
                                                     </button>
                                                 </form>
@@ -176,7 +197,8 @@
                                             <li>
                                                 <form method="POST" action="{{ route('bo.users.activate', $user) }}">
                                                     @csrf
-                                                    <button class="dropdown-item d-flex align-items-center text-success" type="submit">
+                                                    <button class="dropdown-item d-flex align-items-center text-success"
+                                                        type="submit">
                                                         <i class="isax isax-tick-circle me-2"></i>Activer
                                                     </button>
                                                 </form>
@@ -199,6 +221,6 @@
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+                    End Page Content
+                ========================= -->
 @endsection

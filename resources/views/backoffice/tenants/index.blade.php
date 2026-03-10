@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+                    Start Page Content
+                ========================= -->
 
     <div class="page-wrapper">
         <div class="content content-two">
@@ -126,7 +126,8 @@
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center fw-medium"
                                 data-bs-toggle="dropdown">
-                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus récent</span>
+                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus
+                                    récent</span>
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end">
                                 <li>
@@ -137,6 +138,9 @@
                                 </li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Nom', 'Slug', 'Domaine', 'Utilisateurs', 'Créé le', 'Statut'],
+                        ])
                     </div>
                 </div>
             </div>
@@ -155,7 +159,7 @@
     <!-- Modals -->
     @include('backoffice.tenants.partials._modals')
 
-    @if($errors->any() && old('_modal') === 'add_tenant')
+    @if ($errors->any() && old('_modal') === 'add_tenant')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var modal = new bootstrap.Modal(document.getElementById('add_tenant'));
@@ -164,10 +168,10 @@
         </script>
     @endif
 
-    @if($errors->any() && old('_modal') === 'edit_tenant')
+    @if ($errors->any() && old('_modal') === 'edit_tenant')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var modalId = 'edit_tenant_' + '{{ old("_tenant_id") }}';
+                var modalId = 'edit_tenant_' + '{{ old('_tenant_id') }}';
                 var el = document.getElementById(modalId);
                 if (el) {
                     var modal = new bootstrap.Modal(el);
@@ -178,8 +182,8 @@
     @endif
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+                    End Page Content
+                ========================= -->
 
     @push('scripts')
         <script>

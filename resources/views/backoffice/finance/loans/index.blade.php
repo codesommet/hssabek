@@ -80,6 +80,18 @@
                                         class="dropdown-item">Défaut</a></li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Référence',
+                                'Prêteur',
+                                'Montant principal',
+                                'Taux d\'intérêt',
+                                'Date début',
+                                'Date fin',
+                                'Solde restant',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>

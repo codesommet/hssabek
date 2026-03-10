@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+                Start Page Content
+            ========================= -->
 
     <div class="page-wrapper">
 
@@ -36,6 +36,11 @@
                             id="unit-search">
                     </div>
                 </div> <!-- end col -->
+                <div class="col-md-9 d-flex justify-content-end">
+                    @include('backoffice.components.column-toggle', [
+                        'columns' => ['Nom', 'Abréviation', 'Nombre de produits'],
+                    ])
+                </div>
             </div> <!-- end row -->
 
             @if (session('success'))
@@ -113,8 +118,8 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+                End Page Content
+            ========================= -->
 
     {{-- ============================================
         Add Unit Modal

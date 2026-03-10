@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-           Start Page Content
-          ========================= -->
+               Start Page Content
+              ========================= -->
 
     <div class="page-wrapper">
 
@@ -32,7 +32,8 @@
                     </div>
                     <div>
                         <a href="javascript:void(0);" class="btn btn-primary d-flex align-items-center"
-                            data-bs-toggle="modal" data-bs-target="#add_subscription"><i class="isax isax-add-circle5 me-1"></i>Nouvel Abonnement</a>
+                            data-bs-toggle="modal" data-bs-target="#add_subscription"><i
+                                class="isax isax-add-circle5 me-1"></i>Nouvel Abonnement</a>
                     </div>
                 </div>
             </div>
@@ -123,11 +124,15 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Entreprise', 'Plan', 'Statut', 'Début', 'Fin', 'Prochaine facturation'],
+                        ])
                         <div class="dropdown me-2">
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center fw-medium"
                                 data-bs-toggle="dropdown">
-                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus récent</span>
+                                <i class="isax isax-sort me-1"></i>Trier par : <span class="fw-normal ms-1">Plus
+                                    récent</span>
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end">
                                 <li>
@@ -143,7 +148,7 @@
             </div>
             <!-- End Table Search -->
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
@@ -165,7 +170,7 @@
     <!-- Modals -->
     @include('backoffice.subscriptions.partials._modals')
 
-    @if($errors->any() && old('_modal') === 'add_subscription')
+    @if ($errors->any() && old('_modal') === 'add_subscription')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var modal = new bootstrap.Modal(document.getElementById('add_subscription'));
@@ -175,36 +180,37 @@
     @endif
 
     <!-- ========================
-           End Page Content
-          ========================= -->
+               End Page Content
+              ========================= -->
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const plans = @json($plans->keyBy('id')->map(fn($p) => ['price' => $p->price, 'currency' => $p->currency]));
-        const addModal = document.getElementById('add_subscription');
-        if (addModal) {
-            const planSelect = addModal.querySelector('select[name="plan_id"]');
-            const discountInput = addModal.querySelector('input[name="discount"]');
-            const priceHint = document.getElementById('add-sub-final-price');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const plans = @json($plans->keyBy('id')->map(fn($p) => ['price' => $p->price, 'currency' => $p->currency]));
+            const addModal = document.getElementById('add_subscription');
+            if (addModal) {
+                const planSelect = addModal.querySelector('select[name="plan_id"]');
+                const discountInput = addModal.querySelector('input[name="discount"]');
+                const priceHint = document.getElementById('add-sub-final-price');
 
-            function updatePrice() {
-                const planId = planSelect.value;
-                const discount = parseFloat(discountInput.value) || 0;
-                if (planId && plans[planId]) {
-                    const plan = plans[planId];
-                    const final_price = Math.max(0, plan.price - discount);
-                    priceHint.textContent = 'Prix plan : ' + plan.price.toFixed(2) + ' ' + plan.currency + ' → Prix final : ' + final_price.toFixed(2) + ' ' + plan.currency;
-                } else {
-                    priceHint.textContent = '';
+                function updatePrice() {
+                    const planId = planSelect.value;
+                    const discount = parseFloat(discountInput.value) || 0;
+                    if (planId && plans[planId]) {
+                        const plan = plans[planId];
+                        const final_price = Math.max(0, plan.price - discount);
+                        priceHint.textContent = 'Prix plan : ' + plan.price.toFixed(2) + ' ' + plan.currency +
+                            ' → Prix final : ' + final_price.toFixed(2) + ' ' + plan.currency;
+                    } else {
+                        priceHint.textContent = '';
+                    }
                 }
-            }
 
-            planSelect.addEventListener('change', updatePrice);
-            discountInput.addEventListener('input', updatePrice);
-            updatePrice();
-        }
-    });
-</script>
+                planSelect.addEventListener('change', updatePrice);
+                discountInput.addEventListener('input', updatePrice);
+                updatePrice();
+            }
+        });
+    </script>
 @endpush

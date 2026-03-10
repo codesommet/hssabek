@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-               Start Page Content
-              ========================= -->
+                   Start Page Content
+                  ========================= -->
 
     <div class="page-wrapper">
         <div class="content content-two">
@@ -38,6 +38,9 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Utilisateur', 'Agence', 'Raison', 'Date de demande', 'Statut'],
+                        ])
                         <div class="dropdown">
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
@@ -180,7 +183,8 @@
                             </div>
                             <h6 class="mb-1">Confirmer la suppression</h6>
                             <p class="mb-2">Êtes-vous sûr de vouloir confirmer la suppression du compte de
-                                <strong>{{ $req->tenant->name ?? '-' }}</strong> ?</p>
+                                <strong>{{ $req->tenant->name ?? '-' }}</strong> ?
+                            </p>
                             <p class="fs-12 text-danger mb-3">Cette action désactivera le tenant.</p>
                             <form method="POST" action="{{ route('sa.delete-requests.confirm', $req) }}">
                                 @csrf
@@ -197,6 +201,6 @@
         @endforeach
 
         <!-- ========================
-                   End Page Content
-                  ========================= -->
+                           End Page Content
+                          ========================= -->
     @endsection

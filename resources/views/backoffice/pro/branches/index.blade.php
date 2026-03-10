@@ -40,6 +40,11 @@
                             </div>
                         </form>
                     </div>
+                    <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Nom', 'Code', 'E-mail', 'Téléphone', 'Par défaut', 'Statut'],
+                        ])
+                    </div>
                 </div>
             </div>
 

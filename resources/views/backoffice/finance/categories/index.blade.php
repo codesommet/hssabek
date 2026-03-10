@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-      Start Page Content
-     ========================= -->
+          Start Page Content
+         ========================= -->
 
     <div class="page-wrapper">
 
@@ -16,9 +16,12 @@
                     <h6>Catégories financières</h6>
                 </div>
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
-                    @include('backoffice.components.export-dropdown', ['exportType' => 'finance-categories'])
+                    @include('backoffice.components.export-dropdown', [
+                        'exportType' => 'finance-categories',
+                    ])
                     <div>
-                        <a href="{{ route('bo.finance.categories.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <a href="{{ route('bo.finance.categories.create') }}"
+                            class="btn btn-primary d-flex align-items-center">
                             <i class="isax isax-add-circle5 me-1"></i>Nouvelle catégorie
                         </a>
                     </div>
@@ -26,14 +29,14 @@
             </div>
             <!-- End Page Header -->
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -44,39 +47,55 @@
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <form action="{{ route('bo.finance.categories.index') }}" method="GET" class="table-search d-flex align-items-center mb-0">
+                        <form action="{{ route('bo.finance.categories.index') }}" method="GET"
+                            class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <input type="text" name="search" class="form-control" placeholder="Rechercher une catégorie..." value="{{ request('search') }}">
-                                <a href="javascript:void(0);" class="btn-searchset" onclick="this.closest('form').submit()"><i
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Rechercher une catégorie..." value="{{ request('search') }}">
+                                <a href="javascript:void(0);" class="btn-searchset"
+                                    onclick="this.closest('form').submit()"><i
                                         class="isax isax-search-normal fs-12"></i></a>
-                                @if(request('type'))
+                                @if (request('type'))
                                     <input type="hidden" name="type" value="{{ request('type') }}">
                                 @endif
                             </div>
                         </form>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => ['Nom', 'Type', 'Statut'],
+                        ])
                         <div class="dropdown">
                             <a href="javascript:void(0);"
                                 class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
                                 data-bs-toggle="dropdown">
                                 <i class="isax isax-filter me-1"></i>Type : <span class="fw-normal ms-1">
                                     @switch(request('type'))
-                                        @case('expense') Dépense @break
-                                        @case('income') Revenu @break
-                                        @default Tous
+                                        @case('expense')
+                                            Dépense
+                                        @break
+
+                                        @case('income')
+                                            Revenu
+                                        @break
+
+                                        @default
+                                            Tous
                                     @endswitch
                                 </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('type', 'page'))) }}" class="dropdown-item">Tous</a>
+                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('type', 'page'))) }}"
+                                        class="dropdown-item">Tous</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('page'), ['type' => 'expense'])) }}" class="dropdown-item">Dépense</a>
+                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('page'), ['type' => 'expense'])) }}"
+                                        class="dropdown-item">Dépense</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('page'), ['type' => 'income'])) }}" class="dropdown-item">Revenu</a>
+                                    <a href="{{ route('bo.finance.categories.index', array_merge(request()->except('page'), ['type' => 'income'])) }}"
+                                        class="dropdown-item">Revenu</a>
                                 </li>
                             </ul>
                         </div>
@@ -103,7 +122,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($categories as $category)
+                        @foreach ($categories as $category)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -113,22 +132,26 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <span class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                            <span class="avatar avatar-sm rounded-circle {{ $category->type === 'expense' ? 'bg-danger' : 'bg-success' }} text-white d-flex align-items-center justify-content-center">
-                                                <i class="isax {{ $category->type === 'expense' ? 'isax-arrow-up-3' : 'isax-arrow-down-2' }} fs-12"></i>
+                                            <span
+                                                class="avatar avatar-sm rounded-circle {{ $category->type === 'expense' ? 'bg-danger' : 'bg-success' }} text-white d-flex align-items-center justify-content-center">
+                                                <i
+                                                    class="isax {{ $category->type === 'expense' ? 'isax-arrow-up-3' : 'isax-arrow-down-2' }} fs-12"></i>
                                             </span>
                                         </span>
                                         <h6 class="fs-14 fw-medium mb-0">{{ $category->name }}</h6>
                                     </div>
                                 </td>
                                 <td>
-                                    @if($category->type === 'expense')
-                                        <span class="badge badge-soft-danger d-inline-flex align-items-center">Dépense</span>
+                                    @if ($category->type === 'expense')
+                                        <span
+                                            class="badge badge-soft-danger d-inline-flex align-items-center">Dépense</span>
                                     @else
-                                        <span class="badge badge-soft-success d-inline-flex align-items-center">Revenu</span>
+                                        <span
+                                            class="badge badge-soft-success d-inline-flex align-items-center">Revenu</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($category->is_active)
+                                    @if ($category->is_active)
                                         <span class="badge badge-soft-success d-inline-flex align-items-center">Active <i
                                                 class="isax isax-tick-circle ms-1"></i></span>
                                     @else
@@ -148,9 +171,11 @@
                                                     class="isax isax-edit me-2"></i>Modifier</a>
                                         </li>
                                         <li>
-                                            <form method="POST" action="{{ route('bo.finance.categories.destroy', $category) }}">
+                                            <form method="POST"
+                                                action="{{ route('bo.finance.categories.destroy', $category) }}">
                                                 @csrf @method('DELETE')
-                                                <button class="dropdown-item d-flex align-items-center text-danger" type="submit"
+                                                <button class="dropdown-item d-flex align-items-center text-danger"
+                                                    type="submit"
                                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
                                                     <i class="isax isax-trash me-2"></i>Supprimer
                                                 </button>
@@ -175,6 +200,6 @@
     </div>
 
     <!-- ========================
-      End Page Content
-     ========================= -->
+          End Page Content
+         ========================= -->
 @endsection

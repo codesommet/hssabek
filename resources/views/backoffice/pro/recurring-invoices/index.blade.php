@@ -8,7 +8,9 @@
                     <h6>Factures récurrentes</h6>
                 </div>
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
-                    @include('backoffice.components.export-dropdown', ['exportType' => 'recurring-invoices'])
+                    @include('backoffice.components.export-dropdown', [
+                        'exportType' => 'recurring-invoices',
+                    ])
                     <div>
                         <a href="{{ route('bo.pro.recurring-invoices.create') }}"
                             class="btn btn-primary d-flex align-items-center">
@@ -80,6 +82,15 @@
                                         class="dropdown-item">Annulé</a></li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Client',
+                                'Facture modèle',
+                                'Intervalle',
+                                'Prochaine exécution',
+                                'Statut',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>

@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-      Start Page Content
-     ========================= -->
+          Start Page Content
+         ========================= -->
 
     <div class="page-wrapper">
 
@@ -18,7 +18,8 @@
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
                     @include('backoffice.components.export-dropdown', ['exportType' => 'stock-transfers'])
                     <div>
-                        <a href="{{ route('bo.inventory.transfers.create') }}" class="btn btn-primary d-flex align-items-center">
+                        <a href="{{ route('bo.inventory.transfers.create') }}"
+                            class="btn btn-primary d-flex align-items-center">
                             <i class="isax isax-add-circle5 me-1"></i>Nouveau transfert
                         </a>
                     </div>
@@ -26,14 +27,14 @@
             </div>
             <!-- End Page Header -->
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -44,12 +45,15 @@
             <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <form action="{{ route('bo.inventory.transfers.index') }}" method="GET" class="table-search d-flex align-items-center mb-0">
+                        <form action="{{ route('bo.inventory.transfers.index') }}" method="GET"
+                            class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <input type="text" name="search" class="form-control" placeholder="Rechercher par numéro..." value="{{ request('search') }}">
-                                <a href="javascript:void(0);" class="btn-searchset" onclick="this.closest('form').submit()"><i
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Rechercher par numéro..." value="{{ request('search') }}">
+                                <a href="javascript:void(0);" class="btn-searchset"
+                                    onclick="this.closest('form').submit()"><i
                                         class="isax isax-search-normal fs-12"></i></a>
-                                @if(request('status'))
+                                @if (request('status'))
                                     <input type="hidden" name="status" value="{{ request('status') }}">
                                 @endif
                             </div>
@@ -62,24 +66,52 @@
                                 data-bs-toggle="dropdown">
                                 <i class="isax isax-filter me-1"></i>Statut : <span class="fw-normal ms-1">
                                     @switch(request('status'))
-                                        @case('draft') Brouillon @break
-                                        @case('in_transit') En transit @break
-                                        @case('received') Reçu @break
-                                        @case('cancelled') Annulé @break
-                                        @default Tous
+                                        @case('draft')
+                                            Brouillon
+                                        @break
+
+                                        @case('in_transit')
+                                            En transit
+                                        @break
+
+                                        @case('received')
+                                            Reçu
+                                        @break
+
+                                        @case('cancelled')
+                                            Annulé
+                                        @break
+
+                                        @default
+                                            Tous
                                     @endswitch
                                 </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('status', 'page'))) }}" class="dropdown-item">Tous</a>
+                                    <a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('status', 'page'))) }}"
+                                        class="dropdown-item">Tous</a>
                                 </li>
-                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'draft'])) }}" class="dropdown-item">Brouillon</a></li>
-                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'in_transit'])) }}" class="dropdown-item">En transit</a></li>
-                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'received'])) }}" class="dropdown-item">Reçu</a></li>
-                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'cancelled'])) }}" class="dropdown-item">Annulé</a></li>
+                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'draft'])) }}"
+                                        class="dropdown-item">Brouillon</a></li>
+                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'in_transit'])) }}"
+                                        class="dropdown-item">En transit</a></li>
+                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'received'])) }}"
+                                        class="dropdown-item">Reçu</a></li>
+                                <li><a href="{{ route('bo.inventory.transfers.index', array_merge(request()->except('page'), ['status' => 'cancelled'])) }}"
+                                        class="dropdown-item">Annulé</a></li>
                             </ul>
                         </div>
+                        @include('backoffice.components.column-toggle', [
+                            'columns' => [
+                                'Numéro',
+                                'Entrepôt source',
+                                'Entrepôt destination',
+                                'Statut',
+                                'Créé par',
+                                'Date',
+                            ],
+                        ])
                     </div>
                 </div>
             </div>
@@ -105,7 +137,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($transfers as $transfer)
+                        @foreach ($transfers as $transfer)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -114,7 +146,8 @@
                                 </td>
                                 <td>
                                     <h6 class="fs-14 fw-medium mb-0">
-                                        <a href="{{ route('bo.inventory.transfers.show', $transfer) }}">{{ $transfer->number ?? '—' }}</a>
+                                        <a
+                                            href="{{ route('bo.inventory.transfers.show', $transfer) }}">{{ $transfer->number ?? '—' }}</a>
                                     </h6>
                                 </td>
                                 <td>{{ $transfer->fromWarehouse->name ?? '—' }}</td>
@@ -123,16 +156,20 @@
                                     @switch($transfer->status)
                                         @case('draft')
                                             <span class="badge badge-soft-warning d-inline-flex align-items-center">Brouillon</span>
-                                            @break
+                                        @break
+
                                         @case('in_transit')
                                             <span class="badge badge-soft-info d-inline-flex align-items-center">En transit</span>
-                                            @break
+                                        @break
+
                                         @case('received')
-                                            <span class="badge badge-soft-success d-inline-flex align-items-center">Reçu <i class="isax isax-tick-circle ms-1"></i></span>
-                                            @break
+                                            <span class="badge badge-soft-success d-inline-flex align-items-center">Reçu <i
+                                                    class="isax isax-tick-circle ms-1"></i></span>
+                                        @break
+
                                         @case('cancelled')
                                             <span class="badge badge-soft-danger d-inline-flex align-items-center">Annulé</span>
-                                            @break
+                                        @break
                                     @endswitch
                                 </td>
                                 <td>{{ $transfer->createdBy->name ?? '—' }}</td>
@@ -147,22 +184,24 @@
                                                 class="dropdown-item d-flex align-items-center"><i
                                                     class="isax isax-eye me-2"></i>Voir</a>
                                         </li>
-                                        @if($transfer->status === 'draft')
+                                        @if ($transfer->status === 'draft')
                                             <li>
                                                 <a href="{{ route('bo.inventory.transfers.edit', $transfer) }}"
                                                     class="dropdown-item d-flex align-items-center"><i
                                                         class="isax isax-edit me-2"></i>Modifier</a>
                                             </li>
                                         @endif
-                                            <li>
-                                                <form method="POST" action="{{ route('bo.inventory.transfers.destroy', $transfer) }}">
-                                                    @csrf @method('DELETE')
-                                                    <button class="dropdown-item d-flex align-items-center text-danger" type="submit"
-                                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce transfert ?')">
-                                                        <i class="isax isax-trash me-2"></i>Supprimer
-                                                    </button>
-                                                </form>
-                                            </li>
+                                        <li>
+                                            <form method="POST"
+                                                action="{{ route('bo.inventory.transfers.destroy', $transfer) }}">
+                                                @csrf @method('DELETE')
+                                                <button class="dropdown-item d-flex align-items-center text-danger"
+                                                    type="submit"
+                                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce transfert ?')">
+                                                    <i class="isax isax-trash me-2"></i>Supprimer
+                                                </button>
+                                            </form>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>
@@ -182,6 +221,6 @@
     </div>
 
     <!-- ========================
-      End Page Content
-     ========================= -->
+          End Page Content
+         ========================= -->
 @endsection
