@@ -17,13 +17,18 @@ class Subscription extends Model
         'tenant_id',
         'plan_id',
         'status',
+        'quantity',
+        'discount',
         'starts_at',
         'ends_at',
         'trial_ends_at',
         'cancels_at',
+        'provider',
+        'provider_subscription_id',
     ];
 
     protected $casts = [
+        'discount' => 'decimal:2',
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
         'trial_ends_at' => 'datetime',

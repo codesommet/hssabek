@@ -383,6 +383,60 @@
                             </ul>
                         </div>
                     @endif
+
+                    {{-- Historique des transactions --}}
+                    <div class="mb-3">
+                        <h6 class="fs-14 fw-bold mb-2"><i class="isax isax-receipt-text me-1"></i>Historique des transactions</h6>
+                        @php
+                            $allInvoices = $tenant->subscriptions->flatMap(fn($s) => $s->invoices->map(function($inv) use ($s) {
+                                $inv->_subscription = $s;
+                                return $inv;
+                            }))->sortByDesc('created_at');
+                        @endphp
+                        @if($allInvoices->count())
+                            <div class="table-responsive">
+                                <table class="table table-sm table-nowrap mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="fs-12">Date</th>
+                                            <th class="fs-12">Plan</th>
+                                            <th class="fs-12">Montant</th>
+                                            <th class="fs-12">Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($allInvoices->take(10) as $inv)
+                                            <tr>
+                                                <td class="fs-13">{{ $inv->created_at->format('d/m/Y') }}</td>
+                                                <td class="fs-13">{{ $inv->_subscription->plan?->name ?? '—' }}</td>
+                                                <td class="fs-13">{{ number_format($inv->amount, 2) }} {{ $inv->currency ?? 'MAD' }}</td>
+                                                <td>
+                                                    @switch($inv->status)
+                                                        @case('paid')
+                                                            <span class="badge badge-soft-success">Payé</span>
+                                                            @break
+                                                        @case('pending')
+                                                            <span class="badge badge-soft-warning">En attente</span>
+                                                            @break
+                                                        @case('failed')
+                                                            <span class="badge badge-soft-danger">Échoué</span>
+                                                            @break
+                                                        @default
+                                                            <span class="badge badge-soft-secondary">{{ $inv->status }}</span>
+                                                    @endswitch
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            @if($allInvoices->count() > 10)
+                                <small class="text-muted mt-1 d-block">Affichage des 10 dernières transactions sur {{ $allInvoices->count() }} au total.</small>
+                            @endif
+                        @else
+                            <p class="text-muted fs-13 mb-0">Aucune transaction enregistrée.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

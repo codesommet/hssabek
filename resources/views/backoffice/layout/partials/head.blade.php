@@ -243,3 +243,14 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ url('build/css/style.css') }}">
+
+    <!-- Fix: ensure item-table headers always have white text on dark bg -->
+    <style>
+        .add-table thead th,
+        [data-bs-theme=dark] .add-table thead th {
+            color: #fff !important;
+            background-color: #1B2850 !important;
+        }
+    </style>
+
+    @stack('styles')

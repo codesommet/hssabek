@@ -12,6 +12,7 @@ use App\Models\Sales\Invoice;
 use App\Services\Sales\CreditNoteService;
 use App\Services\Sales\PdfService;
 use App\Services\System\DocumentNumberService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class CreditNoteController extends Controller
@@ -64,7 +65,11 @@ class CreditNoteController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('credit_note_ref');
 
-        return view('backoffice.sales.credit-notes.create', compact('customers', 'invoices', 'bankAccounts', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.sales.credit-notes.create', compact('customers', 'invoices', 'bankAccounts', 'nextReference', 'defaultTerms', 'defaultFooter'));
     }
 
     public function store(StoreCreditNoteRequest $request)
@@ -111,7 +116,11 @@ class CreditNoteController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('credit_note_ref');
 
-        return view('backoffice.sales.credit-notes.edit', compact('creditNote', 'customers', 'invoices', 'bankAccounts', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.sales.credit-notes.edit', compact('creditNote', 'customers', 'invoices', 'bankAccounts', 'nextReference', 'defaultTerms', 'defaultFooter'));
     }
 
     public function update(UpdateCreditNoteRequest $request, CreditNote $creditNote)

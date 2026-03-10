@@ -60,6 +60,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
+                                <label class="form-label">Remise (MAD)</label>
+                                <input type="number" min="0" step="0.01" class="form-control @error('discount') is-invalid @enderror" name="discount" value="{{ old('discount', 0) }}" id="add-sub-discount">
+                                @error('discount')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <small class="text-muted" id="add-sub-final-price"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
                                 <label class="form-label">Date de début<span class="text-danger ms-1">*</span></label>
                                 <input type="date" class="form-control @error('starts_at') is-invalid @enderror" name="starts_at" value="{{ old('starts_at') }}">
                                 @error('starts_at')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -166,6 +174,15 @@
                                 <div class="mb-3">
                                     <label class="form-label">Quantité</label>
                                     <input type="number" min="1" class="form-control" name="quantity" value="{{ old('quantity', $subscription->quantity) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Remise (MAD)</label>
+                                    <input type="number" min="0" step="0.01" class="form-control" name="discount" value="{{ old('discount', $subscription->discount ?? 0) }}">
+                                    @if($subscription->plan)
+                                        <small class="text-muted">Prix plan : {{ number_format($subscription->plan->price, 2) }} {{ $subscription->plan->currency }} &rarr; Prix final : {{ number_format($subscription->plan->price - ($subscription->discount ?? 0), 2) }} {{ $subscription->plan->currency }}</small>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -282,6 +299,26 @@
                                     <h6 class="fs-14 fw-medium mb-0">{{ $subscription->quantity }}</h6>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <span class="fs-14">Remise</span>
+                                    <h6 class="fs-14 fw-medium mb-0">
+                                        @if(($subscription->discount ?? 0) > 0)
+                                            <span class="text-danger">-{{ number_format($subscription->discount, 2) }} {{ $subscription->plan?->currency ?? 'MAD' }}</span>
+                                        @else
+                                            —
+                                        @endif
+                                    </h6>
+                                </div>
+                            </div>
+                            @if(($subscription->discount ?? 0) > 0 && $subscription->plan)
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <span class="fs-14">Prix final</span>
+                                        <h6 class="fs-14 fw-bold mb-0 text-success">{{ number_format($subscription->plan->price - $subscription->discount, 2) }} {{ $subscription->plan->currency }}</h6>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <span class="fs-14">Fournisseur</span>

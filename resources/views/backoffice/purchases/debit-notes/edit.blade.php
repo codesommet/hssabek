@@ -101,40 +101,31 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Notes</label>
-                                                <textarea class="form-control @error('notes') is-invalid @enderror" name="notes" rows="3">{{ old('notes', $debitNote->notes) }}</textarea>
-                                                @error('notes')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
                                     </div>
 
                                     {{-- Articles --}}
                                     <div class="border-top pt-3 mb-3">
                                         <h6 class="mb-3">Articles</h6>
                                         <div class="table-responsive rounded border-bottom-0 border mb-3">
-                                            <table class="table table-nowrap add-table m-0" id="items-table">
-                                                <thead class="table-dark">
+                                            <table class="table table-nowrap add-table m-0" id="items-table" style="table-layout: fixed; width: 100%;">
+                                                <thead style="background-color: #1B2850; color: #fff;">
                                                     <tr>
-                                                        <th>Libellé</th>
-                                                        <th>Quantité</th>
-                                                        <th>Prix unitaire</th>
-                                                        <th>Taxe (%)</th>
-                                                        <th>Montant</th>
-                                                        <th></th>
+                                                        <th style="width: 28%;">Libellé</th>
+                                                        <th style="width: 13%;">Quantité</th>
+                                                        <th style="width: 17%;">Prix unitaire</th>
+                                                        <th style="width: 15%;">Taxe (%)</th>
+                                                        <th style="width: 17%;">Montant</th>
+                                                        <th style="width: 10%;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="add-tbody">
                                                     @foreach(old('items', $debitNote->items->toArray()) as $i => $item)
                                                         <tr class="item-row">
                                                             <td><input type="text" name="items[{{ $i }}][label]" class="form-control" value="{{ $item['label'] ?? $item['product']['name'] ?? '' }}" placeholder="Libellé" required></td>
-                                                            <td><input type="number" name="items[{{ $i }}][quantity]" class="form-control" value="{{ $item['quantity'] ?? 1 }}" min="0.001" step="0.001" style="min-width: 80px;" required></td>
-                                                            <td><input type="number" name="items[{{ $i }}][unit_price]" class="form-control" value="{{ $item['unit_price'] ?? 0 }}" min="0" step="0.01" style="min-width: 100px;" required></td>
-                                                            <td><input type="number" name="items[{{ $i }}][tax_rate]" class="form-control" value="{{ $item['tax_rate'] ?? 0 }}" min="0" max="100" step="0.01" style="min-width: 80px;"></td>
-                                                            <td><input type="text" class="form-control item-total" value="{{ number_format($item['line_total'] ?? 0, 2, '.', '') }}" readonly style="min-width: 90px;"></td>
+                                                            <td><input type="number" name="items[{{ $i }}][quantity]" class="form-control" value="{{ $item['quantity'] ?? 1 }}" min="0.001" step="0.001" required></td>
+                                                            <td><input type="number" name="items[{{ $i }}][unit_price]" class="form-control" value="{{ $item['unit_price'] ?? 0 }}" min="0" step="0.01" required></td>
+                                                            <td><input type="number" name="items[{{ $i }}][tax_rate]" class="form-control" value="{{ $item['tax_rate'] ?? 0 }}" min="0" max="100" step="0.01"></td>
+                                                            <td><input type="text" class="form-control item-total" value="{{ number_format($item['line_total'] ?? 0, 2, '.', '') }}" readonly></td>
                                                             <td>
                                                                 @if($i > 0 || count(old('items', $debitNote->items->toArray())) > 1)
                                                                     <a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a>
@@ -147,6 +138,47 @@
                                         </div>
                                         <div>
                                             <a href="javascript:void(0);" class="d-inline-flex align-items-center" id="add-item-btn"><i class="isax isax-add-circle5 text-primary me-1"></i>Ajouter un article</a>
+                                        </div>
+                                    </div>
+
+                                    {{-- Informations supplémentaires --}}
+                                    <div class="border-top pt-3 mb-3">
+                                        <h6 class="mb-3">Informations supplémentaires</h6>
+                                        <div>
+                                            <ul class="nav nav-tabs nav-solid-primary mb-3" role="tablist">
+                                                <li class="nav-item me-2" role="presentation">
+                                                    <a class="nav-link active border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#notes" aria-current="page" href="javascript:void(0);"><i class="isax isax-document-text me-1"></i>Notes</a>
+                                                </li>
+                                                <li class="nav-item me-2" role="presentation">
+                                                    <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#terms" href="javascript:void(0);"><i class="isax isax-document me-1"></i>Conditions</a>
+                                                </li>
+                                                <li class="nav-item me-2" role="presentation">
+                                                    <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#bank" href="javascript:void(0);"><i class="isax isax-bank me-1"></i>Coordonnées bancaires</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active show" id="notes" role="tabpanel">
+                                                    <label class="form-label">Notes additionnelles</label>
+                                                    <textarea name="notes" class="form-control bg-light" rows="3" readonly>{{ $defaultFooter }}</textarea>
+                                                    <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
+                                                </div>
+                                                <div class="tab-pane fade" id="terms" role="tabpanel">
+                                                    <label class="form-label">Conditions générales</label>
+                                                    <textarea name="terms" class="form-control bg-light" rows="3" readonly>{{ $defaultTerms }}</textarea>
+                                                    <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
+                                                </div>
+                                                <div class="tab-pane fade" id="bank" role="tabpanel">
+                                                    <label class="form-label">Compte bancaire</label>
+                                                    <select class="select" name="bank_account_id">
+                                                        <option value="">Sélectionner</option>
+                                                        @foreach ($bankAccounts as $ba)
+                                                            <option value="{{ $ba->id }}" {{ old('bank_account_id', $debitNote->bank_account_id ?? '') == $ba->id ? 'selected' : '' }}>
+                                                                {{ $ba->account_holder_name }} - {{ $ba->account_number }} ({{ $ba->bank_name }})
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -179,10 +211,10 @@
             row.className = 'item-row';
             row.innerHTML = `
                 <td><input type="text" name="items[${itemIndex}][label]" class="form-control" placeholder="Libellé" required></td>
-                <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control" value="1" min="0.001" step="0.001" style="min-width: 80px;" required></td>
-                <td><input type="number" name="items[${itemIndex}][unit_price]" class="form-control" value="0" min="0" step="0.01" style="min-width: 100px;" required></td>
-                <td><input type="number" name="items[${itemIndex}][tax_rate]" class="form-control" value="0" min="0" max="100" step="0.01" style="min-width: 80px;"></td>
-                <td><input type="text" class="form-control item-total" value="0.00" readonly style="min-width: 90px;"></td>
+                <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control" value="1" min="0.001" step="0.001" required></td>
+                <td><input type="number" name="items[${itemIndex}][unit_price]" class="form-control" value="0" min="0" step="0.01" required></td>
+                <td><input type="number" name="items[${itemIndex}][tax_rate]" class="form-control" value="0" min="0" max="100" step="0.01"></td>
+                <td><input type="text" class="form-control item-total" value="0.00" readonly></td>
                 <td><a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a></td>
             `;
             tbody.appendChild(row);

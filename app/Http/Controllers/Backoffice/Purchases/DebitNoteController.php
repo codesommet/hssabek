@@ -9,8 +9,10 @@ use App\Models\Purchases\DebitNote;
 use App\Models\Purchases\Supplier;
 use App\Models\Purchases\VendorBill;
 use App\Services\Purchases\DebitNoteService;
+use App\Models\Finance\BankAccount;
 use App\Services\Sales\PdfService;
 use App\Services\System\DocumentNumberService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class DebitNoteController extends Controller
@@ -46,8 +48,13 @@ class DebitNoteController extends Controller
         $vendorBills = VendorBill::with('supplier')->orderBy('issue_date', 'desc')->limit(50)->get();
 
         $nextReference = app(DocumentNumberService::class)->preview('debit_note_ref');
+        $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name')->get();
 
-        return view('backoffice.purchases.debit-notes.create', compact('suppliers', 'vendorBills', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.purchases.debit-notes.create', compact('suppliers', 'vendorBills', 'nextReference', 'bankAccounts', 'defaultTerms', 'defaultFooter'));
     }
 
     public function store(StoreDebitNoteRequest $request)
@@ -77,8 +84,13 @@ class DebitNoteController extends Controller
         $vendorBills = VendorBill::with('supplier')->orderBy('issue_date', 'desc')->limit(50)->get();
 
         $nextReference = app(DocumentNumberService::class)->preview('debit_note_ref');
+        $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name')->get();
 
-        return view('backoffice.purchases.debit-notes.edit', compact('debitNote', 'suppliers', 'vendorBills', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.purchases.debit-notes.edit', compact('debitNote', 'suppliers', 'vendorBills', 'nextReference', 'bankAccounts', 'defaultTerms', 'defaultFooter'));
     }
 
     public function update(UpdateDebitNoteRequest $request, DebitNote $debitNote)

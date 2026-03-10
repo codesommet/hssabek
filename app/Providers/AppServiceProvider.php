@@ -52,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::policy(\App\Models\User::class, \App\Policies\UserPolicy::class);
         Gate::policy(\App\Models\CRM\Customer::class, \App\Policies\CustomerPolicy::class);
+        Gate::policy(\App\Models\Reports\CustomReport::class, \App\Policies\CustomReportPolicy::class);
         Gate::policy(\App\Models\Catalog\Product::class, \App\Policies\ProductPolicy::class);
         Gate::policy(\App\Models\Sales\Invoice::class, \App\Policies\InvoicePolicy::class);
         Gate::policy(\App\Models\Sales\Quote::class, \App\Policies\QuotePolicy::class);

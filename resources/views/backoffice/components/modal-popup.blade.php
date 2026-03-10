@@ -651,7 +651,7 @@
                             <h6 class="mb-3">Product / Service Items</h6>
                             <div class="table-responsive rounded border-bottom-0 border">
                                 <table class="table mb-0">
-                                    <thead class="table-dark">
+                                    <thead style="background-color: #1B2850; color: #fff;">
                                         <tr>
                                             <th>#</th>
                                             <th>Product/Service</th>
@@ -9845,7 +9845,7 @@
                             <h6 class="mb-3">Product / Service Items</h6>
                             <div class="table-responsive rounded border-bottom-0 border">
                                 <table class="table mb-0">
-                                    <thead class="table-dark">
+                                    <thead style="background-color: #1B2850; color: #fff;">
                                         <tr>
                                             <th>#</th>
                                             <th>Product/Service</th>

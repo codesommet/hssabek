@@ -306,15 +306,15 @@
 
                                     <!-- Table List start -->
                                     <div class="table-responsive table-nowrap rounded border-bottom-0 border mb-3">
-                                        <table class="table mb-0 add-table" id="items-table">
-                                            <thead class="table-dark">
+                                        <table class="table mb-0 add-table" id="items-table" style="table-layout: fixed; width: 100%;">
+                                            <thead style="background-color: #1B2850; color: #fff;">
                                                 <tr>
-                                                    <th>Produit/Service</th>
-                                                    <th>Quantité</th>
-                                                    <th>Prix unitaire</th>
-                                                    <th>Taxe (%)</th>
-                                                    <th>Montant</th>
-                                                    <th></th>
+                                                    <th style="width: 28%;">Produit/Service</th>
+                                                    <th style="width: 13%;">Quantité</th>
+                                                    <th style="width: 17%;">Prix unitaire</th>
+                                                    <th style="width: 15%;">Taxe (%)</th>
+                                                    <th style="width: 17%;">Montant</th>
+                                                    <th style="width: 10%;"></th>
                                                 </tr>
                                             </thead>
                                             <tbody class="add-tbody">
@@ -333,25 +333,25 @@
                                                             class="form-control item-qty"
                                                             value="{{ old('items.0.quantity', 1) }}"
                                                             min="0.001" step="0.001"
-                                                            style="min-width: 80px;" required>
+                                                            required>
                                                     </td>
                                                     <td>
                                                         <input type="number" name="items[0][unit_price]"
                                                             class="form-control item-price"
                                                             value="{{ old('items.0.unit_price', 0) }}"
                                                             min="0" step="0.01"
-                                                            style="min-width: 100px;">
+                                                           >
                                                     </td>
                                                     <td>
                                                         <input type="number" name="items[0][tax_rate]"
                                                             class="form-control item-tax"
                                                             value="{{ old('items.0.tax_rate', 0) }}"
                                                             min="0" max="100" step="0.01"
-                                                            style="min-width: 80px;">
+                                                           >
                                                     </td>
                                                     <td>
                                                         <input type="text" class="form-control item-total"
-                                                            value="0,00" readonly style="min-width: 90px;">
+                                                            value="0,00" readonly>
                                                     </td>
                                                     <td></td>
                                                 </tr>
@@ -362,7 +362,7 @@
 
                                     <div>
                                         <a href="javascript:void(0);"
-                                            class="d-inline-flex align-items-center add-invoice-data"
+                                            class="d-inline-flex align-items-center"
                                             id="add-item-btn"><i
                                                 class="isax isax-add-circle5 text-primary me-1"></i>Ajouter un
                                             article</a>
@@ -404,12 +404,14 @@
                                                             role="tabpanel">
                                                             <label class="form-label">Notes
                                                                 additionnelles</label>
-                                                            <textarea name="notes" class="form-control" rows="3">{{ old('notes') }}</textarea>
+                                                            <textarea name="notes" class="form-control bg-light" rows="3" readonly>{{ $defaultFooter }}</textarea>
+                                                            <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
                                                         </div>
                                                         <div class="tab-pane fade" id="terms" role="tabpanel">
                                                             <label class="form-label">Conditions
                                                                 générales</label>
-                                                            <textarea name="terms" class="form-control" rows="3">{{ old('terms') }}</textarea>
+                                                            <textarea name="terms" class="form-control bg-light" rows="3" readonly>{{ $defaultTerms }}</textarea>
+                                                            <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
                                                         </div>
                                                         <div class="tab-pane fade" id="bank" role="tabpanel">
                                                             <label class="form-label">Compte bancaire</label>
@@ -505,16 +507,16 @@
                         <input type="text" name="items[${itemIndex}][label]" class="form-control item-label" placeholder="Nom de l'article">
                     </td>
                     <td>
-                        <input type="number" name="items[${itemIndex}][quantity]" class="form-control item-qty" value="1" min="0.001" step="0.001" style="min-width: 80px;" required>
+                        <input type="number" name="items[${itemIndex}][quantity]" class="form-control item-qty" value="1" min="0.001" step="0.001" required>
                     </td>
                     <td>
-                        <input type="number" name="items[${itemIndex}][unit_price]" class="form-control item-price" value="0" min="0" step="0.01" style="min-width: 100px;">
+                        <input type="number" name="items[${itemIndex}][unit_price]" class="form-control item-price" value="0" min="0" step="0.01">
                     </td>
                     <td>
-                        <input type="number" name="items[${itemIndex}][tax_rate]" class="form-control item-tax" value="0" min="0" max="100" step="0.01" style="min-width: 80px;">
+                        <input type="number" name="items[${itemIndex}][tax_rate]" class="form-control item-tax" value="0" min="0" max="100" step="0.01">
                     </td>
                     <td>
-                        <input type="text" class="form-control item-total" value="0,00" readonly style="min-width: 90px;">
+                        <input type="text" class="form-control item-total" value="0,00" readonly>
                     </td>
                     <td>
                         <div>

@@ -293,15 +293,15 @@
 
                                     <!-- Table List Start -->
                                     <div class="table-responsive rounded border-bottom-0 border mb-3">
-                                        <table class="table table-nowrap add-table mb-0" id="items-table">
-                                            <thead class="table-dark">
+                                        <table class="table table-nowrap add-table mb-0" id="items-table" style="table-layout: fixed; width: 100%;">
+                                            <thead style="background-color: #1B2850; color: #fff;">
                                                 <tr>
-                                                    <th>Produit / Libellé</th>
-                                                    <th>Quantité</th>
-                                                    <th>Coût unitaire</th>
-                                                    <th>Taxe (%)</th>
-                                                    <th>Total ligne</th>
-                                                    <th></th>
+                                                    <th style="width: 28%;">Produit / Libellé</th>
+                                                    <th style="width: 13%;">Quantité</th>
+                                                    <th style="width: 17%;">Coût unitaire</th>
+                                                    <th style="width: 15%;">Taxe (%)</th>
+                                                    <th style="width: 17%;">Total ligne</th>
+                                                    <th style="width: 10%;"></th>
                                                 </tr>
                                             </thead>
                                             <tbody class="add-tbody" id="items-body">
@@ -310,7 +310,7 @@
                                                         <input type="text" class="form-control" name="items[0][label]"
                                                             placeholder="Libellé de l'article"
                                                             value="{{ old('items.0.label') }}" required
-                                                            style="min-width:200px;">
+                                                           >
                                                         <select class="form-select form-select-sm mt-1"
                                                             name="items[0][product_id]">
                                                             <option value="">-- Produit (optionnel) --</option>
@@ -325,19 +325,19 @@
                                                         <input type="number" class="form-control item-qty"
                                                             name="items[0][quantity]"
                                                             value="{{ old('items.0.quantity', 1) }}" min="0.001"
-                                                            step="0.001" required style="min-width:80px;">
+                                                            step="0.001" required>
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control item-cost"
                                                             name="items[0][unit_cost]"
                                                             value="{{ old('items.0.unit_cost', 0) }}" min="0"
-                                                            step="0.01" required style="min-width:100px;">
+                                                            step="0.01" required>
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control item-tax"
                                                             name="items[0][tax_rate]"
                                                             value="{{ old('items.0.tax_rate', 20) }}" min="0"
-                                                            max="100" step="0.01" style="min-width:70px;">
+                                                            max="100" step="0.01">
                                                     </td>
                                                     <td>
                                                         <span class="item-total fw-medium">0,00</span>
@@ -351,7 +351,7 @@
 
                                     <div>
                                         <a href="javascript:void(0);"
-                                            class="d-inline-flex align-items-center add-invoice-data"
+                                            class="d-inline-flex align-items-center"
                                             id="add-item-btn"><i
                                                 class="isax isax-add-circle5 text-primary me-1"></i>Ajouter
                                             un article</a>
@@ -389,11 +389,13 @@
                                                     <div class="tab-content">
                                                         <div class="tab-pane active show" id="notes" role="tabpanel">
                                                             <label class="form-label">Notes supplémentaires</label>
-                                                            <textarea class="form-control" name="notes" rows="3">{{ old('notes') }}</textarea>
+                                                            <textarea class="form-control bg-light" name="notes" rows="3" readonly>{{ $defaultFooter }}</textarea>
+                                                            <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
                                                         </div>
                                                         <div class="tab-pane fade" id="terms" role="tabpanel">
                                                             <label class="form-label">Conditions générales</label>
-                                                            <textarea class="form-control" name="terms" rows="3">{{ old('terms') }}</textarea>
+                                                            <textarea class="form-control bg-light" name="terms" rows="3" readonly>{{ $defaultTerms }}</textarea>
+                                                            <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
                                                         </div>
                                                         <div class="tab-pane fade" id="bank" role="tabpanel">
                                                             <label class="form-label">Compte bancaire</label>
@@ -489,12 +491,12 @@
                 row.classList.add('item-row');
                 row.innerHTML = `
                     <td>
-                        <input type="text" class="form-control" name="items[${itemIndex}][label]" value="${name}" required style="min-width:200px;">
+                        <input type="text" class="form-control" name="items[${itemIndex}][label]" value="${name}" required>
                         <select class="form-select form-select-sm mt-1" name="items[${itemIndex}][product_id]">${productOptions}</select>
                     </td>
-                    <td><input type="number" class="form-control item-qty" name="items[${itemIndex}][quantity]" value="1" min="0.001" step="0.001" required style="min-width:80px;"></td>
-                    <td><input type="number" class="form-control item-cost" name="items[${itemIndex}][unit_cost]" value="${cost}" min="0" step="0.01" required style="min-width:100px;"></td>
-                    <td><input type="number" class="form-control item-tax" name="items[${itemIndex}][tax_rate]" value="${tax}" min="0" max="100" step="0.01" style="min-width:70px;"></td>
+                    <td><input type="number" class="form-control item-qty" name="items[${itemIndex}][quantity]" value="1" min="0.001" step="0.001" required></td>
+                    <td><input type="number" class="form-control item-cost" name="items[${itemIndex}][unit_cost]" value="${cost}" min="0" step="0.01" required></td>
+                    <td><input type="number" class="form-control item-tax" name="items[${itemIndex}][tax_rate]" value="${tax}" min="0" max="100" step="0.01"></td>
                     <td><span class="item-total fw-medium">0,00</span></td>
                     <td><a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a></td>
                 `;
@@ -514,12 +516,12 @@
                 row.classList.add('item-row');
                 row.innerHTML = `
             <td>
-                <input type="text" class="form-control" name="items[${itemIndex}][label]" placeholder="Libellé de l'article" required style="min-width:200px;">
+                <input type="text" class="form-control" name="items[${itemIndex}][label]" placeholder="Libellé de l'article" required>
                 <select class="form-select form-select-sm mt-1" name="items[${itemIndex}][product_id]">${productOptions}</select>
             </td>
-            <td><input type="number" class="form-control item-qty" name="items[${itemIndex}][quantity]" value="1" min="0.001" step="0.001" required style="min-width:80px;"></td>
-            <td><input type="number" class="form-control item-cost" name="items[${itemIndex}][unit_cost]" value="0" min="0" step="0.01" required style="min-width:100px;"></td>
-            <td><input type="number" class="form-control item-tax" name="items[${itemIndex}][tax_rate]" value="20" min="0" max="100" step="0.01" style="min-width:70px;"></td>
+            <td><input type="number" class="form-control item-qty" name="items[${itemIndex}][quantity]" value="1" min="0.001" step="0.001" required></td>
+            <td><input type="number" class="form-control item-cost" name="items[${itemIndex}][unit_cost]" value="0" min="0" step="0.01" required></td>
+            <td><input type="number" class="form-control item-tax" name="items[${itemIndex}][tax_rate]" value="20" min="0" max="100" step="0.01"></td>
             <td><span class="item-total fw-medium">0,00</span></td>
             <td><a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a></td>
         `;

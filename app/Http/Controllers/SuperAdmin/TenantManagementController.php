@@ -20,7 +20,7 @@ class TenantManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $tenants = Tenant::with('domains')
+        $tenants = Tenant::with(['domains', 'subscriptions.plan', 'subscriptions.invoices'])
             ->withCount('users')
             ->orderByDesc('created_at')
             ->paginate(20);

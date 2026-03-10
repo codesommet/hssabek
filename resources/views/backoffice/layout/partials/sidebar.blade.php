@@ -352,6 +352,9 @@
                                             <li><a href="{{ route('bo.reports.inventory') }}"
                                                     class="{{ request()->routeIs('bo.reports.inventory') ? 'active' : '' }}">Inventaire</a>
                                             </li>
+                                            <li><a href="{{ route('bo.reports.custom.index') }}"
+                                                    class="{{ request()->routeIs('bo.reports.custom.*') ? 'active' : '' }}">Personnalisés</a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>

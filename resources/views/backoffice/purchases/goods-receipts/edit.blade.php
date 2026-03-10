@@ -135,26 +135,26 @@
                                     <div class="border-top pt-3 mb-3">
                                         <h6 class="mb-3">Articles reçus</h6>
                                         <div class="table-responsive rounded border-bottom-0 border mb-3">
-                                            <table class="table table-nowrap add-table m-0" id="items-table">
-                                                <thead class="table-dark">
+                                            <table class="table table-nowrap add-table m-0" id="items-table" style="table-layout: fixed; width: 100%;">
+                                                <thead style="background-color: #1B2850; color: #fff;">
                                                     <tr>
-                                                        <th>Produit <span class="text-danger">*</span></th>
-                                                        <th>Quantité reçue <span class="text-danger">*</span></th>
-                                                        <th></th>
+                                                        <th style="width: 50%;">Produit <span class="text-danger">*</span></th>
+                                                        <th style="width: 35%;">Quantité reçue <span class="text-danger">*</span></th>
+                                                        <th style="width: 15%;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="add-tbody">
                                                     @foreach(old('items', $goodsReceipt->items->toArray()) as $i => $item)
                                                         <tr class="item-row">
                                                             <td>
-                                                                <select name="items[{{ $i }}][product_id]" class="form-select" style="min-width: 200px;" required>
+                                                                <select name="items[{{ $i }}][product_id]" class="form-select" required>
                                                                     <option value="">— Produit —</option>
                                                                     @foreach ($products as $product)
                                                                         <option value="{{ $product->id }}" {{ ($item['product_id'] ?? '') == $product->id ? 'selected' : '' }}>{{ $product->name }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </td>
-                                                            <td><input type="number" name="items[{{ $i }}][quantity]" class="form-control" value="{{ $item['quantity'] ?? 1 }}" min="0.001" step="0.001" style="min-width: 120px;" required></td>
+                                                            <td><input type="number" name="items[{{ $i }}][quantity]" class="form-control" value="{{ $item['quantity'] ?? 1 }}" min="0.001" step="0.001" required></td>
                                                             <td>
                                                                 @if($i > 0 || count(old('items', $goodsReceipt->items->toArray())) > 1)
                                                                     <a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a>
@@ -200,8 +200,8 @@
             const row = document.createElement('tr');
             row.className = 'item-row';
             row.innerHTML = `
-                <td><select name="items[${itemIndex}][product_id]" class="form-select" style="min-width: 200px;" required>${productOptions}</select></td>
-                <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control" value="1" min="0.001" step="0.001" style="min-width: 120px;" required></td>
+                <td><select name="items[${itemIndex}][product_id]" class="form-select" required>${productOptions}</select></td>
+                <td><input type="number" name="items[${itemIndex}][quantity]" class="form-control" value="1" min="0.001" step="0.001" required></td>
                 <td><a href="javascript:void(0);" class="text-danger remove-item"><i class="isax isax-close-circle"></i></a></td>
             `;
             tbody.appendChild(row);

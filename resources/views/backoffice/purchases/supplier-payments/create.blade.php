@@ -148,7 +148,7 @@
                                         <h6 class="mb-3">Allocation aux factures fournisseurs</h6>
                                         <div class="table-responsive rounded border-bottom-0 border mb-3">
                                             <table class="table table-nowrap m-0" id="allocations-table">
-                                                <thead class="table-dark">
+                                                <thead style="background-color: #1B2850; color: #fff;">
                                                     <tr>
                                                         <th>Facture</th>
                                                         <th>Fournisseur</th>

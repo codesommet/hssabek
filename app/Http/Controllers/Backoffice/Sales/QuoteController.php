@@ -66,13 +66,19 @@ class QuoteController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('quote_ref');
 
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
         return view('backoffice.sales.quotes.create', compact(
             'customers',
             'products',
             'units',
             'taxGroups',
             'bankAccounts',
-            'nextReference'
+            'nextReference',
+            'defaultTerms',
+            'defaultFooter'
         ));
     }
 
@@ -120,6 +126,10 @@ class QuoteController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('quote_ref');
 
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
         return view('backoffice.sales.quotes.edit', compact(
             'quote',
             'customers',
@@ -127,7 +137,9 @@ class QuoteController extends Controller
             'units',
             'taxGroups',
             'bankAccounts',
-            'nextReference'
+            'nextReference',
+            'defaultTerms',
+            'defaultFooter'
         ));
     }
 

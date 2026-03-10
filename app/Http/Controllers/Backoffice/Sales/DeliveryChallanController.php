@@ -13,6 +13,7 @@ use App\Models\Sales\Invoice;
 use App\Services\Sales\DeliveryChallanService;
 use App\Services\Sales\PdfService;
 use App\Services\System\DocumentNumberService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class DeliveryChallanController extends Controller
@@ -52,7 +53,11 @@ class DeliveryChallanController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('challan_ref');
 
-        return view('backoffice.sales.delivery-challans.create', compact('customers', 'invoices', 'products', 'bankAccounts', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.sales.delivery-challans.create', compact('customers', 'invoices', 'products', 'bankAccounts', 'nextReference', 'defaultTerms', 'defaultFooter'));
     }
 
     public function store(StoreDeliveryChallanRequest $request)
@@ -87,7 +92,11 @@ class DeliveryChallanController extends Controller
 
         $nextReference = app(DocumentNumberService::class)->preview('challan_ref');
 
-        return view('backoffice.sales.delivery-challans.edit', compact('deliveryChallan', 'customers', 'invoices', 'products', 'bankAccounts', 'nextReference'));
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.sales.delivery-challans.edit', compact('deliveryChallan', 'customers', 'invoices', 'products', 'bankAccounts', 'nextReference', 'defaultTerms', 'defaultFooter'));
     }
 
     public function update(UpdateDeliveryChallanRequest $request, DeliveryChallan $deliveryChallan)

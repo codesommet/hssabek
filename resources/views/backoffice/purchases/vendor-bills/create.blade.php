@@ -156,13 +156,50 @@
                                     </div>
                                 </div>
 
+                                {{-- Informations supplémentaires --}}
+                                <div class="border-top pt-3 mb-3">
+                                    <h6 class="mb-3">Informations supplémentaires</h6>
+                                    <div>
+                                        <ul class="nav nav-tabs nav-solid-primary mb-3" role="tablist">
+                                            <li class="nav-item me-2" role="presentation">
+                                                <a class="nav-link active border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#notes" aria-current="page" href="javascript:void(0);"><i class="isax isax-document-text me-1"></i>Notes</a>
+                                            </li>
+                                            <li class="nav-item me-2" role="presentation">
+                                                <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#terms" href="javascript:void(0);"><i class="isax isax-document me-1"></i>Conditions</a>
+                                            </li>
+                                            <li class="nav-item me-2" role="presentation">
+                                                <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#bank" href="javascript:void(0);"><i class="isax isax-bank me-1"></i>Coordonnées bancaires</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active show" id="notes" role="tabpanel">
+                                                <label class="form-label">Notes additionnelles</label>
+                                                <textarea name="notes" class="form-control bg-light" rows="3" readonly>{{ $defaultFooter }}</textarea>
+                                                <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
+                                            </div>
+                                            <div class="tab-pane fade" id="terms" role="tabpanel">
+                                                <label class="form-label">Conditions générales</label>
+                                                <textarea name="terms" class="form-control bg-light" rows="3" readonly>{{ $defaultTerms }}</textarea>
+                                                <small class="text-muted mt-1 d-block"><i class="isax isax-setting-2 me-1"></i>Modifiable depuis <a href="{{ route('bo.settings.invoice.edit') }}">Paramètres de facturation</a></small>
+                                            </div>
+                                            <div class="tab-pane fade" id="bank" role="tabpanel">
+                                                <label class="form-label">Compte bancaire</label>
+                                                <select class="select" name="bank_account_id">
+                                                    <option value="">Sélectionner</option>
+                                                    @foreach ($bankAccounts as $ba)
+                                                        <option value="{{ $ba->id }}" {{ old('bank_account_id') == $ba->id ? 'selected' : '' }}>
+                                                            {{ $ba->account_holder_name }} - {{ $ba->account_number }} ({{ $ba->bank_name }})
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="extra-info">
                                     <div class="row">
                                         <div class="col-md-7">
-                                            <div class="mb-3">
-                                                <label class="form-label">Notes</label>
-                                                <textarea class="form-control" name="notes" rows="3">{{ old('notes') }}</textarea>
-                                            </div>
                                         </div>
                                         <div class="col-md-5">
                                             <ul class="mb-0 ps-0 list-unstyled">

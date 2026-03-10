@@ -12,6 +12,7 @@
                 <th>Cycle</th>
                 <th>Fournisseur</th>
                 <th>Quantité</th>
+                <th>Remise</th>
                 <th>Début</th>
                 <th>Fin</th>
                 <th class="no-sort">Statut</th>
@@ -57,6 +58,13 @@
                         @endif
                     </td>
                     <td>{{ $subscription->quantity }}</td>
+                    <td>
+                        @if(($subscription->discount ?? 0) > 0)
+                            <span class="text-danger">-{{ number_format($subscription->discount, 2) }}</span>
+                        @else
+                            —
+                        @endif
+                    </td>
                     <td>{{ $subscription->starts_at?->format('d/m/Y') ?? '—' }}</td>
                     <td>{{ $subscription->ends_at?->format('d/m/Y') ?? '—' }}</td>
                     <td>

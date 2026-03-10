@@ -136,7 +136,7 @@
                                         <h6 class="mb-3">Allocation aux factures <span class="text-danger">*</span></h6>
                                         <div class="table-responsive rounded border-bottom-0 border mb-3">
                                             <table class="table table-nowrap m-0" id="allocation-table">
-                                                <thead class="table-dark">
+                                                <thead style="background-color: #1B2850; color: #fff;">
                                                     <tr>
                                                         <th>Facture</th>
                                                         <th>Client</th>

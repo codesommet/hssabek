@@ -178,3 +178,33 @@
            End Page Content
           ========================= -->
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const plans = @json($plans->keyBy('id')->map(fn($p) => ['price' => $p->price, 'currency' => $p->currency]));
+        const addModal = document.getElementById('add_subscription');
+        if (addModal) {
+            const planSelect = addModal.querySelector('select[name="plan_id"]');
+            const discountInput = addModal.querySelector('input[name="discount"]');
+            const priceHint = document.getElementById('add-sub-final-price');
+
+            function updatePrice() {
+                const planId = planSelect.value;
+                const discount = parseFloat(discountInput.value) || 0;
+                if (planId && plans[planId]) {
+                    const plan = plans[planId];
+                    const final_price = Math.max(0, plan.price - discount);
+                    priceHint.textContent = 'Prix plan : ' + plan.price.toFixed(2) + ' ' + plan.currency + ' → Prix final : ' + final_price.toFixed(2) + ' ' + plan.currency;
+                } else {
+                    priceHint.textContent = '';
+                }
+            }
+
+            planSelect.addEventListener('change', updatePrice);
+            discountInput.addEventListener('input', updatePrice);
+            updatePrice();
+        }
+    });
+</script>
+@endpush

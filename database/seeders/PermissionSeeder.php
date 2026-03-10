@@ -126,6 +126,15 @@ class PermissionSeeder extends Seeder
             ]);
         }
 
+        // Custom Reports (full CRUD + export)
+        foreach (['view', 'create', 'edit', 'delete', 'export'] as $action) {
+            Permission::firstOrCreate([
+                'name' => "reports.custom.{$action}",
+                'guard_name' => 'web',
+                'tenant_id' => null,
+            ]);
+        }
+
         // Dashboard (view-only)
         Permission::firstOrCreate([
             'name' => 'dashboard.view',

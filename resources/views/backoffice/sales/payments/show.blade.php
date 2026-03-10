@@ -83,7 +83,7 @@
                                     <h6 class="mb-3 mt-4">Allocations aux factures</h6>
                                     <div class="table-responsive rounded border mb-3">
                                         <table class="table table-nowrap m-0">
-                                            <thead class="table-dark">
+                                            <thead style="background-color: #1B2850; color: #fff;">
                                                 <tr>
                                                     <th>Facture</th>
                                                     <th>Montant alloué</th>

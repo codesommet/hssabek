@@ -111,7 +111,7 @@
                                     <h6 class="mb-3">Articles</h6>
                                     <div class="table-responsive rounded border-bottom-0 border table-nowrap">
                                         <table class="table m-0">
-                                            <thead class="table-dark">
+                                            <thead style="background-color: #1B2850; color: #fff;">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Libellé</th>
@@ -206,7 +206,7 @@
                                         <h6 class="mb-3">Factures liées</h6>
                                         <div class="table-responsive rounded border-bottom-0 border table-nowrap">
                                             <table class="table m-0">
-                                                <thead class="table-dark">
+                                                <thead style="background-color: #1B2850; color: #fff;">
                                                     <tr>
                                                         <th>N° Facture</th>
                                                         <th>Date</th>

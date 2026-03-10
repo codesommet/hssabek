@@ -9,7 +9,9 @@ use App\Models\Purchases\PurchaseOrder;
 use App\Models\Purchases\Supplier;
 use App\Models\Purchases\VendorBill;
 use App\Services\Sales\PdfService;
+use App\Models\Finance\BankAccount;
 use App\Services\System\DocumentNumberService;
+use App\Services\Tenancy\TenantContext;
 use Illuminate\Http\Request;
 
 class VendorBillController extends Controller
@@ -59,7 +61,12 @@ class VendorBillController extends Controller
 
         $nextReference = $this->docNumberService->preview('vendor_bill_ref');
 
-        return view('backoffice.purchases.vendor-bills.create', compact('suppliers', 'purchaseOrders', 'selectedPO', 'nextReference'));
+        $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name')->get();
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.purchases.vendor-bills.create', compact('suppliers', 'purchaseOrders', 'selectedPO', 'nextReference', 'bankAccounts', 'defaultTerms', 'defaultFooter'));
     }
 
     public function store(StoreVendorBillRequest $request)
@@ -98,7 +105,12 @@ class VendorBillController extends Controller
 
         $nextReference = $this->docNumberService->preview('vendor_bill_ref');
 
-        return view('backoffice.purchases.vendor-bills.edit', compact('vendorBill', 'suppliers', 'nextReference'));
+        $bankAccounts = BankAccount::where('is_active', true)->orderBy('bank_name')->get();
+        $invoiceSettings = TenantContext::get()->settings->invoice_settings ?? [];
+        $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
+        $defaultFooter = $invoiceSettings['invoice_footer'] ?? '';
+
+        return view('backoffice.purchases.vendor-bills.edit', compact('vendorBill', 'suppliers', 'nextReference', 'bankAccounts', 'defaultTerms', 'defaultFooter'));
     }
 
     public function update(UpdateVendorBillRequest $request, VendorBill $vendorBill)
