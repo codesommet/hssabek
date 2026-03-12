@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice\Purchases;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Purchases\Store\StorePurchaseOrderRequest;
 use App\Http\Requests\Purchases\Update\UpdatePurchaseOrderRequest;
+use App\Jobs\SendPurchaseOrderEmailJob;
 use App\Models\Catalog\Product;
 use App\Models\Catalog\TaxCategory;
 use App\Models\Catalog\TaxGroup;
@@ -169,5 +170,21 @@ class PurchaseOrderController extends Controller
 
         return redirect()->route('bo.purchases.purchase-orders.show', $purchaseOrder)
             ->with('success', 'Bon de commande annulé.');
+    }
+
+    public function send(PurchaseOrder $purchaseOrder)
+    {
+        $this->authorize('update', $purchaseOrder);
+
+        $this->purchaseOrderService->transition($purchaseOrder, 'sent');
+        $purchaseOrder->update(['sent_at' => now()]);
+
+        dispatch(new SendPurchaseOrderEmailJob(
+            purchaseOrderId: $purchaseOrder->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.purchases.purchase-orders.show', $purchaseOrder)
+            ->with('success', 'Bon de commande envoyé au fournisseur par email.');
     }
 }

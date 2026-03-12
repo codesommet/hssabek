@@ -1,4 +1,12 @@
-# Tasks — Facturation SaaS
+FinancialTransaction
+├── type: 'income' | 'expense'
+├── transactionable_type: 'Payment', 'SupplierPayment', 'Expense', 'Income', etc.
+├── transactionable_id: UUID
+├── bank_account_id: UUID
+├── amount: decimal
+├── transaction_date: date
+├── description: auto-generated
+└── auto_generated: boolean# Tasks — Facturation SaaS
 
 > Production-grade task plan for a multi-tenant Laravel 12 SaaS.
 > Every task in this folder is ordered, opinionated, and ready to execute.

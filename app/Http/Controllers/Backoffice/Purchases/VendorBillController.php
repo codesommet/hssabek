@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice\Purchases;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Purchases\Store\StoreVendorBillRequest;
 use App\Http\Requests\Purchases\Update\UpdateVendorBillRequest;
+use App\Jobs\SendVendorBillEmailJob;
 use App\Models\Purchases\PurchaseOrder;
 use App\Models\Purchases\Supplier;
 use App\Models\Purchases\VendorBill;
@@ -31,7 +32,7 @@ class VendorBillController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('number', 'like', "%{$search}%")
                     ->orWhere('reference_number', 'like', "%{$search}%")
-                    ->orWhereHas('supplier', fn ($sq) => $sq->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('supplier', fn($sq) => $sq->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -143,5 +144,26 @@ class VendorBillController extends Controller
         abort_unless(auth()->user()->can('purchases.vendor-bills.view'), 403);
 
         return $pdfService->vendorBillResponse($vendorBill, 'download');
+    }
+
+    public function send(VendorBill $vendorBill)
+    {
+        $this->authorize('update', $vendorBill);
+
+        abort_unless(
+            !in_array($vendorBill->status, ['draft']),
+            403,
+            'Les factures en brouillon ne peuvent pas être envoyées.'
+        );
+
+        $vendorBill->update(['sent_at' => now()]);
+
+        dispatch(new SendVendorBillEmailJob(
+            vendorBillId: $vendorBill->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.purchases.vendor-bills.show', $vendorBill)
+            ->with('success', 'Facture fournisseur envoyée par email.');
     }
 }

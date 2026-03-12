@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -34,8 +34,10 @@
                                 <div class="mb-3">
                                     <label class="form-label">Titre <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                           name="title" value="{{ old('title', $announcement->title) }}" required>
-                                    @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        name="title" value="{{ old('title', $announcement->title) }}" required>
+                                    @error('title')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -43,44 +45,61 @@
                                     <label class="form-label">Type <span class="text-danger">*</span></label>
                                     <select class="form-select @error('type') is-invalid @enderror" name="type" required>
                                         <option value="">-- Choisir --</option>
-                                        <option value="info" {{ old('type', $announcement->type) === 'info' ? 'selected' : '' }}>Information</option>
-                                        <option value="warning" {{ old('type', $announcement->type) === 'warning' ? 'selected' : '' }}>Avertissement</option>
-                                        <option value="success" {{ old('type', $announcement->type) === 'success' ? 'selected' : '' }}>Succès</option>
-                                        <option value="danger" {{ old('type', $announcement->type) === 'danger' ? 'selected' : '' }}>Urgent</option>
+                                        <option value="info"
+                                            {{ old('type', $announcement->type) === 'info' ? 'selected' : '' }}>Information
+                                        </option>
+                                        <option value="warning"
+                                            {{ old('type', $announcement->type) === 'warning' ? 'selected' : '' }}>
+                                            Avertissement</option>
+                                        <option value="success"
+                                            {{ old('type', $announcement->type) === 'success' ? 'selected' : '' }}>Succès
+                                        </option>
+                                        <option value="danger"
+                                            {{ old('type', $announcement->type) === 'danger' ? 'selected' : '' }}>Urgent
+                                        </option>
                                     </select>
-                                    @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    @error('type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Contenu <span class="text-danger">*</span></label>
-                                    <textarea class="form-control @error('content') is-invalid @enderror"
-                                              name="content" rows="5" required>{{ old('content', $announcement->content) }}</textarea>
-                                    @error('content')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    <textarea id="announcement-content" class="form-control @error('content') is-invalid @enderror" name="content">{!! old('content', $announcement->content) !!}</textarea>
+                                    @error('content')
+                                        <div class="text-danger mt-1 fs-12">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Date de publication</label>
-                                    <input type="datetime-local" class="form-control @error('published_at') is-invalid @enderror"
-                                           name="published_at" value="{{ old('published_at', $announcement->published_at?->format('Y-m-d\TH:i')) }}">
-                                    @error('published_at')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    <input type="datetime-local"
+                                        class="form-control @error('published_at') is-invalid @enderror" name="published_at"
+                                        value="{{ old('published_at', $announcement->published_at?->format('Y-m-d\TH:i')) }}">
+                                    @error('published_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Date d'expiration</label>
-                                    <input type="datetime-local" class="form-control @error('expires_at') is-invalid @enderror"
-                                           name="expires_at" value="{{ old('expires_at', $announcement->expires_at?->format('Y-m-d\TH:i')) }}">
+                                    <input type="datetime-local"
+                                        class="form-control @error('expires_at') is-invalid @enderror" name="expires_at"
+                                        value="{{ old('expires_at', $announcement->expires_at?->format('Y-m-d\TH:i')) }}">
                                     <small class="text-muted">Laissez vide pour ne jamais expirer.</small>
-                                    @error('expires_at')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    @error('expires_at')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" name="is_active" value="1"
-                                               {{ old('is_active', $announcement->is_active) ? 'checked' : '' }}>
+                                            {{ old('is_active', $announcement->is_active) ? 'checked' : '' }}>
                                         <label class="form-check-label">Active</label>
                                     </div>
                                 </div>
@@ -96,3 +115,8 @@
         </div>
     </div>
 @endsection
+
+@include('backoffice.components._summernote-editor', [
+    'editorId' => 'announcement-content',
+    'height' => 250,
+])

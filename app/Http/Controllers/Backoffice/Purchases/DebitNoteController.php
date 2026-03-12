@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice\Purchases;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Purchases\Store\StoreDebitNoteRequest;
 use App\Http\Requests\Purchases\Update\UpdateDebitNoteRequest;
+use App\Jobs\SendDebitNoteEmailJob;
 use App\Models\Catalog\TaxCategory;
 use App\Models\Catalog\TaxGroup;
 use App\Models\Purchases\DebitNote;
@@ -146,5 +147,26 @@ class DebitNoteController extends Controller
         abort_unless(auth()->user()->can('purchases.debit_notes.view'), 403);
 
         return $pdfService->debitNoteResponse($debitNote, 'download');
+    }
+
+    public function send(DebitNote $debitNote)
+    {
+        $this->authorize('update', $debitNote);
+
+        abort_unless(
+            in_array($debitNote->status, ['draft', 'sent', 'issued']),
+            403,
+            'Cette note de débit ne peut pas être envoyée.'
+        );
+
+        $debitNote->update(['sent_at' => now()]);
+
+        dispatch(new SendDebitNoteEmailJob(
+            debitNoteId: $debitNote->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.purchases.debit-notes.show', $debitNote)
+            ->with('success', 'Note de débit envoyée au fournisseur par email.');
     }
 }

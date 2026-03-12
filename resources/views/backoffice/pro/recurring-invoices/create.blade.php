@@ -108,6 +108,18 @@
                                         </div>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="mb-3">
+                                                <label class="form-label">Date de fin</label>
+                                                <input type="text"
+                                                    class="form-control datetimepicker @error('end_at') is-invalid @enderror"
+                                                    name="end_at" value="{{ old('end_at') }}"
+                                                    placeholder="Laisser vide = sans fin">
+                                                @error('end_at')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="mb-3">
                                                 <label class="form-label">Statut</label>
                                                 <select class="form-select @error('status') is-invalid @enderror"
                                                     name="status">

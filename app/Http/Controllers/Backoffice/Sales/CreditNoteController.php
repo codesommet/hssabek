@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice\Sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\Store\StoreCreditNoteRequest;
 use App\Http\Requests\Sales\Update\UpdateCreditNoteRequest;
+use App\Jobs\SendCreditNoteEmailJob;
 use App\Models\Catalog\TaxCategory;
 use App\Models\Catalog\TaxGroup;
 use App\Models\CRM\Customer;
@@ -32,7 +33,7 @@ class CreditNoteController extends Controller
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('number', 'like', "%{$search}%")
-                    ->orWhereHas('customer', fn ($c) => $c->where('name', 'like', "%{$search}%"));
+                    ->orWhereHas('customer', fn($c) => $c->where('name', 'like', "%{$search}%"));
             });
         }
 
@@ -189,5 +190,26 @@ class CreditNoteController extends Controller
         abort_unless(auth()->user()->can('sales.credit_notes.view'), 403);
 
         return $pdfService->creditNoteResponse($creditNote, 'download');
+    }
+
+    public function send(CreditNote $creditNote)
+    {
+        $this->authorize('update', $creditNote);
+
+        abort_unless(
+            in_array($creditNote->status, ['issued']),
+            403,
+            'Seuls les avoirs émis peuvent être envoyés par email.'
+        );
+
+        $creditNote->update(['sent_at' => now()]);
+
+        dispatch(new SendCreditNoteEmailJob(
+            creditNoteId: $creditNote->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.sales.credit-notes.show', $creditNote)
+            ->with('success', 'Avoir envoyé au client par email.');
     }
 }

@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                                Start Page Content
-                            ========================= -->
+                                        Start Page Content
+                                    ========================= -->
 
     @php
         $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
@@ -70,14 +70,21 @@
                                                                 <label class="form-label">Référence</label>
                                                                 <div class="mb-2">
                                                                     <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name="ref_mode" id="ref_mode_manual" value="manual" checked
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="ref_mode" id="ref_mode_manual"
+                                                                            value="manual" checked
                                                                             onchange="document.getElementById('reference_number').readOnly=false; document.getElementById('reference_number').value=''; document.getElementById('reference_number').focus();">
-                                                                        <label class="form-check-label" for="ref_mode_manual">Saisie manuelle</label>
+                                                                        <label class="form-check-label"
+                                                                            for="ref_mode_manual">Saisie manuelle</label>
                                                                     </div>
                                                                     <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio" name="ref_mode" id="ref_mode_auto" value="auto"
+                                                                        <input class="form-check-input" type="radio"
+                                                                            name="ref_mode" id="ref_mode_auto"
+                                                                            value="auto"
                                                                             onchange="document.getElementById('reference_number').value='{{ $nextReference }}'; document.getElementById('reference_number').readOnly=true;">
-                                                                        <label class="form-check-label" for="ref_mode_auto">Générer automatiquement</label>
+                                                                        <label class="form-check-label"
+                                                                            for="ref_mode_auto">Générer
+                                                                            automatiquement</label>
                                                                     </div>
                                                                 </div>
                                                                 <input type="text" name="reference_number"
@@ -181,6 +188,56 @@
                                                                                 {{ old('recurring_every') == '12' ? 'selected' : '' }}>
                                                                                 12</option>
                                                                         </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {{-- Recurring date fields --}}
+                                                        <div class="col-md-12 {{ old('is_recurring') ? '' : 'd-none' }}"
+                                                            id="recurring-date-fields">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Date de première
+                                                                            exécution <span
+                                                                                class="text-danger">*</span></label>
+                                                                        <div class="input-group position-relative">
+                                                                            <input type="text"
+                                                                                name="recurring_next_run_at"
+                                                                                id="recurring_next_run_at"
+                                                                                class="form-control datetimepicker rounded-end @error('recurring_next_run_at') is-invalid @enderror"
+                                                                                value="{{ old('recurring_next_run_at') }}"
+                                                                                placeholder="{{ now()->addMonth()->format('d M Y') }}">
+                                                                            <span
+                                                                                class="input-icon-addon fs-16 text-gray-9">
+                                                                                <i class="isax isax-calendar-2"></i>
+                                                                            </span>
+                                                                            @error('recurring_next_run_at')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $message }}</div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Date de fin
+                                                                            (optionnel)</label>
+                                                                        <div class="input-group position-relative">
+                                                                            <input type="text" name="recurring_end_at"
+                                                                                id="recurring_end_at"
+                                                                                class="form-control datetimepicker rounded-end @error('recurring_end_at') is-invalid @enderror"
+                                                                                value="{{ old('recurring_end_at') }}"
+                                                                                placeholder="Sans fin">
+                                                                            <span
+                                                                                class="input-icon-addon fs-16 text-gray-9">
+                                                                                <i class="isax isax-calendar-2"></i>
+                                                                            </span>
+                                                                            @error('recurring_end_at')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $message }}</div>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -417,32 +474,33 @@
                                                     <td class="tax-col">
                                                         <select name="items[0][tax_group_id]"
                                                             class="form-select item-tax">
-                                                            <option value="" data-rate="0" data-type="">0%</option>
-                                                            @if($taxCategories->count())
-                                                            <optgroup label="Taux de taxes">
-                                                                @foreach ($taxCategories as $tc)
-                                                                    <option value="cat_{{ $tc->id }}"
-                                                                        data-rate="{{ $tc->rate }}"
-                                                                        data-type="category"
-                                                                        {{ old('items.0.tax_group_id') == 'cat_'.$tc->id ? 'selected' : '' }}>
-                                                                        {{ $tc->name }}
-                                                                        ({{ $tc->rate }}%)
-                                                                    </option>
-                                                                @endforeach
-                                                            </optgroup>
+                                                            <option value="" data-rate="0" data-type="">0%
+                                                            </option>
+                                                            @if ($taxCategories->count())
+                                                                <optgroup label="Taux de taxes">
+                                                                    @foreach ($taxCategories as $tc)
+                                                                        <option value="cat_{{ $tc->id }}"
+                                                                            data-rate="{{ $tc->rate }}"
+                                                                            data-type="category"
+                                                                            {{ old('items.0.tax_group_id') == 'cat_' . $tc->id ? 'selected' : '' }}>
+                                                                            {{ $tc->name }}
+                                                                            ({{ $tc->rate }}%)
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
                                                             @endif
-                                                            @if($taxGroups->count())
-                                                            <optgroup label="Groupes de taxes">
-                                                                @foreach ($taxGroups as $tg)
-                                                                    <option value="{{ $tg->id }}"
-                                                                        data-rate="{{ $tg->rates->sum('rate') }}"
-                                                                        data-type="group"
-                                                                        {{ old('items.0.tax_group_id') == $tg->id ? 'selected' : '' }}>
-                                                                        {{ $tg->name }}
-                                                                        ({{ $tg->rates->sum('rate') }}%)
-                                                                    </option>
-                                                                @endforeach
-                                                            </optgroup>
+                                                            @if ($taxGroups->count())
+                                                                <optgroup label="Groupes de taxes">
+                                                                    @foreach ($taxGroups as $tg)
+                                                                        <option value="{{ $tg->id }}"
+                                                                            data-rate="{{ $tg->rates->sum('rate') }}"
+                                                                            data-type="group"
+                                                                            {{ old('items.0.tax_group_id') == $tg->id ? 'selected' : '' }}>
+                                                                            {{ $tg->name }}
+                                                                            ({{ $tg->rates->sum('rate') }}%)
+                                                                        </option>
+                                                                    @endforeach
+                                                                </optgroup>
                                                             @endif
                                                         </select>
                                                     </td>
@@ -526,7 +584,8 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                            <small class="text-muted bank-balance-info mt-1 d-block" style="display:none;"></small>
+                                                            <small class="text-muted bank-balance-info mt-1 d-block"
+                                                                style="display:none;"></small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -647,8 +706,8 @@
     </div>
 
     <!-- ========================
-                                End Page Content
-                            ========================= -->
+                                        End Page Content
+                                    ========================= -->
 @endsection
 
 @php
@@ -731,14 +790,17 @@
              * ========================================================= */
             const recurringCheck = document.getElementById('recurring_check');
             const recurringFields = document.getElementById('recurring-fields');
+            const recurringDateFields = document.getElementById('recurring-date-fields');
             const isRecurringInput = document.getElementById('is_recurring_input');
 
             recurringCheck.addEventListener('change', function() {
                 if (this.checked) {
                     recurringFields.classList.remove('d-none');
+                    recurringDateFields.classList.remove('d-none');
                     isRecurringInput.value = '1';
                 } else {
                     recurringFields.classList.add('d-none');
+                    recurringDateFields.classList.add('d-none');
                     isRecurringInput.value = '0';
                 }
             });
@@ -811,14 +873,16 @@
                 if (taxCategories.length) {
                     taxOptions += '<optgroup label="Taux de taxes">';
                     taxCategories.forEach(tc => {
-                        taxOptions += `<option value="cat_${tc.id}" data-rate="${tc.rate}" data-type="category">${tc.name} (${tc.rate}%)</option>`;
+                        taxOptions +=
+                            `<option value="cat_${tc.id}" data-rate="${tc.rate}" data-type="category">${tc.name} (${tc.rate}%)</option>`;
                     });
                     taxOptions += '</optgroup>';
                 }
                 if (taxGroups.length) {
                     taxOptions += '<optgroup label="Groupes de taxes">';
                     taxGroups.forEach(tg => {
-                        taxOptions += `<option value="${tg.id}" data-rate="${tg.rate}" data-type="group">${tg.name} (${tg.rate}%)</option>`;
+                        taxOptions +=
+                            `<option value="${tg.id}" data-rate="${tg.rate}" data-type="group">${tg.name} (${tg.rate}%)</option>`;
                     });
                     taxOptions += '</optgroup>';
                 }
@@ -907,7 +971,8 @@
                     const discountVal = parseFloat(row.querySelector('.item-discount')?.value) || 0;
                     const taxSelect = row.querySelector('.item-tax');
                     const taxEnabled = enableTaxCheck.checked;
-                    const taxRate = taxEnabled ? (parseFloat(taxSelect?.selectedOptions[0]?.dataset.rate) || 0) : 0;
+                    const taxRate = taxEnabled ? (parseFloat(taxSelect?.selectedOptions[0]?.dataset.rate) ||
+                        0) : 0;
 
                     let lineSubtotal = qty * price;
                     let lineDiscount = 0;

@@ -128,7 +128,7 @@ class InvoiceController extends Controller
 
         abort_unless($invoice->status === 'draft', 403, 'Seules les factures en brouillon peuvent être modifiées.');
 
-        $invoice->load(['items', 'charges']);
+        $invoice->load(['items', 'charges', 'recurringInvoice']);
 
         $tenant = TenantContext::get();
         $settings = $tenant->settings;

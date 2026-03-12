@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                                    Start Page Content
-                                ========================= -->
+                                            Start Page Content
+                                        ========================= -->
 
     @php
         $defaultTerms = $invoiceSettings['invoice_terms'] ?? '';
@@ -155,56 +155,140 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
-                                                                <div class="form-check form-switch me-4">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        role="switch" id="recurring_check"
-                                                                        {{ old('is_recurring') ? 'checked' : '' }}>
-                                                                    <label class="form-check-label"
-                                                                        for="recurring_check">Récurrence</label>
-                                                                </div>
-                                                                <div class="d-flex align-items-center flex-fill {{ old('is_recurring') ? '' : 'd-none' }}"
-                                                                    id="recurring-fields">
-                                                                    <input type="hidden" name="is_recurring"
-                                                                        id="is_recurring_input"
-                                                                        value="{{ old('is_recurring', '0') }}">
-                                                                    <div class="flex-fill me-3">
-                                                                        <select class="form-select"
-                                                                            name="recurring_interval"
-                                                                            id="recurring_interval">
-                                                                            <option value="month"
-                                                                                {{ old('recurring_interval') == 'month' ? 'selected' : '' }}>
-                                                                                Mensuel</option>
-                                                                            <option value="week"
-                                                                                {{ old('recurring_interval') == 'week' ? 'selected' : '' }}>
-                                                                                Hebdomadaire</option>
-                                                                            <option value="year"
-                                                                                {{ old('recurring_interval') == 'year' ? 'selected' : '' }}>
-                                                                                Annuel</option>
-                                                                        </select>
-                                                                    </div>
+                                                            @php
+                                                                $existingRecurring = $invoice->recurringInvoice;
+                                                                $hasRecurrence = $existingRecurring !== null;
+                                                            @endphp
+                                                            @if ($hasRecurrence)
+                                                                {{-- Show existing recurring info --}}
+                                                                <div
+                                                                    class="alert alert-info d-flex align-items-center mb-3">
+                                                                    <i class="isax isax-repeat me-2"></i>
                                                                     <div class="flex-fill">
-                                                                        <select class="form-select" name="recurring_every"
-                                                                            id="recurring_every">
-                                                                            <option value="1"
-                                                                                {{ old('recurring_every') == '1' ? 'selected' : '' }}>
-                                                                                1</option>
-                                                                            <option value="2"
-                                                                                {{ old('recurring_every') == '2' ? 'selected' : '' }}>
-                                                                                2</option>
-                                                                            <option value="3"
-                                                                                {{ old('recurring_every') == '3' ? 'selected' : '' }}>
-                                                                                3</option>
-                                                                            <option value="6"
-                                                                                {{ old('recurring_every') == '6' ? 'selected' : '' }}>
-                                                                                6</option>
-                                                                            <option value="12"
-                                                                                {{ old('recurring_every') == '12' ? 'selected' : '' }}>
-                                                                                12</option>
-                                                                        </select>
+                                                                        <strong>Récurrence active</strong><br>
+                                                                        <span class="small">
+                                                                            Tous les {{ $existingRecurring->every }}
+                                                                            {{ $existingRecurring->interval === 'month' ? 'mois' : ($existingRecurring->interval === 'week' ? 'semaines' : 'ans') }}
+                                                                            — Prochaine exécution :
+                                                                            {{ $existingRecurring->next_run_at?->format('d/m/Y') }}
+                                                                            @if ($existingRecurring->end_at)
+                                                                                — Fin :
+                                                                                {{ $existingRecurring->end_at->format('d/m/Y') }}
+                                                                            @endif
+                                                                        </span>
+                                                                    </div>
+                                                                    <a href="{{ route('bo.pro.recurring-invoices.edit', $existingRecurring) }}"
+                                                                        class="btn btn-sm btn-outline-primary">
+                                                                        <i class="isax isax-edit-2 me-1"></i>Modifier
+                                                                    </a>
+                                                                </div>
+                                                            @else
+                                                                <div
+                                                                    class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                                                                    <div class="form-check form-switch me-4">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            role="switch" id="recurring_check"
+                                                                            {{ old('is_recurring') ? 'checked' : '' }}>
+                                                                        <label class="form-check-label"
+                                                                            for="recurring_check">Récurrence</label>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center flex-fill {{ old('is_recurring') ? '' : 'd-none' }}"
+                                                                        id="recurring-fields">
+                                                                        <input type="hidden" name="is_recurring"
+                                                                            id="is_recurring_input"
+                                                                            value="{{ old('is_recurring', '0') }}">
+                                                                        <div class="flex-fill me-3">
+                                                                            <select class="form-select"
+                                                                                name="recurring_interval"
+                                                                                id="recurring_interval">
+                                                                                <option value="month"
+                                                                                    {{ old('recurring_interval') == 'month' ? 'selected' : '' }}>
+                                                                                    Mensuel</option>
+                                                                                <option value="week"
+                                                                                    {{ old('recurring_interval') == 'week' ? 'selected' : '' }}>
+                                                                                    Hebdomadaire</option>
+                                                                                <option value="year"
+                                                                                    {{ old('recurring_interval') == 'year' ? 'selected' : '' }}>
+                                                                                    Annuel</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="flex-fill">
+                                                                            <select class="form-select"
+                                                                                name="recurring_every"
+                                                                                id="recurring_every">
+                                                                                <option value="1"
+                                                                                    {{ old('recurring_every') == '1' ? 'selected' : '' }}>
+                                                                                    1</option>
+                                                                                <option value="2"
+                                                                                    {{ old('recurring_every') == '2' ? 'selected' : '' }}>
+                                                                                    2</option>
+                                                                                <option value="3"
+                                                                                    {{ old('recurring_every') == '3' ? 'selected' : '' }}>
+                                                                                    3</option>
+                                                                                <option value="6"
+                                                                                    {{ old('recurring_every') == '6' ? 'selected' : '' }}>
+                                                                                    6</option>
+                                                                                <option value="12"
+                                                                                    {{ old('recurring_every') == '12' ? 'selected' : '' }}>
+                                                                                    12</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                                {{-- Recurring date fields --}}
+                                                                <div class="col-md-12 {{ old('is_recurring') ? '' : 'd-none' }}"
+                                                                    id="recurring-date-fields">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Date de première
+                                                                                    exécution <span
+                                                                                        class="text-danger">*</span></label>
+                                                                                <div class="input-group position-relative">
+                                                                                    <input type="text"
+                                                                                        name="recurring_next_run_at"
+                                                                                        id="recurring_next_run_at"
+                                                                                        class="form-control datetimepicker rounded-end @error('recurring_next_run_at') is-invalid @enderror"
+                                                                                        value="{{ old('recurring_next_run_at') }}"
+                                                                                        placeholder="{{ now()->addMonth()->format('d M Y') }}">
+                                                                                    <span
+                                                                                        class="input-icon-addon fs-16 text-gray-9">
+                                                                                        <i
+                                                                                            class="isax isax-calendar-2"></i>
+                                                                                    </span>
+                                                                                    @error('recurring_next_run_at')
+                                                                                        <div class="invalid-feedback">
+                                                                                            {{ $message }}</div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Date de fin
+                                                                                    (optionnel)</label>
+                                                                                <div class="input-group position-relative">
+                                                                                    <input type="text"
+                                                                                        name="recurring_end_at"
+                                                                                        id="recurring_end_at"
+                                                                                        class="form-control datetimepicker rounded-end @error('recurring_end_at') is-invalid @enderror"
+                                                                                        value="{{ old('recurring_end_at') }}"
+                                                                                        placeholder="Sans fin">
+                                                                                    <span
+                                                                                        class="input-icon-addon fs-16 text-gray-9">
+                                                                                        <i
+                                                                                            class="isax isax-calendar-2"></i>
+                                                                                    </span>
+                                                                                    @error('recurring_end_at')
+                                                                                        <div class="invalid-feedback">
+                                                                                            {{ $message }}</div>
+                                                                                    @enderror
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
@@ -451,32 +535,33 @@
                                                         <td class="tax-col">
                                                             <select name="items[{{ $i }}][tax_group_id]"
                                                                 class="form-select item-tax">
-                                                                <option value="" data-rate="0" data-type="">0%</option>
-                                                                @if($taxCategories->count())
-                                                                <optgroup label="Taux de taxes">
-                                                                    @foreach ($taxCategories as $tc)
-                                                                        <option value="cat_{{ $tc->id }}"
-                                                                            data-rate="{{ $tc->rate }}"
-                                                                            data-type="category"
-                                                                            {{ old("items.{$i}.tax_group_id", $item->tax_group_id) == 'cat_'.$tc->id ? 'selected' : '' }}>
-                                                                            {{ $tc->name }}
-                                                                            ({{ $tc->rate }}%)
-                                                                        </option>
-                                                                    @endforeach
-                                                                </optgroup>
+                                                                <option value="" data-rate="0" data-type="">0%
+                                                                </option>
+                                                                @if ($taxCategories->count())
+                                                                    <optgroup label="Taux de taxes">
+                                                                        @foreach ($taxCategories as $tc)
+                                                                            <option value="cat_{{ $tc->id }}"
+                                                                                data-rate="{{ $tc->rate }}"
+                                                                                data-type="category"
+                                                                                {{ old("items.{$i}.tax_group_id", $item->tax_group_id) == 'cat_' . $tc->id ? 'selected' : '' }}>
+                                                                                {{ $tc->name }}
+                                                                                ({{ $tc->rate }}%)
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </optgroup>
                                                                 @endif
-                                                                @if($taxGroups->count())
-                                                                <optgroup label="Groupes de taxes">
-                                                                    @foreach ($taxGroups as $tg)
-                                                                        <option value="{{ $tg->id }}"
-                                                                            data-rate="{{ $tg->rates->sum('rate') }}"
-                                                                            data-type="group"
-                                                                            {{ old("items.{$i}.tax_group_id", $item->tax_group_id) == $tg->id ? 'selected' : '' }}>
-                                                                            {{ $tg->name }}
-                                                                            ({{ $tg->rates->sum('rate') }}%)
-                                                                        </option>
-                                                                    @endforeach
-                                                                </optgroup>
+                                                                @if ($taxGroups->count())
+                                                                    <optgroup label="Groupes de taxes">
+                                                                        @foreach ($taxGroups as $tg)
+                                                                            <option value="{{ $tg->id }}"
+                                                                                data-rate="{{ $tg->rates->sum('rate') }}"
+                                                                                data-type="group"
+                                                                                {{ old("items.{$i}.tax_group_id", $item->tax_group_id) == $tg->id ? 'selected' : '' }}>
+                                                                                {{ $tg->name }}
+                                                                                ({{ $tg->rates->sum('rate') }}%)
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </optgroup>
                                                                 @endif
                                                             </select>
                                                         </td>
@@ -567,7 +652,8 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                            <small class="text-muted bank-balance-info mt-1 d-block" style="display:none;"></small>
+                                                            <small class="text-muted bank-balance-info mt-1 d-block"
+                                                                style="display:none;"></small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -698,8 +784,8 @@
     </div>
 
     <!-- ========================
-                                    End Page Content
-                                ========================= -->
+                                            End Page Content
+                                        ========================= -->
 @endsection
 
 @php
@@ -788,17 +874,22 @@
              * ========================================================= */
             const recurringCheck = document.getElementById('recurring_check');
             const recurringFields = document.getElementById('recurring-fields');
+            const recurringDateFields = document.getElementById('recurring-date-fields');
             const isRecurringInput = document.getElementById('is_recurring_input');
 
-            recurringCheck.addEventListener('change', function() {
-                if (this.checked) {
-                    recurringFields.classList.remove('d-none');
-                    isRecurringInput.value = '1';
-                } else {
-                    recurringFields.classList.add('d-none');
-                    isRecurringInput.value = '0';
-                }
-            });
+            if (recurringCheck && recurringFields && isRecurringInput) {
+                recurringCheck.addEventListener('change', function() {
+                    if (this.checked) {
+                        recurringFields.classList.remove('d-none');
+                        if (recurringDateFields) recurringDateFields.classList.remove('d-none');
+                        isRecurringInput.value = '1';
+                    } else {
+                        recurringFields.classList.add('d-none');
+                        if (recurringDateFields) recurringDateFields.classList.add('d-none');
+                        isRecurringInput.value = '0';
+                    }
+                });
+            }
 
             /* =========================================================
              * Product select → populate first empty row
@@ -868,14 +959,16 @@
                 if (taxCategories.length) {
                     taxOptions += '<optgroup label="Taux de taxes">';
                     taxCategories.forEach(tc => {
-                        taxOptions += `<option value="cat_${tc.id}" data-rate="${tc.rate}" data-type="category">${tc.name} (${tc.rate}%)</option>`;
+                        taxOptions +=
+                            `<option value="cat_${tc.id}" data-rate="${tc.rate}" data-type="category">${tc.name} (${tc.rate}%)</option>`;
                     });
                     taxOptions += '</optgroup>';
                 }
                 if (taxGroups.length) {
                     taxOptions += '<optgroup label="Groupes de taxes">';
                     taxGroups.forEach(tg => {
-                        taxOptions += `<option value="${tg.id}" data-rate="${tg.rate}" data-type="group">${tg.name} (${tg.rate}%)</option>`;
+                        taxOptions +=
+                            `<option value="${tg.id}" data-rate="${tg.rate}" data-type="group">${tg.name} (${tg.rate}%)</option>`;
                     });
                     taxOptions += '</optgroup>';
                 }
@@ -972,7 +1065,8 @@
                     const discountVal = parseFloat(row.querySelector('.item-discount')?.value) || 0;
                     const taxSelect = row.querySelector('.item-tax');
                     const taxEnabled = enableTaxCheck.checked;
-                    const taxRate = taxEnabled ? (parseFloat(taxSelect?.selectedOptions[0]?.dataset.rate) || 0) : 0;
+                    const taxRate = taxEnabled ? (parseFloat(taxSelect?.selectedOptions[0]?.dataset.rate) ||
+                        0) : 0;
 
                     let lineSubtotal = qty * price;
                     let lineDiscount = 0;

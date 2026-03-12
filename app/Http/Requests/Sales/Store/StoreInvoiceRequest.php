@@ -28,6 +28,13 @@ class StoreInvoiceRequest extends FormRequest
             'notes' => ['nullable', 'string', 'max:2000'],
             'terms' => ['nullable', 'string', 'max:2000'],
 
+            // Recurring fields
+            'is_recurring' => ['nullable', 'boolean'],
+            'recurring_interval' => ['required_if:is_recurring,1', 'nullable', 'in:week,month,year'],
+            'recurring_every' => ['required_if:is_recurring,1', 'nullable', 'integer', 'min:1'],
+            'recurring_next_run_at' => ['required_if:is_recurring,1', 'nullable', 'date', 'after_or_equal:today'],
+            'recurring_end_at' => ['nullable', 'date', 'after_or_equal:recurring_next_run_at'],
+
             // Line items — required, min 1
             'items' => ['required', 'array', 'min:1'],
             'items.*.label' => ['required', 'string', 'max:255'],
@@ -65,6 +72,11 @@ class StoreInvoiceRequest extends FormRequest
             'items.*.unit_price.min' => 'Le prix unitaire doit être positif.',
             'charges.*.label.required_with' => 'Le libellé du frais est obligatoire.',
             'charges.*.amount.required_with' => 'Le montant du frais est obligatoire.',
+            'recurring_interval.required_if' => 'L\'intervalle de récurrence est obligatoire.',
+            'recurring_every.required_if' => 'La fréquence de récurrence est obligatoire.',
+            'recurring_next_run_at.required_if' => 'La date de première exécution est obligatoire pour la récurrence.',
+            'recurring_next_run_at.after_or_equal' => 'La date de première exécution doit être aujourd\'hui ou ultérieure.',
+            'recurring_end_at.after_or_equal' => 'La date de fin doit être postérieure ou égale à la date de première exécution.',
         ];
     }
 }

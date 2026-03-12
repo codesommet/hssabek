@@ -27,18 +27,23 @@ class InvoiceSentNotification extends Notification
     {
         $tenantName = $this->tenant->name ?? 'notre entreprise';
         $currency   = $this->tenant->default_currency ?? 'MAD';
+        $dueDate    = $this->invoice->due_date?->format('d/m/Y') ?? 'Non définie';
 
-        return (new MailMessage)
+        $mail = (new MailMessage)
             ->subject('Facture ' . $this->invoice->number . ' — ' . $tenantName)
             ->greeting('Bonjour,')
             ->line('Veuillez trouver ci-joint votre facture n° ' . $this->invoice->number . '.')
             ->line('Montant total : ' . number_format($this->invoice->total, 2, ',', ' ') . ' ' . $currency)
-            ->line('Date d\'échéance : ' . $this->invoice->due_date?->format('d/m/Y'))
-            ->attach($this->pdfPath, [
+            ->line('Date d\'échéance : ' . $dueDate);
+
+        if ($this->pdfPath && file_exists($this->pdfPath)) {
+            $mail->attach($this->pdfPath, [
                 'as'   => 'facture-' . $this->invoice->number . '.pdf',
                 'mime' => 'application/pdf',
-            ])
-            ->line('Merci pour votre confiance.')
+            ]);
+        }
+
+        return $mail->line('Merci pour votre confiance.')
             ->salutation('Cordialement');
     }
 }

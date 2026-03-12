@@ -88,6 +88,8 @@
                                 'Facture modèle',
                                 'Intervalle',
                                 'Prochaine exécution',
+                                'Date de fin',
+                                'Générées',
                                 'Statut',
                             ],
                         ])
@@ -108,12 +110,14 @@
                             <th>Facture modèle</th>
                             <th>Intervalle</th>
                             <th>Prochaine exécution</th>
+                            <th>Date de fin</th>
+                            <th>Générées</th>
                             <th class="no-sort">Statut</th>
                             <th class="no-sort"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($recurringInvoices as $ri)
+                        @forelse ($recurringInvoices as $ri)
                             <tr>
                                 <td>
                                     <div class="form-check form-check-md">
@@ -127,6 +131,9 @@
                                 </td>
                                 <td>{{ $ri->next_run_at ? \Carbon\Carbon::parse($ri->next_run_at)->format('d/m/Y') : '—' }}
                                 </td>
+                                <td>{{ $ri->end_at ? \Carbon\Carbon::parse($ri->end_at)->format('d/m/Y') : 'Sans fin' }}
+                                </td>
+                                <td>{{ $ri->total_generated }}</td>
                                 <td>
                                     @switch($ri->status)
                                         @case('active')
@@ -166,7 +173,11 @@
                                     </ul>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="9" class="text-center py-4">Aucune facture récurrente trouvée.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

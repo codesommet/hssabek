@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Billing\Subscription;
 use App\Models\Tenancy\Tenant;
 use App\Models\Tenancy\TenantDomain;
+use App\Models\Templates\TemplateCatalog;
+use App\Models\Templates\TenantTemplate;
 use App\Models\User;
 use App\Services\Billing\PlanLimitService;
 use Illuminate\Http\Request;
@@ -108,6 +110,9 @@ class TenantManagementController extends Controller
                 );
                 $owner->assignRole($role);
             }
+
+            // Auto-attach free templates to the new tenant
+            $this->attachFreeTemplatesToTenant($tenant);
 
             return $tenant;
         });
@@ -282,5 +287,28 @@ class TenantManagementController extends Controller
         $tenant->addMedia($tmpPath)
             ->usingFileName($fileName)
             ->toMediaCollection('logo');
+    }
+
+    /**
+     * Attach all free templates to a tenant.
+     */
+    private function attachFreeTemplatesToTenant(Tenant $tenant): void
+    {
+        $freeTemplates = TemplateCatalog::where('is_free', true)
+            ->where('is_active', true)
+            ->get();
+
+        foreach ($freeTemplates as $template) {
+            TenantTemplate::updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'template_catalog_id' => $template->id,
+                ],
+                [
+                    'name' => $template->name,
+                    'is_active' => true,
+                ]
+            );
+        }
     }
 }

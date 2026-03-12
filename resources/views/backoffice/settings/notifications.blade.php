@@ -2,8 +2,8 @@
 @extends('backoffice.layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+                    Start Page Content
+                ========================= -->
 
     <div class="page-wrapper">
         <div class="content">
@@ -25,14 +25,16 @@
                             @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Fermer"></button>
                                 </div>
                             @endif
 
                             @if (session('error'))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     {{ session('error') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Fermer"></button>
                                 </div>
                             @endif
 
@@ -50,8 +52,8 @@
                                             Notifications g&eacute;n&eacute;rales
                                         </h6>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                name="general_enabled" value="1"
+                                            <input class="form-check-input" type="checkbox" name="general_enabled"
+                                                value="1"
                                                 {{ old('general_enabled', $settings->notification_settings['general']['enabled'] ?? true) ? 'checked' : '' }}>
                                         </div>
                                     </div>
@@ -70,8 +72,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <h6 class="fs-13 fw-medium mb-1">Mises &agrave; jour syst&egrave;me</h6>
-                                                            <p class="fs-12">Recevez des alertes pour les mises &agrave; jour logicielles et la maintenance.</p>
+                                                            <h6 class="fs-13 fw-medium mb-1">Mises &agrave; jour
+                                                                syst&egrave;me</h6>
+                                                            <p class="fs-12">Recevez des alertes pour les mises &agrave;
+                                                                jour logicielles et la maintenance.</p>
                                                         </td>
                                                         <td class="text-center">
                                                             <input class="form-check-input" type="checkbox"
@@ -96,8 +100,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td>
-                                                            <h6 class="fs-13 fw-medium mb-1">Alertes de s&eacute;curit&eacute;</h6>
-                                                            <p class="fs-12">Notifications concernant les tentatives de connexion et les changements de mot de passe.</p>
+                                                            <h6 class="fs-13 fw-medium mb-1">Alertes de
+                                                                s&eacute;curit&eacute;</h6>
+                                                            <p class="fs-12">Notifications concernant les tentatives de
+                                                                connexion et les changements de mot de passe.</p>
                                                         </td>
                                                         <td class="text-center">
                                                             <input class="form-check-input" type="checkbox"
@@ -136,8 +142,8 @@
                                             Notifications des ventes
                                         </h6>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                name="sales_enabled" value="1"
+                                            <input class="form-check-input" type="checkbox" name="sales_enabled"
+                                                value="1"
                                                 {{ old('sales_enabled', $settings->notification_settings['sales']['enabled'] ?? true) ? 'checked' : '' }}>
                                         </div>
                                     </div>
@@ -155,8 +161,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <h6 class="fs-13 fw-medium mb-1">Nouvelle vente enregistr&eacute;e</h6>
-                                                        <p class="fs-12">Soyez notifi&eacute; lorsqu'une vente est effectu&eacute;e.</p>
+                                                        <h6 class="fs-13 fw-medium mb-1">Nouvelle vente enregistr&eacute;e
+                                                        </h6>
+                                                        <p class="fs-12">Soyez notifi&eacute; lorsqu'une vente est
+                                                            effectu&eacute;e.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -208,7 +216,8 @@
                                                 <tr>
                                                     <td>
                                                         <h6 class="fs-13 fw-medium mb-1">Transactions</h6>
-                                                        <p class="fs-12">Confirmation lorsqu'un paiement est re&ccedil;u.</p>
+                                                        <p class="fs-12">Confirmation lorsqu'un paiement est re&ccedil;u.
+                                                        </p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -246,8 +255,8 @@
                                             Notifications de factures
                                         </h6>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                name="invoices_enabled" value="1"
+                                            <input class="form-check-input" type="checkbox" name="invoices_enabled"
+                                                value="1"
                                                 {{ old('invoices_enabled', $settings->notification_settings['invoices']['enabled'] ?? true) ? 'checked' : '' }}>
                                         </div>
                                     </div>
@@ -265,8 +274,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <h6 class="fs-13 fw-medium mb-1">Nouvelle facture cr&eacute;&eacute;e</h6>
-                                                        <p class="fs-12">Alerte lorsqu'une nouvelle facture est g&eacute;n&eacute;r&eacute;e.</p>
+                                                        <h6 class="fs-13 fw-medium mb-1">Nouvelle facture
+                                                            cr&eacute;&eacute;e</h6>
+                                                        <p class="fs-12">Alerte lorsqu'une nouvelle facture est
+                                                            g&eacute;n&eacute;r&eacute;e.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -291,8 +302,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <h6 class="fs-13 fw-medium mb-1">Rappel d'&eacute;ch&eacute;ance de facture</h6>
-                                                        <p class="fs-12">Notification avant la date d'&eacute;ch&eacute;ance de la facture.</p>
+                                                        <h6 class="fs-13 fw-medium mb-1">Rappel d'&eacute;ch&eacute;ance de
+                                                            facture</h6>
+                                                        <p class="fs-12">Notification avant la date
+                                                            d'&eacute;ch&eacute;ance de la facture.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -330,8 +343,8 @@
                                             Gestion des utilisateurs
                                         </h6>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                name="users_enabled" value="1"
+                                            <input class="form-check-input" type="checkbox" name="users_enabled"
+                                                value="1"
                                                 {{ old('users_enabled', $settings->notification_settings['users']['enabled'] ?? true) ? 'checked' : '' }}>
                                         </div>
                                     </div>
@@ -349,8 +362,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <h6 class="fs-13 fw-medium mb-1">Nouvel utilisateur ajout&eacute;</h6>
-                                                        <p class="fs-12">Notification lorsqu'un nouvel utilisateur est enregistr&eacute;.</p>
+                                                        <h6 class="fs-13 fw-medium mb-1">Nouvel utilisateur ajout&eacute;
+                                                        </h6>
+                                                        <p class="fs-12">Notification lorsqu'un nouvel utilisateur est
+                                                            enregistr&eacute;.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -376,7 +391,8 @@
                                                 <tr>
                                                     <td>
                                                         <h6 class="fs-13 fw-medium mb-1">Retour des utilisateurs</h6>
-                                                        <p class="fs-12">Alertes pour les commentaires ou avis re&ccedil;us.</p>
+                                                        <p class="fs-12">Alertes pour les commentaires ou avis
+                                                            re&ccedil;us.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -401,8 +417,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <h6 class="fs-13 fw-medium mb-1">Changements de r&ocirc;les et permissions</h6>
-                                                        <p class="fs-12">Notification lorsque les r&ocirc;les des utilisateurs sont mis &agrave; jour.</p>
+                                                        <h6 class="fs-13 fw-medium mb-1">Changements de r&ocirc;les et
+                                                            permissions</h6>
+                                                        <p class="fs-12">Notification lorsque les r&ocirc;les des
+                                                            utilisateurs sont mis &agrave; jour.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -428,7 +446,8 @@
                                                 <tr>
                                                     <td>
                                                         <h6 class="fs-13 fw-medium mb-1">Messages directs et mentions</h6>
-                                                        <p class="fs-12">Recevez des alertes lorsque vous &ecirc;tes mentionn&eacute; ou contact&eacute;.</p>
+                                                        <p class="fs-12">Recevez des alertes lorsque vous &ecirc;tes
+                                                            mentionn&eacute; ou contact&eacute;.</p>
                                                     </td>
                                                     <td class="text-center">
                                                         <input class="form-check-input" type="checkbox"
@@ -456,8 +475,95 @@
                                     </div>
                                 </div>
 
+                                {{-- Section 5: Rappels automatiques de factures --}}
+                                <div class="border-bottom mb-3 pb-2">
+                                    <div class="card-title-head d-flex align-items-center justify-content-between">
+                                        <h6 class="fs-16 fw-semibold mb-3 d-flex align-items-center">
+                                            <span
+                                                class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i
+                                                    class="isax isax-timer-1"></i></span>
+                                            Rappels automatiques de factures
+                                        </h6>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                name="reminder_settings[enabled]" value="1" id="reminder_enabled"
+                                                {{ old('reminder_settings.enabled', $settings->reminder_settings['enabled'] ?? false) ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                    <div class="reminder-settings-content" id="reminder_settings_content">
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <p class="text-muted fs-12 mb-3">
+                                                    Configurez les rappels automatiques pour les factures impayées. Les
+                                                    rappels seront envoyés par email au client et une notification sera
+                                                    envoyée à votre entreprise.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Rappel avant échéance</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control"
+                                                        name="reminder_settings[before_due_days]"
+                                                        value="{{ old('reminder_settings.before_due_days', $settings->reminder_settings['before_due_days'] ?? 3) }}"
+                                                        min="0" max="30" placeholder="3">
+                                                    <span class="input-group-text">jours avant</span>
+                                                </div>
+                                                <small class="text-muted">Envoyer un rappel X jours avant la date
+                                                    d'échéance (0 = désactivé)</small>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Rappel le jour d'échéance</label>
+                                                <div class="form-check form-switch mt-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="reminder_settings[on_due]" value="1"
+                                                        {{ old('reminder_settings.on_due', $settings->reminder_settings['on_due'] ?? true) ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Activer</label>
+                                                </div>
+                                                <small class="text-muted">Envoyer un rappel le jour de l'échéance</small>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">Rappel après échéance</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control"
+                                                        name="reminder_settings[after_due_days]"
+                                                        value="{{ old('reminder_settings.after_due_days', $settings->reminder_settings['after_due_days'] ?? 7) }}"
+                                                        min="0" max="90" placeholder="7">
+                                                    <span class="input-group-text">jours après</span>
+                                                </div>
+                                                <small class="text-muted">Envoyer un rappel X jours après la date
+                                                    d'échéance (0 = désactivé)</small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Notifier l'entreprise</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="reminder_settings[notify_company]" value="1"
+                                                        {{ old('reminder_settings.notify_company', $settings->reminder_settings['notify_company'] ?? true) ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Recevoir une notification système quand
+                                                        un rappel est envoyé</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Notifier l'entreprise par email</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="reminder_settings[notify_company_email]" value="1"
+                                                        {{ old('reminder_settings.notify_company_email', $settings->reminder_settings['notify_company_email'] ?? false) ? 'checked' : '' }}>
+                                                    <label class="form-check-label">Recevoir une copie par email des
+                                                        rappels envoyés</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="d-flex align-items-center justify-content-between settings-bottom-btn mt-0">
-                                    <button type="button" class="btn btn-outline-white me-2" onclick="window.location.reload()">Annuler</button>
+                                    <button type="button" class="btn btn-outline-white me-2"
+                                        onclick="window.location.reload()">Annuler</button>
                                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                                 </div>
                             </form>
@@ -475,6 +581,6 @@
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+                    End Page Content
+                ========================= -->
 @endsection

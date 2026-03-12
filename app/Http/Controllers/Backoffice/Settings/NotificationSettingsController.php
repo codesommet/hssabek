@@ -48,6 +48,18 @@ class NotificationSettingsController extends Controller
         }
 
         $setting->notification_settings = $notificationSettings;
+
+        // Save reminder settings
+        $reminderSettings = [
+            'enabled'              => (bool) $request->input('reminder_settings.enabled', false),
+            'before_due_days'      => (int) $request->input('reminder_settings.before_due_days', 3),
+            'on_due'               => (bool) $request->input('reminder_settings.on_due', true),
+            'after_due_days'       => (int) $request->input('reminder_settings.after_due_days', 7),
+            'notify_company'       => (bool) $request->input('reminder_settings.notify_company', true),
+            'notify_company_email' => (bool) $request->input('reminder_settings.notify_company_email', false),
+        ];
+
+        $setting->reminder_settings = $reminderSettings;
         $setting->save();
 
         return redirect()->route('bo.settings.notifications.edit')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
+use App\Models\System\Announcement;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
@@ -16,7 +17,18 @@ class NotificationController extends Controller
             ->notifications()
             ->paginate(20);
 
-        return view('backoffice.notifications.index', compact('notifications'));
+        // System notifications (from Laravel's notification system)
+        $systemNotifications = $request->user()
+            ->notifications()
+            ->paginate(15, ['*'], 'system_page');
+
+        // Admin announcements (from super admin)
+        $announcements = Announcement::active()
+            ->orderByDesc('published_at')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('backoffice.notifications.index', compact('notifications', 'systemNotifications', 'announcements'));
     }
 
     /**

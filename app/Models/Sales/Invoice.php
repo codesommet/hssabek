@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Invoice extends Model
 {
     use HasFactory, HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
@@ -92,5 +93,13 @@ class Invoice extends Model
     public function creditNoteApplications(): HasMany
     {
         return $this->hasMany(CreditNoteApplication::class);
+    }
+
+    /**
+     * Get the recurring invoice that uses this invoice as a template.
+     */
+    public function recurringInvoice(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(\App\Models\Pro\RecurringInvoice::class, 'template_invoice_id');
     }
 }

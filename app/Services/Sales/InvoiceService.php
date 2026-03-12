@@ -4,6 +4,7 @@ namespace App\Services\Sales;
 
 use App\Events\InvoiceCreated;
 use App\Events\InvoicePaid;
+use App\Models\Pro\RecurringInvoice;
 use App\Models\Sales\Invoice;
 use App\Models\Sales\InvoiceCharge;
 use App\Models\Sales\InvoiceItem;
@@ -83,6 +84,19 @@ class InvoiceService
 
             $invoice = $invoice->load('items', 'charges');
 
+            // Create recurring invoice if enabled
+            if (!empty($validated['is_recurring']) && $validated['is_recurring']) {
+                RecurringInvoice::create([
+                    'customer_id' => $validated['customer_id'],
+                    'template_invoice_id' => $invoice->id,
+                    'interval' => $validated['recurring_interval'],
+                    'every' => $validated['recurring_every'] ?? 1,
+                    'next_run_at' => $validated['recurring_next_run_at'],
+                    'end_at' => $validated['recurring_end_at'] ?? null,
+                    'status' => 'active',
+                ]);
+            }
+
             InvoiceCreated::dispatch($invoice);
 
             return $invoice;
@@ -153,7 +167,23 @@ class InvoiceService
                 ]);
             }
 
-            return $invoice->fresh(['items', 'charges']);
+            // Create recurring invoice if enabled and doesn't exist
+            if (!empty($validated['is_recurring']) && $validated['is_recurring']) {
+                $existingRecurring = $invoice->recurringInvoice;
+                if (!$existingRecurring) {
+                    RecurringInvoice::create([
+                        'customer_id' => $validated['customer_id'] ?? $invoice->customer_id,
+                        'template_invoice_id' => $invoice->id,
+                        'interval' => $validated['recurring_interval'],
+                        'every' => $validated['recurring_every'] ?? 1,
+                        'next_run_at' => $validated['recurring_next_run_at'],
+                        'end_at' => $validated['recurring_end_at'] ?? null,
+                        'status' => 'active',
+                    ]);
+                }
+            }
+
+            return $invoice->fresh(['items', 'charges', 'recurringInvoice']);
         });
     }
 

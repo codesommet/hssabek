@@ -182,6 +182,10 @@ Route::prefix('sales')->as('sales.')->group(function () {
         Route::get('/{creditNote}/download', [CreditNoteController::class, 'download'])
             ->middleware(['permission:sales.credit_notes.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
+
+        Route::post('/{creditNote}/send', [CreditNoteController::class, 'send'])
+            ->middleware('permission:sales.credit_notes.edit')
+            ->name('send');
     });
 
     // ─── Delivery Challans ────────────────────────────────────────
@@ -217,6 +221,10 @@ Route::prefix('sales')->as('sales.')->group(function () {
         Route::get('/{deliveryChallan}/download', [DeliveryChallanController::class, 'download'])
             ->middleware(['permission:sales.delivery_challans.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
+
+        Route::post('/{deliveryChallan}/send', [DeliveryChallanController::class, 'send'])
+            ->middleware('permission:sales.delivery_challans.edit')
+            ->name('send');
     });
 
     // ─── Refunds ──────────────────────────────────────────────────

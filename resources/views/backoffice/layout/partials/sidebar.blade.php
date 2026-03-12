@@ -316,12 +316,8 @@
                                             <span class="menu-arrow"></span>
                                         </a>
                                         <ul>
-                                            <li><a href="{{ route('bo.pro.recurring-invoices.index') }}"
-                                                    class="{{ request()->routeIs('bo.pro.recurring-invoices.*') ? 'active' : '' }}">Factures
-                                                    récurrentes</a></li>
-                                            <li><a href="{{ route('bo.pro.invoice-reminders.index') }}"
-                                                    class="{{ request()->routeIs('bo.pro.invoice-reminders.*') ? 'active' : '' }}">Rappels
-                                                    de factures</a></li>
+                                            {{-- Factures récurrentes - moved to Settings --}}
+                                            {{-- Rappels de factures - moved to Settings > Notifications --}}
                                             {{-- V2: Succursales
                                             <li><a href="{{ route('bo.pro.branches.index') }}"
                                                     class="{{ request()->routeIs('bo.pro.branches.*') ? 'active' : '' }}">Succursales</a>
@@ -403,7 +399,7 @@
                                     {{-- Paramètres --}}
                                     <li class="submenu">
                                         <a href="javascript:void(0);"
-                                            class="{{ request()->routeIs('bo.account.settings.*', 'bo.settings.*') ? 'active subdrop' : '' }}">
+                                            class="{{ request()->routeIs('bo.account.settings.*', 'bo.settings.*', 'bo.pro.recurring-invoices.*') ? 'active subdrop' : '' }}">
                                             <i class="isax isax-setting-25"></i><span>Paramètres</span>
                                             <span class="menu-arrow"></span>
                                         </a>
@@ -417,6 +413,9 @@
                                             <li><a href="{{ route('bo.settings.invoice.edit') }}"
                                                     class="{{ request()->routeIs('bo.settings.invoice.*') ? 'active' : '' }}">Facturation</a>
                                             </li>
+                                            <li><a href="{{ route('bo.pro.recurring-invoices.index') }}"
+                                                    class="{{ request()->routeIs('bo.pro.recurring-invoices.*') ? 'active' : '' }}">Factures
+                                                    récurrentes</a></li>
                                             <li><a href="{{ route('bo.settings.locale.edit') }}"
                                                     class="{{ request()->routeIs('bo.settings.locale.*') ? 'active' : '' }}">Localisation</a>
                                             </li>

@@ -28,6 +28,13 @@ class UpdateInvoiceRequest extends FormRequest
             'notes' => ['nullable', 'string', 'max:2000'],
             'terms' => ['nullable', 'string', 'max:2000'],
 
+            // Recurring fields
+            'is_recurring' => ['nullable', 'boolean'],
+            'recurring_interval' => ['required_if:is_recurring,1', 'nullable', 'in:week,month,year'],
+            'recurring_every' => ['required_if:is_recurring,1', 'nullable', 'integer', 'min:1'],
+            'recurring_next_run_at' => ['required_if:is_recurring,1', 'nullable', 'date', 'after_or_equal:today'],
+            'recurring_end_at' => ['nullable', 'date', 'after_or_equal:recurring_next_run_at'],
+
             'items' => ['sometimes', 'required', 'array', 'min:1'],
             'items.*.label' => ['required_with:items', 'string', 'max:255'],
             'items.*.description' => ['nullable', 'string', 'max:1000'],
@@ -55,6 +62,11 @@ class UpdateInvoiceRequest extends FormRequest
             'items.*.label.required_with' => 'Le libellé de l\'article est obligatoire.',
             'items.*.quantity.required_with' => 'La quantité est obligatoire.',
             'items.*.unit_price.required_with' => 'Le prix unitaire est obligatoire.',
+            'recurring_interval.required_if' => 'L\'intervalle de récurrence est obligatoire.',
+            'recurring_every.required_if' => 'La fréquence de récurrence est obligatoire.',
+            'recurring_next_run_at.required_if' => 'La date de première exécution est obligatoire pour la récurrence.',
+            'recurring_next_run_at.after_or_equal' => 'La date de première exécution doit être aujourd\'hui ou ultérieure.',
+            'recurring_end_at.after_or_equal' => 'La date de fin doit être postérieure ou égale à la date de première exécution.',
         ];
     }
 }

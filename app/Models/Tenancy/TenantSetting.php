@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class TenantSetting extends Model
 {
     use HasFactory, HasUuids, BelongsToTenant;
@@ -24,6 +25,7 @@ class TenantSetting extends Model
         'signature_settings',
         'integration_settings',
         'modules_settings',
+        'reminder_settings',
     ];
 
     protected $casts = [
@@ -35,5 +37,6 @@ class TenantSetting extends Model
         'signature_settings' => 'json',
         'integration_settings' => 'json',
         'modules_settings' => 'json',
+        'reminder_settings' => 'json',
     ];
 }

@@ -2,18 +2,18 @@
 
 namespace App\Notifications;
 
-use App\Models\Sales\Quote;
+use App\Models\Purchases\VendorBill;
 use App\Models\Tenancy\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class QuoteSentNotification extends Notification
+class VendorBillSentNotification extends Notification
 {
     use Queueable;
 
     public function __construct(
-        public readonly Quote $quote,
+        public readonly VendorBill $vendorBill,
         public readonly Tenant $tenant,
         public readonly string $pdfPath,
     ) {}
@@ -27,25 +27,23 @@ class QuoteSentNotification extends Notification
     {
         $tenantName = $this->tenant->name ?? 'notre entreprise';
         $currency   = $this->tenant->default_currency ?? 'MAD';
+        $dueDate    = $this->vendorBill->due_date?->format('d/m/Y') ?? 'Non définie';
 
         $mail = (new MailMessage)
-            ->subject('Devis ' . $this->quote->number . ' — ' . $tenantName)
+            ->subject('Facture fournisseur ' . $this->vendorBill->number . ' — ' . $tenantName)
             ->greeting('Bonjour,')
-            ->line('Veuillez trouver ci-joint votre devis n° ' . $this->quote->number . '.')
-            ->line('Montant total : ' . number_format($this->quote->total, 2, ',', ' ') . ' ' . $currency);
-
-        if ($this->quote->expiry_date) {
-            $mail->line('Valide jusqu\'au : ' . $this->quote->expiry_date->format('d/m/Y'));
-        }
+            ->line('Veuillez trouver ci-joint la facture fournisseur n° ' . $this->vendorBill->number . '.')
+            ->line('Montant total : ' . number_format($this->vendorBill->total, 2, ',', ' ') . ' ' . $currency)
+            ->line('Date d\'échéance : ' . $dueDate);
 
         if ($this->pdfPath && file_exists($this->pdfPath)) {
             $mail->attach($this->pdfPath, [
-                'as'   => 'devis-' . $this->quote->number . '.pdf',
+                'as'   => 'facture-fournisseur-' . $this->vendorBill->number . '.pdf',
                 'mime' => 'application/pdf',
             ]);
         }
 
-        return $mail->line('N\'hésitez pas à nous contacter pour toute question.')
+        return $mail->line('Merci pour votre collaboration.')
             ->salutation('Cordialement');
     }
 }

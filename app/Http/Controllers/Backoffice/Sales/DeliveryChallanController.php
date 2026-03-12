@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backoffice\Sales;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\Store\StoreDeliveryChallanRequest;
 use App\Http\Requests\Sales\Update\UpdateDeliveryChallanRequest;
+use App\Jobs\SendDeliveryChallanEmailJob;
 use App\Models\Catalog\Product;
 use App\Models\Catalog\TaxCategory;
 use App\Models\Catalog\TaxGroup;
@@ -131,5 +132,20 @@ class DeliveryChallanController extends Controller
         abort_unless(auth()->user()->can('sales.delivery_challans.view'), 403);
 
         return $pdfService->deliveryChallanResponse($deliveryChallan, 'download');
+    }
+
+    public function send(DeliveryChallan $deliveryChallan)
+    {
+        $this->authorize('update', $deliveryChallan);
+
+        $deliveryChallan->update(['sent_at' => now()]);
+
+        dispatch(new SendDeliveryChallanEmailJob(
+            deliveryChallanId: $deliveryChallan->id,
+            tenantId: TenantContext::id(),
+        ));
+
+        return redirect()->route('bo.sales.delivery-challans.show', $deliveryChallan)
+            ->with('success', 'Bon de livraison envoyé au client par email.');
     }
 }

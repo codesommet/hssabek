@@ -93,6 +93,10 @@ Route::prefix('purchases')->as('purchases.')->group(function () {
         Route::post('/{purchaseOrder}/cancel', [PurchaseOrderController::class, 'cancel'])
             ->middleware('permission:purchases.purchase-orders.edit')
             ->name('cancel');
+
+        Route::post('/{purchaseOrder}/send', [PurchaseOrderController::class, 'send'])
+            ->middleware('permission:purchases.purchase-orders.edit')
+            ->name('send');
     });
 
     // Vendor Bills
@@ -128,6 +132,10 @@ Route::prefix('purchases')->as('purchases.')->group(function () {
         Route::get('/{vendorBill}/download', [VendorBillController::class, 'download'])
             ->middleware(['permission:purchases.vendor-bills.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
+
+        Route::post('/{vendorBill}/send', [VendorBillController::class, 'send'])
+            ->middleware('permission:purchases.vendor-bills.edit')
+            ->name('send');
     });
 
     // Goods Receipts
@@ -206,6 +214,10 @@ Route::prefix('purchases')->as('purchases.')->group(function () {
         Route::get('/{debitNote}/download', [DebitNoteController::class, 'download'])
             ->middleware(['permission:purchases.debit_notes.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
+
+        Route::post('/{debitNote}/send', [DebitNoteController::class, 'send'])
+            ->middleware('permission:purchases.debit_notes.edit')
+            ->name('send');
     });
 
     // Supplier Payments
@@ -242,5 +254,4 @@ Route::prefix('purchases')->as('purchases.')->group(function () {
             ->middleware(['permission:purchases.supplier_payments.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
     });
-
 });

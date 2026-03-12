@@ -14,12 +14,13 @@ class UpdateRecurringInvoiceRequest extends TenantFormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => ['sometimes', 'uuid', $this->tenantExists('customers')],
-            'interval' => ['sometimes', 'in:weekly,monthly,quarterly,yearly'],
-            'next_run_at' => ['sometimes', 'date'],
-            'end_at' => ['sometimes', 'nullable', 'date', 'after_or_equal:next_run_at'],
-            'is_active' => ['sometimes', 'boolean'],
-            'payload' => ['sometimes', 'nullable', 'array'],
+            'customer_id'         => ['sometimes', 'uuid', $this->tenantExists('customers')],
+            'template_invoice_id' => ['nullable', 'uuid', $this->tenantExists('invoices')],
+            'interval'            => ['sometimes', 'in:week,month,year'],
+            'every'               => ['sometimes', 'integer', 'min:1'],
+            'next_run_at'         => ['sometimes', 'date'],
+            'end_at'              => ['nullable', 'date', 'after_or_equal:next_run_at'],
+            'status'              => ['sometimes', 'in:active,paused,cancelled'],
         ];
     }
 
