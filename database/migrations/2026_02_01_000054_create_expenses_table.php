@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('expense_number');
             $table->string('reference_number')->nullable();
             $table->decimal('amount', 12, 2);
+            $table->decimal('paid_amount', 12, 2)->default(0);
             $table->date('expense_date');
             $table->enum('payment_mode', ['cash', 'bank_transfer', 'card', 'cheque', 'other']);
             $table->enum('payment_status', ['unpaid', 'paid', 'partial'])->default('unpaid');

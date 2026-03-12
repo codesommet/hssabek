@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->uuid('plan_id');
             $table->enum('status', ['trialing', 'active', 'past_due', 'cancelled'])->default('active');
             $table->integer('quantity')->default(1);
+            $table->decimal('discount', 10, 2)->default(0);
             $table->dateTime('starts_at')->nullable();
             $table->dateTime('ends_at')->nullable();
             $table->dateTime('trial_ends_at')->nullable();

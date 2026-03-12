@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('loans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('tenant_id');
+            $table->enum('loan_type', ['received', 'given'])->default('received');
             $table->enum('lender_type', ['bank', 'personal', 'other']);
             $table->string('lender_name');
             $table->string('reference_number')->nullable();
@@ -17,6 +18,7 @@ return new class extends Migration {
             $table->decimal('interest_rate', 6, 3)->nullable();
             $table->enum('interest_type', ['fixed', 'reducing'])->default('fixed');
             $table->decimal('total_amount', 14, 2);
+            $table->decimal('paid_amount', 12, 2)->default(0);
             $table->decimal('remaining_balance', 14, 2);
             $table->date('start_date');
             $table->date('end_date')->nullable();

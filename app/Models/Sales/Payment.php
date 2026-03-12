@@ -2,6 +2,7 @@
 
 namespace App\Models\Sales;
 
+use App\Models\Finance\BankAccount;
 use App\Traits\BelongsToTenant;
 use App\Traits\UsesTenantCurrency;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Payment extends Model
 {
     use HasFactory, HasUuids, SoftDeletes, BelongsToTenant, UsesTenantCurrency;
@@ -18,6 +20,7 @@ class Payment extends Model
     protected $fillable = [
         'customer_id',
         'payment_method_id',
+        'bank_account_id',
         'amount',
         'status',
         'payment_date',
@@ -41,6 +44,11 @@ class Payment extends Model
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function bankAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class);
     }
 
     public function allocations(): HasMany

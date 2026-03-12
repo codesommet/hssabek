@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Billing\Subscription;
 use App\Models\Tenancy\Tenant;
 use App\Models\Tenancy\TenantDomain;
-use App\Models\Templates\TemplateCatalog;
-use App\Models\Templates\TenantTemplate;
 use App\Models\User;
 use App\Services\Billing\PlanLimitService;
 use Illuminate\Http\Request;
@@ -111,8 +109,11 @@ class TenantManagementController extends Controller
                 $owner->assignRole($role);
             }
 
-            // Auto-attach free templates to the new tenant
-            $this->attachFreeTemplatesToTenant($tenant);
+            // Seed default finance categories for the new tenant
+            $this->seedFinanceCategoriesForTenant($tenant);
+
+            // Note: Free templates are accessible to all tenants by default (is_free=true)
+            // No need to attach them - only purchased/premium templates need tenant_templates records
 
             return $tenant;
         });
@@ -290,24 +291,41 @@ class TenantManagementController extends Controller
     }
 
     /**
-     * Attach all free templates to a tenant.
+     * Seed default finance categories for a tenant.
      */
-    private function attachFreeTemplatesToTenant(Tenant $tenant): void
+    private function seedFinanceCategoriesForTenant(Tenant $tenant): void
     {
-        $freeTemplates = TemplateCatalog::where('is_free', true)
-            ->where('is_active', true)
-            ->get();
+        $categories = [
+            // Income categories
+            ['name' => 'Ventes - Paiements Clients', 'type' => 'income'],
+            ['name' => 'Ventes - Produits', 'type' => 'income'],
+            ['name' => 'Ventes - Services', 'type' => 'income'],
+            ['name' => 'Revenus - Intérêts', 'type' => 'income'],
+            ['name' => 'Revenus - Autres', 'type' => 'income'],
+            // Expense categories
+            ['name' => 'Achats - Paiements Fournisseurs', 'type' => 'expense'],
+            ['name' => 'Achats - Matières premières', 'type' => 'expense'],
+            ['name' => 'Achats - Marchandises', 'type' => 'expense'],
+            ['name' => 'Frais - Loyer', 'type' => 'expense'],
+            ['name' => 'Frais - Électricité', 'type' => 'expense'],
+            ['name' => 'Frais - Internet & Téléphone', 'type' => 'expense'],
+            ['name' => 'Frais - Salaires', 'type' => 'expense'],
+            ['name' => 'Frais - Transport', 'type' => 'expense'],
+            ['name' => 'Frais - Fournitures de bureau', 'type' => 'expense'],
+            ['name' => 'Frais - Marketing & Publicité', 'type' => 'expense'],
+            ['name' => 'Frais - Assurances', 'type' => 'expense'],
+            ['name' => 'Frais - Bancaires', 'type' => 'expense'],
+            ['name' => 'Frais - Autres', 'type' => 'expense'],
+        ];
 
-        foreach ($freeTemplates as $template) {
-            TenantTemplate::updateOrCreate(
+        foreach ($categories as $category) {
+            \App\Models\Finance\FinanceCategory::firstOrCreate(
                 [
                     'tenant_id' => $tenant->id,
-                    'template_catalog_id' => $template->id,
+                    'name' => $category['name'],
+                    'type' => $category['type'],
                 ],
-                [
-                    'name' => $template->name,
-                    'is_active' => true,
-                ]
+                ['is_active' => true]
             );
         }
     }

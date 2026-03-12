@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->uuid('tenant_id');
             $table->uuid('customer_id');
             $table->uuid('payment_method_id')->nullable();
+            $table->uuid('bank_account_id')->nullable();
             $table->decimal('amount', 12, 2);
             $table->enum('status', ['pending', 'succeeded', 'failed', 'refunded', 'cancelled'])->default('pending');
             $table->date('payment_date')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration {
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('customer_id')->references('id')->on('customers')->cascadeOnDelete();
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->nullOnDelete();
+            $table->foreign('bank_account_id')->references('id')->on('bank_accounts')->nullOnDelete();
             $table->index('tenant_id');
             $table->index('customer_id');
         });

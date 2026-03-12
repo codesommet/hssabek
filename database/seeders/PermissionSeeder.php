@@ -27,6 +27,7 @@ class PermissionSeeder extends Seeder
             'sales' => [
                 'invoices',
                 'quotes',
+                'payments',
                 'credit_notes',
                 'delivery_challans',
                 'refunds',
@@ -41,11 +42,19 @@ class PermissionSeeder extends Seeder
                 'goods_receipts',
             ],
 
+            // Catalog
+            'catalog' => [
+                'categories',
+                'units',
+                'tax_rates',
+            ],
+
             // Inventory
             'inventory' => [
                 'products',
                 'warehouses',
                 'stock_movements',
+                'stock_transfers',
             ],
 
             // Finance
@@ -55,6 +64,7 @@ class PermissionSeeder extends Seeder
                 'incomes',
                 'categories',
                 'loans',
+                'money_transfers',
             ],
 
             // Pro
@@ -80,6 +90,10 @@ class PermissionSeeder extends Seeder
                 'appearance',
                 'payment_methods',
                 'security',
+                'signatures',
+                'currencies',
+                'barcode',
+                'email_templates',
             ],
         ];
 
@@ -116,15 +130,6 @@ class PermissionSeeder extends Seeder
             ]);
         }
 
-        // supplier_payment_methods (full CRUD)
-        foreach ($actions as $action) {
-            Permission::firstOrCreate([
-                'name' => "purchases.supplier_payment_methods.{$action}",
-                'guard_name' => 'web',
-                'tenant_id' => null,
-            ]);
-        }
-
         // Reports (view-only)
         $reportModules = ['sales', 'customers', 'purchases', 'inventory', 'finance'];
         foreach ($reportModules as $module) {
@@ -147,6 +152,22 @@ class PermissionSeeder extends Seeder
         // Dashboard (view-only)
         Permission::firstOrCreate([
             'name' => 'dashboard.view',
+            'guard_name' => 'web',
+            'tenant_id' => null,
+        ]);
+
+        // Settings — account (view + edit only, personal settings)
+        foreach (['view', 'edit'] as $action) {
+            Permission::firstOrCreate([
+                'name' => "settings.account.{$action}",
+                'guard_name' => 'web',
+                'tenant_id' => null,
+            ]);
+        }
+
+        // Settings — plans_billing (view-only)
+        Permission::firstOrCreate([
+            'name' => 'settings.plans_billing.view',
             'guard_name' => 'web',
             'tenant_id' => null,
         ]);

@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tenancy\Tenant;
-use App\Models\Templates\TemplateCatalog;
-use App\Models\Templates\TenantTemplate;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -388,37 +385,6 @@ class TemplateCatalogSeeder extends Seeder
                     'updated_at' => now(),
                 ])
             );
-        }
-
-        // Auto-attach free templates to all tenants/companies
-        $this->attachFreeTemplatesToAllTenants();
-    }
-
-    /**
-     * Attach all free templates to all existing tenants
-     */
-    private function attachFreeTemplatesToAllTenants(): void
-    {
-        $freeTemplates = TemplateCatalog::where('is_free', true)
-            ->where('is_active', true)
-            ->get();
-
-        $tenants = Tenant::all();
-
-        foreach ($tenants as $tenant) {
-            foreach ($freeTemplates as $template) {
-                // Use updateOrInsert to avoid duplicates
-                TenantTemplate::updateOrCreate(
-                    [
-                        'tenant_id' => $tenant->id,
-                        'template_catalog_id' => $template->id,
-                    ],
-                    [
-                        'name' => $template->name,
-                        'is_active' => true,
-                    ]
-                );
-            }
         }
     }
 }

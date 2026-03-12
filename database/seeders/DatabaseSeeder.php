@@ -22,7 +22,13 @@ class DatabaseSeeder extends Seeder
             // 4) Demo tenant with users, role assignments, subscription (dev only)
             DemoTenantSeeder::class,
 
-            // 5) Fake data for all CRUD operations (customers, products, invoices, etc.)
+            // 5) Template catalog (global templates)
+            TemplateCatalogSeeder::class,
+
+            // 6) Finance categories for all tenants
+            FinanceCategorySeeder::class,
+
+            // 7) Fake data for all CRUD operations (customers, products, invoices, etc.)
             // FakeDataSeeder::class,
         ]);
     }

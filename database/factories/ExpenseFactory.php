@@ -14,6 +14,7 @@ class ExpenseFactory extends Factory
         return [
             'expense_number' => 'EXP-' . fake()->unique()->numerify('######'),
             'amount' => fake()->randomFloat(2, 50, 5000),
+            'paid_amount' => 0,
             'expense_date' => fake()->dateTimeBetween('-3 months', 'now'),
             'payment_mode' => fake()->randomElement(['cash', 'bank_transfer', 'check']),
             'payment_status' => fake()->randomElement(['unpaid', 'paid', 'partial']),

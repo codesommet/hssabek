@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Web\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,23 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| 🌍 PUBLIC WEBSITE
+| 🌍 PUBLIC WEBSITE (FRONTOFFICE)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('web')->group(function () {
-
-    Route::get('/', [PageController::class, 'home'])->name('home');
-    Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
-    Route::get('/features', [PageController::class, 'features'])->name('features');
-    Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-    Route::post('/contact', [PageController::class, 'contactSend'])->name('contact.send');
-
-    // Legal pages
-    Route::get('/conditions-utilisation', [PageController::class, 'terms'])->name('terms');
-    Route::get('/politique-confidentialite', [PageController::class, 'privacy'])->name('privacy');
-    Route::get('/mentions-legales', [PageController::class, 'legal'])->name('legal');
-});
+require __DIR__ . '/frontoffice.php';
 
 
 /*
@@ -155,6 +142,7 @@ Route::prefix('admin')
         require __DIR__ . '/superadmin/settings.php';
         require __DIR__ . '/superadmin/access.php';
         require __DIR__ . '/superadmin/announcements.php';
+        require __DIR__ . '/superadmin/activity-logs.php';
     });
 
 // this route for testing the theming system, can be removed later

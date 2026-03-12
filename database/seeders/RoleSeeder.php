@@ -48,7 +48,7 @@ class RoleSeeder extends Seeder
                     $tenantPermissions->filter(fn ($p) => !str_starts_with($p->name, 'access.') && !str_starts_with($p->name, 'settings.'))
                 ),
                 'accountant' => $role->syncPermissions(
-                    $tenantPermissions->filter(fn ($p) => str_starts_with($p->name, 'finance.') || str_starts_with($p->name, 'sales.') || str_starts_with($p->name, 'purchases.') || str_starts_with($p->name, 'reports.') || $p->name === 'dashboard.view')
+                    $tenantPermissions->filter(fn ($p) => str_starts_with($p->name, 'finance.') || str_starts_with($p->name, 'sales.') || str_starts_with($p->name, 'purchases.') || str_starts_with($p->name, 'catalog.') || str_starts_with($p->name, 'reports.') || $p->name === 'dashboard.view')
                 ),
                 'receptionist' => $role->syncPermissions(
                     $tenantPermissions->filter(fn ($p) => (str_starts_with($p->name, 'sales.') || str_starts_with($p->name, 'crm.')) && (str_ends_with($p->name, '.view') || str_ends_with($p->name, '.create')))

@@ -15,6 +15,7 @@ class SubscriptionFactory extends Factory
             'tenant_id' => TenantFactory::new(),
             'plan_id' => PlanFactory::new(),
             'status' => 'active',
+            'discount' => 0,
             'starts_at' => now(),
             'ends_at' => now()->addMonth(),
         ];

@@ -128,6 +128,11 @@
                                             <i class="isax isax-notification"></i><span>Annonces</span>
                                         </a>
                                     </li>
+                                    <li class="{{ request()->routeIs('sa.activity-logs.*') ? 'active' : '' }}">
+                                        <a href="{{ route('sa.activity-logs.index') }}">
+                                            <i class="isax isax-note-215"></i><span>Journal d'activité</span>
+                                        </a>
+                                    </li>
                                     <li class="{{ request()->routeIs('sa.access.*') ? 'active' : '' }}">
                                         <a href="{{ route('sa.access.roles.index') }}">
                                             <i class="isax isax-shield-tick"></i><span>Rôles & Permissions</span>

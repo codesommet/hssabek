@@ -75,7 +75,8 @@ class InvoiceTemplateSettingsController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        // Tenant's accessible template IDs
+        // Tenant's accessible template IDs (purchased/premium templates only)
+        // Note: Free templates (is_free=true) are accessible to all tenants by default
         $ownedTemplateIds = DB::table('tenant_templates')
             ->where('tenant_id', $tenant->id)
             ->where('status', 'active')

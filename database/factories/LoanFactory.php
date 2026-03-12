@@ -16,11 +16,13 @@ class LoanFactory extends Factory
         $total = round($principal * (1 + $interestRate / 100), 2);
 
         return [
+            'loan_type' => fake()->randomElement(['received', 'given']),
             'lender_type' => fake()->randomElement(['bank', 'personal', 'other']),
             'lender_name' => fake()->company(),
             'principal_amount' => $principal,
             'interest_rate' => $interestRate,
             'total_amount' => $total,
+            'paid_amount' => 0,
             'remaining_balance' => $total,
             'start_date' => now(),
             'end_date' => now()->addYear(),

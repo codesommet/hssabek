@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->json('localization_settings')->nullable();
             $table->json('invoice_settings')->nullable();
             $table->json('notification_settings')->nullable();
+            $table->json('reminder_settings')->nullable();
             $table->json('signature_settings')->nullable();
             $table->json('integration_settings')->nullable();
             $table->json('modules_settings')->nullable();

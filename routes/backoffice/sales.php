@@ -113,35 +113,35 @@ Route::prefix('sales')->as('sales.')->group(function () {
     // ─── Payments ─────────────────────────────────────────────────
     Route::prefix('payments')->as('payments.')->group(function () {
         Route::get('/', [PaymentController::class, 'index'])
-            ->middleware('permission:sales.invoices.view')
+            ->middleware('permission:sales.payments.view')
             ->name('index');
 
         Route::get('/create', [PaymentController::class, 'create'])
-            ->middleware('permission:sales.invoices.create')
+            ->middleware('permission:sales.payments.create')
             ->name('create');
 
         Route::post('/', [PaymentController::class, 'store'])
-            ->middleware('permission:sales.invoices.create')
+            ->middleware('permission:sales.payments.create')
             ->name('store');
 
         Route::get('/{payment}', [PaymentController::class, 'show'])
-            ->middleware('permission:sales.invoices.view')
+            ->middleware('permission:sales.payments.view')
             ->name('show');
 
         Route::get('/{payment}/edit', [PaymentController::class, 'edit'])
-            ->middleware('permission:sales.invoices.edit')
+            ->middleware('permission:sales.payments.edit')
             ->name('edit');
 
         Route::put('/{payment}', [PaymentController::class, 'update'])
-            ->middleware('permission:sales.invoices.edit')
+            ->middleware('permission:sales.payments.edit')
             ->name('update');
 
         Route::delete('/{payment}', [PaymentController::class, 'destroy'])
-            ->middleware('permission:sales.invoices.delete')
+            ->middleware('permission:sales.payments.delete')
             ->name('destroy');
 
         Route::get('/{payment}/download', [PaymentController::class, 'download'])
-            ->middleware(['permission:sales.invoices.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
+            ->middleware(['permission:sales.payments.view', 'plan.limit:exports_per_month', 'throttle:pdf-download'])
             ->name('download');
     });
 

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Purchases\SupplierPayment;
+use App\Models\Sales\Payment;
+use App\Observers\PaymentObserver;
+use App\Observers\SupplierPaymentObserver;
 use App\Services\System\DocumentNumberService;
 use App\Services\Tenancy\TenantContext;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -30,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
         $this->registerEvents();
+        $this->registerObservers();
 
         // Resolve factories by model base name (flat factory directory)
         Factory::guessFactoryNamesUsing(function (string $modelName) {
@@ -140,5 +145,14 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('user-invitation', function (Request $request) {
             return Limit::perMinute(10)->by(TenantContext::id() ?: $request->ip());
         });
+    }
+
+    /**
+     * Register model observers for auto-syncing financial data.
+     */
+    protected function registerObservers(): void
+    {
+        Payment::observe(PaymentObserver::class);
+        SupplierPayment::observe(SupplierPaymentObserver::class);
     }
 }

@@ -65,73 +65,73 @@ Route::prefix('catalog')->as('catalog.')->group(function () {
     // ─── Categories ─────────────────────────────────────────────
     Route::prefix('categories')->as('categories.')->group(function () {
         Route::get('/', [ProductCategoryController::class, 'index'])
-            ->middleware('permission:inventory.products.view')
+            ->middleware('permission:catalog.categories.view')
             ->name('index');
 
         Route::post('/', [ProductCategoryController::class, 'store'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware('permission:catalog.categories.create')
             ->name('store');
 
         Route::put('/{category}', [ProductCategoryController::class, 'update'])
-            ->middleware('permission:inventory.products.edit')
+            ->middleware('permission:catalog.categories.edit')
             ->name('update');
 
         Route::delete('/{category}', [ProductCategoryController::class, 'destroy'])
-            ->middleware('permission:inventory.products.delete')
+            ->middleware('permission:catalog.categories.delete')
             ->name('destroy');
     });
 
     // ─── Units ──────────────────────────────────────────────────
     Route::prefix('units')->as('units.')->group(function () {
         Route::get('/', [UnitController::class, 'index'])
-            ->middleware('permission:inventory.products.view')
+            ->middleware('permission:catalog.units.view')
             ->name('index');
 
         Route::post('/', [UnitController::class, 'store'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware('permission:catalog.units.create')
             ->name('store');
 
         Route::put('/{unit}', [UnitController::class, 'update'])
-            ->middleware('permission:inventory.products.edit')
+            ->middleware('permission:catalog.units.edit')
             ->name('update');
 
         Route::delete('/{unit}', [UnitController::class, 'destroy'])
-            ->middleware('permission:inventory.products.delete')
+            ->middleware('permission:catalog.units.delete')
             ->name('destroy');
     });
 
     // ─── Tax Rates (combined page) ─────────────────────────────
     Route::get('/tax-rates', [TaxGroupController::class, 'index'])
-        ->middleware('permission:inventory.products.view')
+        ->middleware('permission:catalog.tax_rates.view')
         ->name('tax-rates.index');
 
     // Tax Categories (modal CRUD on tax-rates page)
     Route::prefix('tax-categories')->as('tax-categories.')->group(function () {
         Route::post('/', [TaxCategoryController::class, 'store'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware('permission:catalog.tax_rates.create')
             ->name('store');
 
         Route::put('/{tax_category}', [TaxCategoryController::class, 'update'])
-            ->middleware('permission:inventory.products.edit')
+            ->middleware('permission:catalog.tax_rates.edit')
             ->name('update');
 
         Route::delete('/{tax_category}', [TaxCategoryController::class, 'destroy'])
-            ->middleware('permission:inventory.products.delete')
+            ->middleware('permission:catalog.tax_rates.delete')
             ->name('destroy');
     });
 
     // Tax Groups (modal CRUD on tax-rates page)
     Route::prefix('tax-groups')->as('tax-groups.')->group(function () {
         Route::post('/', [TaxGroupController::class, 'store'])
-            ->middleware('permission:inventory.products.create')
+            ->middleware('permission:catalog.tax_rates.create')
             ->name('store');
 
         Route::put('/{tax_group}', [TaxGroupController::class, 'update'])
-            ->middleware('permission:inventory.products.edit')
+            ->middleware('permission:catalog.tax_rates.edit')
             ->name('update');
 
         Route::delete('/{tax_group}', [TaxGroupController::class, 'destroy'])
-            ->middleware('permission:inventory.products.delete')
+            ->middleware('permission:catalog.tax_rates.delete')
             ->name('destroy');
     });
 });

@@ -43,7 +43,6 @@ use App\Models\Purchases\VendorBill;
 use App\Models\Purchases\DebitNote;
 use App\Models\Purchases\DebitNoteItem;
 use App\Models\Purchases\DebitNoteApplication;
-use App\Models\Purchases\SupplierPaymentMethod;
 use App\Models\Purchases\SupplierPayment;
 use App\Models\Purchases\SupplierPaymentAllocation;
 use App\Models\Finance\BankAccount;
@@ -122,7 +121,6 @@ class FakeDataSeeder extends Seeder
         $this->seedGoodsReceipts();
         $this->seedVendorBills();
         $this->seedDebitNotes();
-        $this->seedSupplierPaymentMethods();
         $this->seedSupplierPayments();
 
         // Inventory
@@ -938,22 +936,10 @@ class FakeDataSeeder extends Seeder
         }
     }
 
-    private function seedSupplierPaymentMethods(): void
-    {
-        $methods = ['Espèces', 'Virement Bancaire', 'Chèque'];
-
-        foreach ($methods as $method) {
-            SupplierPaymentMethod::firstOrCreate(
-                ['tenant_id' => $this->tenant->id, 'name' => $method],
-                ['is_active' => true]
-            );
-        }
-    }
-
     private function seedSupplierPayments(): void
     {
         $suppliers = Supplier::where('tenant_id', $this->tenant->id)->get();
-        $supplierPaymentMethods = SupplierPaymentMethod::where('tenant_id', $this->tenant->id)->get();
+        $paymentMethods = PaymentMethod::where('tenant_id', $this->tenant->id)->get();
 
         for ($i = 0; $i < 10; $i++) {
             SupplierPayment::create([
@@ -963,7 +949,7 @@ class FakeDataSeeder extends Seeder
                 'amount' => $this->faker->randomFloat(2, 1000, 100000),
                 'payment_date' => $this->faker->dateTimeBetween('-30 days', 'now'),
                 'status' => $this->faker->randomElement(['pending', 'succeeded']),
-                'payment_method_id' => $supplierPaymentMethods->isNotEmpty() ? $supplierPaymentMethods->random()->id : null,
+                'payment_method_id' => $paymentMethods->isNotEmpty() ? $paymentMethods->random()->id : null,
                 'notes' => $this->faker->sentence(),
             ]);
         }

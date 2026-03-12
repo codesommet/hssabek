@@ -64,13 +64,13 @@ Route::prefix('finance')->as('finance.')->group(function () {
 
     // Money Transfers
     Route::prefix('money-transfers')->as('money-transfers.')->group(function () {
-        Route::get('/', [MoneyTransferController::class, 'index'])->middleware('permission:finance.bank_accounts.view')->name('index');
-        Route::get('/create', [MoneyTransferController::class, 'create'])->middleware('permission:finance.bank_accounts.create')->name('create');
-        Route::post('/', [MoneyTransferController::class, 'store'])->middleware('permission:finance.bank_accounts.create')->name('store');
-        Route::get('/{money_transfer}', [MoneyTransferController::class, 'show'])->middleware('permission:finance.bank_accounts.view')->name('show');
-        Route::get('/{money_transfer}/edit', [MoneyTransferController::class, 'edit'])->middleware('permission:finance.bank_accounts.edit')->name('edit');
-        Route::put('/{money_transfer}', [MoneyTransferController::class, 'update'])->middleware('permission:finance.bank_accounts.edit')->name('update');
-        Route::delete('/{money_transfer}', [MoneyTransferController::class, 'destroy'])->middleware('permission:finance.bank_accounts.delete')->name('destroy');
+        Route::get('/', [MoneyTransferController::class, 'index'])->middleware('permission:finance.money_transfers.view')->name('index');
+        Route::get('/create', [MoneyTransferController::class, 'create'])->middleware('permission:finance.money_transfers.create')->name('create');
+        Route::post('/', [MoneyTransferController::class, 'store'])->middleware('permission:finance.money_transfers.create')->name('store');
+        Route::get('/{money_transfer}', [MoneyTransferController::class, 'show'])->middleware('permission:finance.money_transfers.view')->name('show');
+        Route::get('/{money_transfer}/edit', [MoneyTransferController::class, 'edit'])->middleware('permission:finance.money_transfers.edit')->name('edit');
+        Route::put('/{money_transfer}', [MoneyTransferController::class, 'update'])->middleware('permission:finance.money_transfers.edit')->name('update');
+        Route::delete('/{money_transfer}', [MoneyTransferController::class, 'destroy'])->middleware('permission:finance.money_transfers.delete')->name('destroy');
     });
 
     // Loans

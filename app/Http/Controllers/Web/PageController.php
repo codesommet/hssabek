@@ -14,7 +14,7 @@ class PageController extends Controller
 {
     public function home(): View
     {
-        return view('web.pages.home');
+        return view('frontoffice.pages.home');
     }
 
     public function pricing(): View
@@ -23,17 +23,17 @@ class PageController extends Controller
             ->orderBy('price')
             ->get();
 
-        return view('web.pages.pricing', compact('plans'));
+        return view('frontoffice.pages.pricing', compact('plans'));
     }
 
     public function features(): View
     {
-        return view('web.pages.features');
+        return view('frontoffice.pages.features');
     }
 
     public function contact(): View
     {
-        return view('web.pages.contact');
+        return view('frontoffice.pages.contact');
     }
 
     public function contactSend(ContactRequest $request): RedirectResponse
@@ -55,16 +55,31 @@ class PageController extends Controller
 
     public function terms(): View
     {
-        return view('web.pages.terms');
+        return view('frontoffice.pages.terms');
     }
 
     public function privacy(): View
     {
-        return view('web.pages.privacy');
+        return view('frontoffice.pages.privacy');
     }
 
     public function legal(): View
     {
-        return view('web.pages.legal');
+        return view('frontoffice.pages.legal');
+    }
+
+    public function helpCenter(): View
+    {
+        return view('frontoffice.pages.help-center');
+    }
+
+    public function support(): View
+    {
+        return view('frontoffice.pages.support');
+    }
+
+    public function faq(): View
+    {
+        return view('frontoffice.pages.faq');
     }
 }

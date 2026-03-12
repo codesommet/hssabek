@@ -68,35 +68,35 @@ Route::prefix('inventory')->as('inventory.')->group(function () {
     // Stock Transfers
     Route::prefix('transfers')->as('transfers.')->group(function () {
         Route::get('/', [StockTransferController::class, 'index'])
-            ->middleware('permission:inventory.stock_movements.view')
+            ->middleware('permission:inventory.stock_transfers.view')
             ->name('index');
 
         Route::get('/create', [StockTransferController::class, 'create'])
-            ->middleware('permission:inventory.stock_movements.create')
+            ->middleware('permission:inventory.stock_transfers.create')
             ->name('create');
 
         Route::post('/', [StockTransferController::class, 'store'])
-            ->middleware('permission:inventory.stock_movements.create')
+            ->middleware('permission:inventory.stock_transfers.create')
             ->name('store');
 
         Route::get('/{transfer}', [StockTransferController::class, 'show'])
-            ->middleware('permission:inventory.stock_movements.view')
+            ->middleware('permission:inventory.stock_transfers.view')
             ->name('show');
 
         Route::get('/{transfer}/edit', [StockTransferController::class, 'edit'])
-            ->middleware('permission:inventory.stock_movements.edit')
+            ->middleware('permission:inventory.stock_transfers.edit')
             ->name('edit');
 
         Route::put('/{transfer}', [StockTransferController::class, 'update'])
-            ->middleware('permission:inventory.stock_movements.edit')
+            ->middleware('permission:inventory.stock_transfers.edit')
             ->name('update');
 
         Route::post('/{transfer}/execute', [StockTransferController::class, 'execute'])
-            ->middleware('permission:inventory.stock_movements.create')
+            ->middleware('permission:inventory.stock_transfers.create')
             ->name('execute');
 
         Route::delete('/{transfer}', [StockTransferController::class, 'destroy'])
-            ->middleware('permission:inventory.stock_movements.delete')
+            ->middleware('permission:inventory.stock_transfers.delete')
             ->name('destroy');
     });
 });

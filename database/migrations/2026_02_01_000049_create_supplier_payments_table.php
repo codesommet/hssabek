@@ -18,13 +18,15 @@ return new class extends Migration {
             $table->dateTime('paid_at')->nullable();
             $table->string('reference_number')->nullable();
             $table->uuid('payment_method_id')->nullable();
+            $table->uuid('bank_account_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnDelete();
             $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->foreign('vendor_bill_id')->references('id')->on('vendor_bills')->nullOnDelete();
-            $table->foreign('payment_method_id')->references('id')->on('supplier_payment_methods')->nullOnDelete();
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->nullOnDelete();
+            $table->foreign('bank_account_id')->references('id')->on('bank_accounts')->nullOnDelete();
             $table->index('tenant_id');
         });
     }
