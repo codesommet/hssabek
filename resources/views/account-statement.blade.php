@@ -1,9 +1,9 @@
 <?php $page = 'account-statement'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
 
@@ -16,8 +16,7 @@
                 </div>
                 <div class="my-xl-auto">
                     <div class="dropdown">
-                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
                             <i class="isax isax-export-1 me-1"></i>Export
                         </a>
                         <ul class="dropdown-menu">
@@ -41,16 +40,14 @@
                         <div class="card position-relative shadow-lg">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <span
-                                        class="p-2 bg-primary d-flex align-items-center justify-content-center rounded text-white me-2">
+                                    <span class="p-2 bg-primary d-flex align-items-center justify-content-center rounded text-white me-2">
                                         <i class="isax isax-dollar-circle fs-24"></i>
                                     </span>
                                     <div class="mb-0">
                                         <p class="mb-1">Total Credits</p>
                                         <div class="d-flex align-items-center flex-wrap gap-2">
                                             <h6 class="fs-16 fw-semibold mb-0">$2,000,000</h6>
-                                            <span class="badge badge-soft-success">+5.62%<i
-                                                    class="isax isax-arrow-up-15"></i></span>
+                                            <span class="badge badge-soft-success">+5.62%<i class="isax isax-arrow-up-15"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -62,16 +59,14 @@
                         <div class="card position-relative shadow-lg">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <span
-                                        class="p-2 bg-success d-flex align-items-center justify-content-center rounded text-white me-2">
+                                    <span class="p-2 bg-success d-flex align-items-center justify-content-center rounded text-white me-2">
                                         <i class="isax isax-bank fs-24"></i>
                                     </span>
                                     <div class="mb-0">
                                         <p class="mb-1">Total Debits</p>
                                         <div class="d-flex align-items-center flex-wrap gap-2">
                                             <h6 class="fs-16 fw-semibold mb-0">$1,200,000</h6>
-                                            <span class="badge badge-soft-success">+11.4%<i
-                                                    class="isax isax-arrow-up-15"></i></span>
+                                            <span class="badge badge-soft-success">+11.4%<i class="isax isax-arrow-up-15"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -83,16 +78,14 @@
                         <div class="card position-relative shadow-lg">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <span
-                                        class="p-2 bg-warning d-flex align-items-center justify-content-center rounded text-white me-2">
+                                    <span class="p-2 bg-warning d-flex align-items-center justify-content-center rounded text-white me-2">
                                         <i class="isax isax-wallet-3 fs-24"></i>
                                     </span>
                                     <div class="mb-0">
                                         <p class="mb-1"> Net Cash Flow</p>
                                         <div class="d-flex align-items-center flex-wrap gap-2">
                                             <h6 class="fs-16 fw-semibold mb-0">$500,000</h6>
-                                            <span class="badge badge-soft-success">+8.12%<i
-                                                    class="isax isax-arrow-up-15"></i></span>
+                                            <span class="badge badge-soft-success">+8.12%<i class="isax isax-arrow-up-15"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -104,16 +97,14 @@
                         <div class="card position-relative shadow-lg">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <span
-                                        class="p-2 bg-danger d-flex align-items-center justify-content-center rounded text-white me-2">
+                                    <span class="p-2 bg-danger d-flex align-items-center justify-content-center rounded text-white me-2">
                                         <i class="isax isax-money-3 fs-24"></i>
                                     </span>
                                     <div class="mb-0">
                                         <p class="mb-1">Balance</p>
                                         <div class="d-flex align-items-center flex-wrap gap-2">
                                             <h6 class="fs-16 fw-semibold mb-0">$300,000</h6>
-                                            <span class="badge badge-soft-success">+7.45%<i
-                                                    class="isax isax-arrow-up-15"></i></span>
+                                            <span class="badge badge-soft-success">+7.45%<i class="isax isax-arrow-up-15"></i></span>
                                         </div>
                                     </div>
                                 </div>
@@ -130,24 +121,19 @@
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <div class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <a href="javascript:void(0);" class="btn-searchset"><i
-                                        class="isax isax-search-normal fs-12"></i></a>
+                                <a href="javascript:void(0);" class="btn-searchset"><i class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </div>
                         <div id="reportrange" class="reportrange-picker d-flex align-items-center">
-                            <i class="isax isax-calendar text-gray-5 fs-14 me-1"></i><span
-                                class="reportrange-picker-field">16 Apr 25 - 16 Apr 25</span>
+                            <i class="isax isax-calendar text-gray-5 fs-14 me-1"></i><span class="reportrange-picker-field">16 Apr 25 - 16 Apr 25</span>
                         </div>
-                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center"
-                            href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
+                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
                             <i class="isax isax-filter me-1"></i>Filter
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="dropdown">
-                            <a href="javascript:void(0);"
-                                class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
-                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="isax isax-grid-3 me-1"></i>Column
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-lg">
@@ -194,9 +180,7 @@
                 <!-- Start Filter Info -->
                 <div class="align-items-center gap-2 flex-wrap filter-info mt-3">
                     <h6 class="fs-13 fw-semibold">Filters</h6>
-                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span
-                            class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">6</span>Account
-                        Holders Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
+                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">6</span>Account Holders Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
                     <a href="#" class="link-danger fw-medium text-decoration-underline ms-md-1">Clear All</a>
                 </div>
                 <!-- End Filter Info -->
@@ -236,8 +220,7 @@
                             <td>Sale</td>
                             <td>Sale of laptops</td>
                             <td>$15,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$10,000</td>
                         </tr>
@@ -254,8 +237,7 @@
                             <td>Refund</td>
                             <td>Customer Refund</td>
                             <td>$22,500</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$15,000</td>
                         </tr>
@@ -272,8 +254,7 @@
                             <td>Purchase</td>
                             <td>Office Supplies Bought</td>
                             <td>$30,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$20,000</td>
                         </tr>
@@ -290,8 +271,7 @@
                             <td>Income</td>
                             <td>Salary Received</td>
                             <td>$12,000</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$9,000</td>
                         </tr>
@@ -308,8 +288,7 @@
                             <td>Expense</td>
                             <td>Electricity Bill Paid</td>
                             <td>$18,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$12,000</td>
                         </tr>
@@ -326,8 +305,7 @@
                             <td>Sale</td>
                             <td>Service Fee Collected</td>
                             <td>$25,000</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$17,000</td>
                         </tr>
@@ -344,8 +322,7 @@
                             <td>Refund</td>
                             <td>Customer Refund</td>
                             <td>$35,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$23,000</td>
                         </tr>
@@ -362,8 +339,7 @@
                             <td>Purchase</td>
                             <td>Equipment Purchase</td>
                             <td>$40,000</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$25,000</td>
                         </tr>
@@ -380,8 +356,7 @@
                             <td>Income</td>
                             <td>Freelance Payment</td>
                             <td>$27,500</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$18,000</td>
                         </tr>
@@ -398,8 +373,7 @@
                             <td>Expense</td>
                             <td>Office Rent Paid</td>
                             <td>$20,000</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$13,000</td>
                         </tr>
@@ -416,8 +390,7 @@
                             <td>Sale</td>
                             <td>Subscription Sale</td>
                             <td>$45,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$27,000</td>
                         </tr>
@@ -434,8 +407,7 @@
                             <td>Refund</td>
                             <td>Refund Issued</td>
                             <td>$37,500</td>
-                            <td><span class="badge badge-soft-danger"><span
-                                        class="badge-dot bg-danger"></span>Debit</span>
+                            <td><span class="badge badge-soft-danger"><span class="badge-dot bg-danger"></span>Debit</span>
                             </td>
                             <td>$23,500</td>
                         </tr>
@@ -452,8 +424,7 @@
                             <td>Purchase</td>
                             <td>Inventory Restock</td>
                             <td>$38,000</td>
-                            <td><span class="badge badge-soft-success"><span
-                                        class="badge-dot bg-success"></span>Credit</span>
+                            <td><span class="badge badge-soft-success"><span class="badge-dot bg-success"></span>Credit</span>
                             </td>
                             <td>$24,000</td>
                         </tr>
@@ -466,8 +437,7 @@
 
         <!-- Start Footer-->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All
-                Rights Reserved</p>
+            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- Start Footer-->
@@ -475,16 +445,15 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+        End Page Content
+    ========================= -->
 
     <!-- Start Filter -->
     <div class="offcanvas offcanvas-offset offcanvas-end" tabindex="-1" id="customcanvas">
         <div class="offcanvas-header d-block pb-0">
             <div class="border-bottom d-flex align-items-center justify-content-between pb-3">
                 <h6 class="offcanvas-title">Filter</h6>
-                <button type="button" class="btn-close btn-close-modal custom-btn-close" data-bs-dismiss="offcanvas"
-                    aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                <button type="button" class="btn-close btn-close-modal custom-btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-x"></i></button>
             </div>
         </div>
         <div class="offcanvas-body pt-3">
@@ -492,9 +461,7 @@
                 <div class="mb-3">
                     <label class="form-label">Account Holder</label>
                     <div class="dropdown">
-                        <a href="javascript:void(0);"
-                            class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
                             Select
                         </a>
                         <div class="dropdown-menu shadow-lg w-100 dropdown-info">
@@ -511,8 +478,7 @@
                                     <label class="d-inline-flex align-items-center text-gray-9">
                                         <input class="form-check-input select-all m-0 me-2" type="checkbox"> Select All
                                     </label>
-                                    <a href="javascript:void(0);"
-                                        class="link-danger fw-medium text-decoration-underline">Reset</a>
+                                    <a href="javascript:void(0);" class="link-danger fw-medium text-decoration-underline">Reset</a>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
@@ -546,9 +512,7 @@
                 <div class="mb-3">
                     <label class="form-label">Amount</label>
                     <div class="dropdown">
-                        <a href="javascript:void(0);"
-                            class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
                             Select
                         </a>
                         <div class="dropdown-menu shadow-lg w-100 dropdown-info">
@@ -565,8 +529,7 @@
                             <a href="#" class="btn btn-outline-white w-100">Reset</a>
                         </div>
                         <div class="col-6">
-                            <button data-bs-dismiss="offcanvas" class="btn btn-primary w-100"
-                                id="filter-submit">Submit</button>
+                            <button data-bs-dismiss="offcanvas" class="btn btn-primary w-100" id="filter-submit">Submit</button>
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,20 @@
       "Bash(php -l app/Services/System/ListExportService.php)",
       "Bash(find resources/views/backoffice -name \"index.blade.php\" -exec sed -i 's/class=\"\"table table-nowrap datatable\"\"/class=\"\"table table-nowrap table-hover\"\"/g' {} +)",
       "Bash(grep -rn '\\\\$\\\\w\\\\+->links\\(\\)' resources/views/backoffice/ --include=\"*index.blade.php\")",
-      "Bash(php -r \":*)"
+      "Bash(php -r \":*)",
+      "Bash(xargs grep -l \"TemplateCatalog\\\\|InvoiceTemplate\\\\|TemplatePreference\")",
+      "Bash(xargs grep -l \"template\\\\|Template\")",
+      "Bash(cp resources/views/pdf/templates/paid/invoice/bus-booking.blade.php resources/views/pdf/templates/paid/invoice/flight-booking.blade.php)",
+      "Bash(cp resources/views/pdf/templates/paid/invoice/bus-booking.blade.php resources/views/pdf/templates/paid/invoice/hotel-booking.blade.php)",
+      "Bash(grep -c \"''is_free'' => false\" database/seeders/TemplateCatalogSeeder.php)",
+      "Bash(for f in resources/views/pdf/templates/paid/invoice/*.blade.php)",
+      "Bash(do head -1 \"$f\")",
+      "Bash(echo \"MISSING DOCTYPE: $f\")",
+      "Bash(php artisan tinker --execute=\":*)",
+      "Bash(grep -l '\\\\$invoice->number\\\\|bill_to_snapshot\\\\|\\\\$invoice->items' c:/Users/ASUS/Desktop/Projects/facturation/resources/views/pdf/templates/paid/invoice/*.blade.php)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\ASUS\\Desktop\\Projects\\facturation\\resources\\views\\pdf\\templates\\paid"
     ]
   }
 }

@@ -5,6 +5,7 @@ namespace App\Services\System;
 use App\Models\System\DocumentNumberSequence;
 use App\Services\Tenancy\TenantContext;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DocumentNumberService
 {
@@ -46,11 +47,13 @@ class DocumentNumberService
                 ->first();
 
             if (!$sequence) {
-                // Auto-create a default sequence for this tenant+type
+                $prefix = strtoupper(substr($documentType, 0, 3)) . '-';
+                $startNumber = $this->detectNextNumber($tenantId, $documentType, $prefix);
+
                 $sequence = DocumentNumberSequence::create([
                     'key'         => $documentType,
-                    'prefix'      => strtoupper(substr($documentType, 0, 3)) . '-',
-                    'next_number' => 1,
+                    'prefix'      => $prefix,
+                    'next_number' => $startNumber,
                 ]);
             }
 
@@ -64,5 +67,37 @@ class DocumentNumberService
 
             return ($sequence->prefix ?? '') . $padded;
         });
+    }
+
+    /**
+     * Detect the next available number by scanning existing records in the target table.
+     */
+    private function detectNextNumber(string $tenantId, string $documentType, string $prefix): int
+    {
+        $tableMap = [
+            'invoice'          => 'invoices',
+            'quote'            => 'quotes',
+            'credit_note'      => 'credit_notes',
+            'debit_note'       => 'debit_notes',
+            'purchase_order'   => 'purchase_orders',
+            'delivery_challan' => 'delivery_challans',
+            'vendor_bill'      => 'vendor_bills',
+            'goods_receipt'    => 'goods_receipts',
+            'payment'          => 'payments',
+        ];
+
+        $table = $tableMap[$documentType] ?? null;
+
+        if (!$table || !Schema::hasTable($table)) {
+            return 1;
+        }
+
+        $maxNumber = DB::table($table)
+            ->where('tenant_id', $tenantId)
+            ->where('number', 'LIKE', $prefix . '%')
+            ->selectRaw("MAX(CAST(SUBSTRING(`number`, ?) AS UNSIGNED)) as max_num", [strlen($prefix) + 1])
+            ->value('max_num');
+
+        return $maxNumber ? (int) $maxNumber + 1 : 1;
     }
 }

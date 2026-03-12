@@ -1,5 +1,5 @@
 <?php $page = 'units'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
         Start Page Content

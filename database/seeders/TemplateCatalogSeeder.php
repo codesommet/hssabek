@@ -368,6 +368,7 @@ class TemplateCatalogSeeder extends Seeder
                 'sort_order' => 1,
                 'preview_image' => 'build/img/invoice/general-invoice-01.svg',
             ],
+
         ];
 
         foreach ($templates as $tpl) {

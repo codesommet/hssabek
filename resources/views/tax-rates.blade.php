@@ -1,9 +1,9 @@
 <?php $page = 'tax-rates'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
         <div class="content">
@@ -13,8 +13,8 @@
                     <!-- row start -->
                     <div class=" row settings-wrapper d-flex">
                         <!-- Start settings sidebar -->
-                        @component('backoffice.components.settings-sidebar')
-                        @endcomponent
+                        @component('components.settings-sidebar')
+                        @endcomponent                        
                         <!-- End settings sidebar -->
                         <div class="col-xl-9 col-lg-8">
                             <div class="mb-3">
@@ -24,7 +24,7 @@
                                 <div class="d-flex align-items-center mb-3">
                                     <h6 class="fs-16 fw-semibold mb-0">Tax Rates</h6>
                                 </div>
-                                <form action="{{ url('tax-rates') }}">
+                                <form action="{{url('tax-rates')}}">
                                     <div class="mb-3">
                                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                                             <div class="d-flex align-items-center flex-wrap gap-2">
@@ -32,15 +32,11 @@
                                                     <span class="input-icon-addon">
                                                         <i class="isax isax-search-normal"></i>
                                                     </span>
-                                                    <input type="text" class="form-control form-control-sm bg-white"
-                                                        placeholder="Search">
+                                                    <input type="text" class="form-control form-control-sm bg-white" placeholder="Search">
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center flex-wrap gap-2">
-                                                <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                    data-bs-target="#add_tax_rates"
-                                                    class="btn btn-primary d-flex align-items-center"><i
-                                                        class="isax isax-add-circle5 me-2"></i>New Tax Rate</a>
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_tax_rates" class="btn btn-primary d-flex align-items-center"><i class="isax isax-add-circle5 me-2"></i>New Tax Rate</a>
                                             </div>
                                         </div>
                                     </div>
@@ -64,8 +60,7 @@
                                                     <td>22 Feb 2025</td>
                                                     <td>
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                                checked="">
+                                                            <input class="form-check-input" type="checkbox" role="switch" checked="">
                                                         </div>
                                                     </td>
                                                     <td class="action-item">
@@ -74,18 +69,10 @@
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#edit_tax_rates"><i
-                                                                        class="isax isax-edit me-2"></i>Edit</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_tax_rates"><i class="isax isax-edit me-2"></i>Edit</a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delete_tax_rates"><i
-                                                                        class="isax isax-trash me-2"></i>Delete</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_tax_rates"><i class="isax isax-trash me-2"></i>Delete</a>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -98,8 +85,7 @@
                                                     <td>07 Feb 2025</td>
                                                     <td>
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                                checked="">
+                                                            <input class="form-check-input" type="checkbox" role="switch" checked="">
                                                         </div>
                                                     </td>
                                                     <td class="action-item">
@@ -108,18 +94,10 @@
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#edit_tax_rates"><i
-                                                                        class="isax isax-edit me-2"></i>Edit</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_tax_rates"><i class="isax isax-edit me-2"></i>Edit</a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delete_tax_rates"><i
-                                                                        class="isax isax-trash me-2"></i>Delete</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_tax_rates"><i class="isax isax-trash me-2"></i>Delete</a>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -132,8 +110,7 @@
                                                     <td>17 Jan 2025</td>
                                                     <td>
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" role="switch"
-                                                                checked="">
+                                                            <input class="form-check-input" type="checkbox" role="switch" checked="">
                                                         </div>
                                                     </td>
                                                     <td class="action-item">
@@ -142,18 +119,10 @@
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#edit_tax_rates"><i
-                                                                        class="isax isax-edit me-2"></i>Edit</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_tax_rates"><i class="isax isax-edit me-2"></i>Edit</a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delete_tax_rates"><i
-                                                                        class="isax isax-trash me-2"></i>Delete</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_tax_rates"><i class="isax isax-trash me-2"></i>Delete</a>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -171,16 +140,12 @@
                                                     <span class="input-icon-addon">
                                                         <i class="isax isax-search-normal"></i>
                                                     </span>
-                                                    <input type="text" class="form-control form-control-sm bg-white"
-                                                        placeholder="Search">
+                                                    <input type="text" class="form-control form-control-sm bg-white" placeholder="Search">
 
                                                 </div>
                                             </div>
                                             <div class="d-flex align-items-center flex-wrap gap-2">
-                                                <a href="javascript:void(0);" data-bs-toggle="modal"
-                                                    data-bs-target="#add_tax_group"
-                                                    class="btn btn-primary d-flex align-items-center"><i
-                                                        class="isax isax-add-circle5 me-2"></i>New Tax Group</a>
+                                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#add_tax_group" class="btn btn-primary d-flex align-items-center"><i class="isax isax-add-circle5 me-2"></i>New Tax Group</a>
                                             </div>
                                         </div>
                                     </div>
@@ -204,8 +169,7 @@
                                                     <td>19 Feb 2025</td>
                                                     <td>
                                                         <div class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                role="switch" checked="">
+                                                            <input class="form-check-input" type="checkbox" role="switch" checked="">
                                                         </div>
                                                     </td>
                                                     <td class="action-item">
@@ -214,18 +178,10 @@
                                                         </a>
                                                         <ul class="dropdown-menu">
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#edit_tax_group"><i
-                                                                        class="isax isax-edit me-2"></i>Edit</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_tax_group"><i class="isax isax-edit me-2"></i>Edit</a>
                                                             </li>
                                                             <li>
-                                                                <a href="javascript:void(0);"
-                                                                    class="dropdown-item d-flex align-items-center"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#delete_tax_group"><i
-                                                                        class="isax isax-trash me-2"></i>Delete</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_tax_group"><i class="isax isax-trash me-2"></i>Delete</a>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -245,8 +201,7 @@
 
         <!-- Start Footer-->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All
-                Rights Reserved</p>
+            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- End Footer-->
@@ -254,6 +209,6 @@
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

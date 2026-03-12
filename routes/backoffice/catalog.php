@@ -29,6 +29,10 @@ Route::prefix('catalog')->as('catalog.')->group(function () {
             ->middleware(['permission:inventory.products.create', 'plan.limit:products'])
             ->name('store');
 
+        Route::get('/{product}', [ProductController::class, 'show'])
+            ->middleware('permission:inventory.products.view')
+            ->name('show');
+
         Route::get('/{product}/edit', [ProductController::class, 'edit'])
             ->middleware('permission:inventory.products.edit')
             ->name('edit');

@@ -1,11 +1,11 @@
 <?php $page = 'sold-stock'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->
 
-    <div class="page-wrapper">
+    <div class="page-wrapper">	
 
         <!-- Start Content -->
         <div class="content content-two">
@@ -17,8 +17,7 @@
                 </div>
                 <div class="my-xl-auto">
                     <div class="dropdown">
-                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center"  data-bs-toggle="dropdown">
                             <i class="isax isax-export-1 me-1"></i>Export
                         </a>
                         <ul class="dropdown-menu">
@@ -45,13 +44,11 @@
                                         <p class="mb-1">Total Stock Sold</p>
                                         <h6 class="fs-16 fw-semibold mb-1">$8,500,000</h6>
                                         <p class="text-truncate">
-                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>5.62%</span>
-                                            from last month
+                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>5.62%</span> from last month
                                         </p>
                                     </div>
                                     <div>
-                                        <span
-                                            class="badge badge-soft-primary border border-primary rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
+                                        <span class="badge badge-soft-primary border border-primary rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
                                             <i class="isax isax-dollar-circle fs-16"></i>
                                         </span>
                                     </div>
@@ -67,13 +64,11 @@
                                         <p class="mb-1">Total Units Sold</p>
                                         <h6 class="fs-16 fw-semibold mb-1">25 Products</h6>
                                         <p class="text-truncate">
-                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>11.4%</span>
-                                            from last month
+                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>11.4%</span> from last month
                                         </p>
                                     </div>
                                     <div>
-                                        <span
-                                            class="badge badge-soft-success border border-success rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
+                                        <span class="badge badge-soft-success border border-success rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
                                             <i class="isax isax-bag-2 fs-16"></i>
                                         </span>
                                     </div>
@@ -89,13 +84,11 @@
                                         <p class="mb-1 text-truncate">Best-Selling Product</p>
                                         <h6 class="fs-16 fw-semibold mb-1 text-truncate">Earbuds (3,500 Units)</h6>
                                         <p class="text-truncate">
-                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>8.52%</span>
-                                            from last month
+                                            <span class="text-success"><i class="isax isax-send fs-10 me-1"></i>8.52%</span> from last month
                                         </p>
                                     </div>
                                     <div>
-                                        <span
-                                            class="badge badge-soft-warning border border-warning rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
+                                        <span class="badge badge-soft-warning border border-warning rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
                                             <i class="isax isax-bag-timer fs-16"></i>
                                         </span>
                                     </div>
@@ -111,13 +104,11 @@
                                         <p class="mb-1 text-truncate">Slowest Moving Product</p>
                                         <h6 class="fs-16 fw-semibold mb-1 text-truncate">Wallets (150 Units)</h6>
                                         <p class="text-truncate">
-                                            <span class="text-danger"><i
-                                                    class="isax isax-received fs-10 me-1"></i>5.62%</span> from last month
+                                            <span class="text-danger"><i class="isax isax-received fs-10 me-1"></i>5.62%</span> from last month
                                         </p>
                                     </div>
                                     <div>
-                                        <span
-                                            class="badge badge-soft-danger border border-danger rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
+                                        <span class="badge badge-soft-danger border border-danger rounded-circle p-2 d-inline-flex align-items-center justify-content-center">
                                             <i class="isax isax-timer fs-16"></i>
                                         </span>
                                     </div>
@@ -128,7 +119,7 @@
                 </div>
                 <!-- end row -->
             </div>
-
+            
             <!-- Table Search -->
             <div class="mb-3">
 
@@ -136,24 +127,19 @@
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <div class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <a href="javascript:void(0);" class="btn-searchset"><i
-                                        class="isax isax-search-normal fs-12"></i></a>
+                                <a href="javascript:void(0);" class="btn-searchset"><i class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </div>
                         <div id="reportrange" class="reportrange-picker d-flex align-items-center">
-                            <i class="isax isax-calendar text-gray-5 fs-14 me-1"></i><span
-                                class="reportrange-picker-field">16 Apr 25 - 16 Apr 25</span>
+                            <i class="isax isax-calendar text-gray-5 fs-14 me-1"></i><span class="reportrange-picker-field">16 Apr 25 - 16 Apr 25</span>
                         </div>
-                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center"
-                            href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
+                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
                             <i class="isax isax-filter me-1"></i>Filter
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="dropdown">
-                            <a href="javascript:void(0);"
-                                class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
-                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="isax isax-grid-3 me-1"></i>Column
                             </a>
                             <ul class="dropdown-menu  dropdown-menu">
@@ -195,21 +181,19 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>				
 
                 <!-- Filter Info -->
                 <div class="align-items-center gap-2 flex-wrap filter-info mt-3">
                     <h6 class="fs-13 fw-semibold">Filters</h6>
-                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span
-                            class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">5</span>Product
-                        Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
+                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">5</span>Product Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>	
                     <a href="#" class="link-danger fw-medium text-decoration-underline ms-md-1">Clear All</a>
                 </div>
                 <!-- /Filter Info -->
 
             </div>
             <!-- /Table Search -->
-
+            
             <!-- Table List -->
             <div class="table-responsive">
                 <table class="table table-nowrap datatable">
@@ -234,20 +218,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-01.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-01.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Apple iPhone 15</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Apple iPhone 15</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>2</td>
                             <td class="text-dark">$49</td>
@@ -259,20 +240,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-02.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-02.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dell XPS 13
-                                                9310</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dell XPS 13 9310</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>12</td>
                             <td class="text-dark">$12</td>
@@ -284,20 +262,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-03.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-03.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Bose QuietComfort
-                                                45</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Bose QuietComfort 45</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>2</td>
                             <td class="text-dark">$25</td>
@@ -309,20 +284,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-04.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-04.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Nike Dri-FIT
-                                                T-shirt</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Nike Dri-FIT T-shirt</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>24</td>
                             <td class="text-dark">$36</td>
@@ -334,20 +306,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-05.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-05.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Adidas Ultraboost
-                                                22 Running Shoe</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Adidas Ultraboost 22 Running Shoe</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>13</td>
                             <td class="text-dark">$9</td>
@@ -359,20 +328,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-06.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-06.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Samsung French Door
-                                                Refrigerator</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Samsung French Door Refrigerator</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Pack</td>
                             <td>67</td>
                             <td class="text-dark">$120</td>
@@ -384,20 +350,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-07.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-07.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dyson V15 Detect
-                                                Vacuum Cleaner</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dyson V15 Detect  Vacuum Cleaner</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Pack</td>
                             <td>13</td>
                             <td class="text-dark">$250</td>
@@ -409,20 +372,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-08.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-08.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">HP Spectre x360
-                                                14</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">HP Spectre x360 14</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>25</td>
                             <td class="text-dark">$541</td>
@@ -434,20 +394,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-09.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-09.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dyson Supersonic
-                                                Hair Dryer</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dyson Supersonic Hair Dryer</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Litre</td>
                             <td>24</td>
                             <td class="text-dark">$741</td>
@@ -459,20 +416,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-10.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-10.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Apple AirPods
-                                                Pro</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Apple AirPods Pro</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>65</td>
                             <td class="text-dark">$89</td>
@@ -484,20 +438,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-11.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-11.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Levi’s 501 Original
-                                                Fit Jeans</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Levi’s 501 Original Fit Jeans</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>23</td>
                             <td class="text-dark">$34</td>
@@ -509,20 +460,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-12.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-12.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">CeraVe Hydrating
-                                                Facial Cleanser</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">CeraVe Hydrating Facial Cleanser</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Liter</td>
                             <td>12</td>
                             <td class="text-dark">$45</td>
@@ -534,20 +482,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-13.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-13.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Giro Synthe MIPS
-                                                Helmet</a></h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Giro Synthe MIPS Helmet</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>43</td>
                             <td class="text-dark">$74</td>
@@ -559,20 +504,17 @@
                                     <input class="form-check-input" type="checkbox">
                                 </div>
                             </td>
-                            <td>
+                                                        <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
-                                        <img src="{{ URL::asset('build/img/products/product-14.jpg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0">
+                                        <img src="{{URL::asset('build/img/products/product-14.jpg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">OnePlus 11 5G</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">OnePlus 11 5G</a></h6>
                                     </div>
                                 </div>
                             </td>
-
+                            
                             <td class="text-dark">Piece</td>
                             <td>20</td>
                             <td class="text-dark">$80</td>
@@ -585,11 +527,10 @@
 
         </div>
         <!-- End Content -->
-
+        
         <!-- Start Footer -->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All
-                Rights Reserved</p>
+            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- End Footer -->
@@ -597,29 +538,26 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+        End Page Content
+    ========================= -->
 
     <!-- Filter -->
-    <div class="offcanvas offcanvas-offset offcanvas-end" tabindex="-1" id="customcanvas">
+    <div class="offcanvas offcanvas-offset offcanvas-end" tabindex="-1" id="customcanvas">                                      
         <div class="offcanvas-header d-block pb-0">
             <div class="border-bottom d-flex align-items-center justify-content-between pb-3">
                 <h6 class="offcanvas-title">Filter</h6>
-                <button type="button" class="btn-close btn-close-modal custom-btn-close" data-bs-dismiss="offcanvas"
-                    aria-label="Close"><i class="fa-solid fa-x"></i></button>
+                <button type="button" class="btn-close btn-close-modal custom-btn-close" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-x"></i></button>
             </div>
-        </div>
-        <div class="offcanvas-body pt-3">
+        </div>			
+        <div class="offcanvas-body pt-3">  
             <form action="#">
                 <div class="mb-3">
                     <label class="form-label">Product</label>
                     <div class="dropdown">
-                        <a href="javascript:void(0);"
-                            class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
                             Select
                         </a>
-                        <div class="dropdown-menu shadow-lg w-100 dropdown-info">
+                        <div class="dropdown-menu shadow-lg w-100 dropdown-info">							
                             <div class="mb-3">
                                 <div class="input-icon-start position-relative">
                                     <span class="input-icon-addon fs-12">
@@ -634,60 +572,42 @@
                                         <input class="form-check-input select-all m-0 me-2" type="checkbox">
                                         Select All
                                     </label>
-                                    <a href="javascript:void(0);"
-                                        class="link-danger fw-medium text-decoration-underline">Reset</a>
+                                    <a href="javascript:void(0);" class="link-danger fw-medium text-decoration-underline">Reset</a>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-01.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Apple iPhone 15
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-01.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Apple iPhone 15
                                     </label>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-02.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Dell XPS 13
-                                        9310
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-02.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Dell XPS 13 9310
                                     </label>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-03.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Bose
-                                        QuietComfort 45
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-03.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Bose QuietComfort 45
                                     </label>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-04.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Nike Dri-FIT
-                                        T-shirt
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-04.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Nike Dri-FIT T-shirt
                                     </label>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-05.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Adidas
-                                        Ultraboost 22 Running Shoe
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-05.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Adidas Ultraboost 22 Running Shoe
                                     </label>
                                 </li>
                                 <li>
                                     <label class="dropdown-item px-2 d-flex align-items-center text-dark">
                                         <input class="form-check-input m-0 me-2" type="checkbox">
-                                        <span class="avatar avatar-sm rounded-circle me-2"><img
-                                                src="{{ URL::asset('build/img/products/product-06.jpg') }}"
-                                                class="flex-shrink-0 rounded-circle" alt="img"></span>Samsung French
-                                        Door Refrigerator
+                                        <span class="avatar avatar-sm rounded-circle me-2"><img src="{{URL::asset('build/img/products/product-06.jpg')}}" class="flex-shrink-0 rounded-circle" alt="img"></span>Samsung French Door Refrigerator
                                     </label>
                                 </li>
                             </ul>
@@ -714,27 +634,24 @@
                 <div class="mb-3">
                     <label class="form-label">Price</label>
                     <div class="dropdown">
-                        <a href="javascript:void(0);"
-                            class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border"
-                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-lg bg-light  d-flex align-items-center justify-content-start fs-13 fw-normal border" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="true">
                             Select
                         </a>
-                        <div class="dropdown-menu shadow-lg w-100 dropdown-info">
+                        <div class="dropdown-menu shadow-lg w-100 dropdown-info">							
                             <div class="filter-range">
                                 <input type="text" id="range_03">
                                 <p>Range : <span class="text-gray-9">Range : $200 - $5695</span></p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>				
                 <div class="offcanvas-footer">
                     <div class="row g-2">
                         <div class="col-6">
-                            <a href="#" class="btn btn-outline-white w-100">Reset</a>
+                            <a href="#"  class="btn btn-outline-white w-100">Reset</a>
                         </div>
                         <div class="col-6">
-                            <button data-bs-dismiss="offcanvas" class="btn btn-primary w-100"
-                                id="filter-submit">Submit</button>
+                            <button data-bs-dismiss="offcanvas" class="btn btn-primary w-100" id="filter-submit">Submit</button>
                         </div>
                     </div>
                 </div>

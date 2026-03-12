@@ -109,8 +109,6 @@ class FakeDataSeeder extends Seeder
         $this->seedBankAccounts();
         $this->seedBranches();
         $this->seedFinanceCategories();
-        $this->seedDocumentNumberSequences();
-
         // Sales documents
         $this->seedQuotes();
         $this->seedInvoices();
@@ -140,6 +138,9 @@ class FakeDataSeeder extends Seeder
         // Pro features
         $this->seedRecurringInvoices();
         $this->seedInvoiceReminders();
+
+        // Must run AFTER all document seeders to detect correct next_number
+        $this->seedDocumentNumberSequences();
     }
 
     // ─── CATALOG ─────────────────────────────────────────────────────────────
@@ -1221,21 +1222,48 @@ class FakeDataSeeder extends Seeder
     private function seedDocumentNumberSequences(): void
     {
         $sequences = [
-            ['key' => 'invoices', 'prefix' => 'INV'],
-            ['key' => 'quotes', 'prefix' => 'QT'],
-            ['key' => 'purchase_orders', 'prefix' => 'PO'],
-            ['key' => 'delivery_challans', 'prefix' => 'DC'],
-            ['key' => 'credit_notes', 'prefix' => 'CN'],
-            ['key' => 'debit_notes', 'prefix' => 'DN'],
-            ['key' => 'vendor_bills', 'prefix' => 'VB'],
+            ['key' => 'invoice', 'prefix' => 'INV-'],
+            ['key' => 'quote', 'prefix' => 'QT-'],
+            ['key' => 'purchase_order', 'prefix' => 'PO-'],
+            ['key' => 'delivery_challan', 'prefix' => 'DC-'],
+            ['key' => 'credit_note', 'prefix' => 'CN-'],
+            ['key' => 'debit_note', 'prefix' => 'DN-'],
+            ['key' => 'vendor_bill', 'prefix' => 'VB-'],
+            ['key' => 'goods_receipt', 'prefix' => 'GR-'],
+        ];
+
+        $tableMap = [
+            'invoice'          => 'invoices',
+            'quote'            => 'quotes',
+            'purchase_order'   => 'purchase_orders',
+            'delivery_challan' => 'delivery_challans',
+            'credit_note'      => 'credit_notes',
+            'debit_note'       => 'debit_notes',
+            'vendor_bill'      => 'vendor_bills',
+            'goods_receipt'    => 'goods_receipts',
         ];
 
         foreach ($sequences as $seq) {
-            DocumentNumberSequence::firstOrCreate(
+            $table = $tableMap[$seq['key']] ?? null;
+            $nextNumber = 1;
+
+            if ($table) {
+                $maxNumber = \DB::table($table)
+                    ->where('tenant_id', $this->tenant->id)
+                    ->where('number', 'LIKE', $seq['prefix'] . '%')
+                    ->selectRaw("MAX(CAST(SUBSTRING(`number`, ?) AS UNSIGNED)) as max_num", [strlen($seq['prefix']) + 1])
+                    ->value('max_num');
+
+                if ($maxNumber) {
+                    $nextNumber = (int) $maxNumber + 1;
+                }
+            }
+
+            DocumentNumberSequence::updateOrCreate(
                 ['tenant_id' => $this->tenant->id, 'key' => $seq['key']],
                 [
                     'prefix' => $seq['prefix'],
-                    'next_number' => 1,
+                    'next_number' => $nextNumber,
                     'reset_policy' => 'yearly',
                 ]
             );

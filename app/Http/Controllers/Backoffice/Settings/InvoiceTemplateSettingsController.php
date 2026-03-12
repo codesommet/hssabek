@@ -196,12 +196,12 @@ class InvoiceTemplateSettingsController extends Controller
 
         // Temporarily override the template for this document type to render preview
         $docType = $catalogTemplate ? $catalogTemplate->document_type : 'invoice';
-        $style = $catalogTemplate ? $this->extractStyle($catalogTemplate->code, $docType) : $template;
 
         // In-memory override only for preview (must not persist default template).
+        // Use the full catalog code so PdfService::resolveView() can find it in the catalog.
         $invoiceSettings = $originalInvoiceSettings;
         $pdfTemplates = $invoiceSettings['pdf_templates'] ?? [];
-        $pdfTemplates[$docType] = $style;
+        $pdfTemplates[$docType] = $catalogTemplate ? $catalogTemplate->code : $template;
         $invoiceSettings['pdf_templates'] = $pdfTemplates;
         $settings->invoice_settings = $invoiceSettings;
         // Temporarily save so PdfService::resolveView() (which re-reads from DB) sees the override

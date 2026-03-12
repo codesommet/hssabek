@@ -1,17 +1,9 @@
 <?php $page = 'general-invoice-2a'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
-    @php
-        $company = $settings?->company_settings ?? [];
-        $billTo = $invoice->bill_to_snapshot ?? [];
-        $billFrom = $invoice->bill_from_snapshot ?? [];
-        $bank = $invoice->bank_details_snapshot ?? [];
-        $statusColors = ['paid' => 'text-success', 'partial' => 'text-warning', 'sent' => 'text-info', 'draft' => 'text-secondary', 'overdue' => 'text-danger', 'void' => 'text-muted'];
-        $statusLabels = ['paid' => 'Payée', 'partial' => 'Partielle', 'sent' => 'Envoyée', 'draft' => 'Brouillon', 'overdue' => 'En retard', 'void' => 'Annulée'];
-    @endphp
     <!-- ========================
-            Start Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="content p-4">
 
@@ -19,32 +11,27 @@
         <div class="row">
             <div class="col-md-10 mx-auto">
                 <div class="mb-3">
-                    <h6><a href="{{ url()->previous() }}"><i class="isax isax-arrow-left me-1"></i>Retour</a></h6>
+                    <h6><a href="{{url('invoice-templates')}}"><i class="isax isax-arrow-left me-1"></i>Back</a></h6>
                 </div>
                 <div class="mb-3 border-bottom">
                     <div class="d-flex align-items-center justify-content-between flex-wrap p-3 rounded">
                         <div class="">
-                            <h6 class="mb-2 text-primary">FACTURE</h6>
+                            <h6 class="mb-2 text-primary">INVOICE</h6>
                             <div>
-                                <h6 class="mb-1">{{ $company['company_name'] ?? $tenant?->name ?? '' }}</h6>
-                                <div>
-                                    <p class="mb-1">Adresse : <span class="text-dark">{{ $company['address'] ?? '' }}@if(!empty($company['city'])), {{ $company['city'] }}@endif @if(!empty($company['postal_code'])) {{ $company['postal_code'] }}@endif @if(!empty($company['country'])) {{ $company['country'] }}@endif</span></p>
+                                <h6 class="mb-1">Dreamstechnologies Internet Pvt Ltd.,</h6>
+                                <div> 
+                                    <p class="mb-1">Address : <span class="text-dark">15 Hodges Mews, High Wycombe HP12 3JL, United Kingdom.</span></p>
                                 </div>
                             </div>
                         </div>
                         <div class="text-end">
-                            @if($tenant)
-                                @php $logoPath = $tenant->getFirstMediaUrl('logo'); @endphp
-                                @if($logoPath)
-                                    <img src="{{ $logoPath }}" class="mb-2" alt="" style="max-height: 50px;">
-                                @endif
-                            @endif
-                            <p class="mb-1">Date : <span class="text-dark">{{ $invoice->issue_date?->format('d/m/Y') }}</span></p>
+                            <img src="{{URL::asset('build/img/invoice-logo.svg')}}" class="mb-2" alt="">
+                            <p class="mb-1">Date : <span class="text-dark">05/12/2024</span></p>
                             <div class="inv-details">
                                 <div class="inv-date-nine">
-                                    <p class="text-dark">N° Facture : <span>{{ $invoice->number }}</span></p>
+                                    <p class="text-dark">Invoice No: <span>INV 000500</span></p>                                
                                 </div>
-                                <div class="triangle-left"></div>
+                                <div class="triangle-left"></div>                            
                             </div>
                         </div>
                     </div>
@@ -54,107 +41,133 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <h6 class="fs-16 text-gray mb-2">Facturé à :</h6>
+                                    <h6 class="fs-16 text-gray mb-2">Invoice To:</h6>
                                     <div>
-                                        <p class="mb-0 text-dark">{{ $billTo['name'] ?? $invoice->customer?->name ?? '' }}</p>
-                                        <p class="mb-0 text-dark">
-                                            @if(!empty($billTo['address'])) {{ $billTo['address'] }}@if(!empty($billTo['city'])), {{ $billTo['city'] }}@endif @if(!empty($billTo['postal_code'])) {{ $billTo['postal_code'] }}@endif @if(!empty($billTo['country'])) {{ $billTo['country'] }}@endif @endif
-                                        </p>
-                                        @if(!empty($billTo['email'])) <p class="mb-0 text-dark">{{ $billTo['email'] }}</p> @endif
-                                        @if(!empty($billTo['phone'])) <p class="mb-0 text-dark">{{ $billTo['phone'] }}</p> @endif
+                                        <p class="mb-0 text-dark">Walter Roberson</p>
+                                        <p class="mb-0 text-dark">299 Star Trek Drive, Panama City, Florida, 32405, USA.</p>
+                                        <p class="mb-0 text-dark">walter@gmail.com</p>
+                                        <p class="mb-0 text-dark">+45 5421 4523</p>
                                     </div>
                                 </div>
-                            </div> <!-- end col -->
+                            </div>  <!-- end col -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <h6 class="fs-16 text-gray mb-2">Payé à :</h6>
+                                    <h6 class="fs-16 text-gray mb-2">Pay To:</h6>
                                     <div>
-                                        <p class="mb-0 text-dark">{{ $billFrom['company_name'] ?? $company['company_name'] ?? $tenant?->name ?? '' }}</p>
-                                        <p class="mb-0 text-dark">
-                                            @if(!empty($billFrom['address'] ?? $company['address'] ?? '')) {{ $billFrom['address'] ?? $company['address'] ?? '' }}@if(!empty($billFrom['city'] ?? $company['city'] ?? '')), {{ $billFrom['city'] ?? $company['city'] ?? '' }}@endif @endif
-                                        </p>
-                                        @if(!empty($billFrom['email'] ?? $company['email'] ?? '')) <p class="mb-0 text-dark">{{ $billFrom['email'] ?? $company['email'] ?? '' }}</p> @endif
-                                        @if(!empty($billFrom['phone'] ?? $company['phone'] ?? '')) <p class="mb-0 text-dark">{{ $billFrom['phone'] ?? $company['phone'] ?? '' }}</p> @endif
+                                        <p class="mb-0 text-dark">Walter Roberson</p>
+                                        <p class="mb-0 text-dark">299 Star Trek Drive, Panama City, Florida, 32405, USA.</p>
+                                        <p class="mb-0 text-dark">walter@gmail.com</p>
+                                        <p class="mb-0 text-dark">+45 5421 4523</p>
                                     </div>
                                 </div>
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
-                    </div> <!-- end col -->
+                            </div>  <!-- end col -->
+                        </div>  <!-- end row -->
+                    </div>  <!-- end col -->
                     <div class="col-lg-5">
                         <div class="mb-3">
                             <div>
-                                <p class="mb-3 text-dark">Échéance <br> <span
-                                        class="badge bg-orange-transparent text-orange">{{ $invoice->due_date?->format('d/m/Y') }}</span></p>
-                                <p class="text-dark">Statut du paiement <br> <span class="{{ $statusColors[$invoice->status] ?? 'text-info' }}">{{ $statusLabels[$invoice->status] ?? ucfirst($invoice->status) }}</span></p>
+                                <p class="mb-3 text-dark">Date <br> <span class="badge bg-orange-transparent text-orange">07/19/2023</span></p>
+                                <p class="text-dark">Payment Status <br> <span class="text-info">Not Paid</span></p>
                             </div>
                         </div>
-                    </div> <!-- end col -->
+                    </div>  <!-- end col -->
                 </div> <!-- end row -->
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
                                 <th>#</th>
-                                <th>Désignation</th>
-                                <th>Qté</th>
-                                <th>Prix unit.</th>
-                                <th>Remise</th>
-                                <th class="text-end">Total HT</th>
+                                <th>Tax Value</th>
+                                <th>Qty</th>
+                                <th>Tax Value</th>
+                                <th>Discount</th>
+                                <th class="text-end">Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($invoice->items->sortBy('position') as $index => $item)
                             <tr>
-                                <td class="text-dark">{{ $index + 1 }}</td>
-                                <td>{{ $item->label }}</td>
-                                <td class="text-dark">{{ rtrim(rtrim(number_format($item->quantity, 3, ',', ' '), '0'), ',') }}</td>
+                                <td class="text-dark">1</td>
+                                <td>Accounting Software Maintainence</td>
+                                <td class="text-dark">1</td>
                                 <td>
                                     <div>
-                                        <span class="d-block">{{ number_format($item->unit_price, 2, ',', ' ') }} {{ $currency }}</span>
+                                        <span class="d-block mb-1">$500</span>
+                                        <p class="text-primary">after disc. $450.00</p>
                                     </div>
                                 </td>
-                                <td class="text-dark">{{ $item->discount_value > 0 ? ($item->discount_type === 'percentage' ? number_format($item->discount_value, 0) . '%' : number_format($item->discount_value, 2, ',', ' ') . ' ' . $currency) : '-' }}</td>
-                                <td class="text-dark text-end">{{ number_format($item->line_subtotal, 2, ',', ' ') }} {{ $currency }}</td>
+                                <td class="text-dark">10%</td>
+                                <td class="text-dark text-end">$350</td>
                             </tr>
-                            @endforeach
+                            <tr>
+                                <td class="text-dark">2</td>
+                                <td>Man Power Support</td>
+                                <td class="text-dark">1</td>
+                                <td>
+                                    <div>
+                                        <span class="d-block">$100</span>
+                                    </div>
+                                </td>
+                                <td class="text-dark">10%</td>
+                                <td class="text-dark text-end">$600</td>
+                            </tr>
+                            <tr>
+                                <td class="text-dark">3</td>
+                                <td>Transportation Fee</td>
+                                <td class="text-dark">2</td>
+                                <td>
+                                    <div>
+                                        <span class="d-block mb-1">$500</span>
+                                        <p class="text-primary">after disc. $450.00</p>
+                                    </div>
+                                </td>
+                                <td class="text-dark">10%</td>
+                                <td class="text-dark text-end">$400</td>
+                            </tr>
+                            <tr>
+                                <td class="text-dark">4</td>
+                                <td>Spars Replacement Charges</td>
+                                <td class="text-dark">3</td>
+                                <td>
+                                    <div>
+                                        <span class="d-block">$100</span>
+                                    </div>
+                                </td>
+                                <td class="text-dark">10%</td>
+                                <td class="text-dark text-end">$300</td>
+                            </tr>
+                            <tr>
+                                <td class="text-dark">5</td>
+                                <td>Materials Handling</td>
+                                <td class="text-dark">3</td>
+                                <td>
+                                    <div>
+                                        <span class="d-block mb-1">$500</span>
+                                        <p class="text-primary">after disc. $450.00</p>
+                                    </div>
+                                </td>
+                                <td class="text-dark">10%</td>
+                                <td class="text-dark text-end">$300</td>
+                            </tr>
                             <tr>
                                 <td colspan="4">
-                                    @if($invoice->status === 'paid')
                                     <div>
-                                        <img src="{{ URL::asset('build/img/icons/paid.svg') }}" alt="">
+                                        <img src="{{URL::asset('build/img/icons/not-paid.svg')}}" alt="">
                                     </div>
-                                    @elseif(in_array($invoice->status, ['sent', 'draft', 'overdue']))
-                                    <div>
-                                        <img src="{{ URL::asset('build/img/icons/not-paid.svg') }}" alt="">
-                                    </div>
-                                    @endif
                                 </td>
                                 <td class="text-dark">
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">Sous-total HT</h6>
-                                        @if($invoice->enable_tax)
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">TVA</h6>
-                                        @endif
-                                        @if($invoice->discount_total > 0)
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">Remise</h6>
-                                        @endif
-                                        @if($invoice->round_off != 0)
-                                        <h6 class="fs-14 fw-medium mb-0">Arrondi</h6>
-                                        @endif
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">Taxable Amount</h6>
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">IGST 18.0%</h6>
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">Extra Discount Promo (5%)</h6>
+                                        <h6 class="fs-14 fw-medium mb-0">Round Off</h6>
                                     </div>
                                 </td>
                                 <td class="text-dark text-end fw-medium">
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">{{ number_format($invoice->subtotal, 2, ',', ' ') }} {{ $currency }}</h6>
-                                        @if($invoice->enable_tax)
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">{{ number_format($invoice->tax_total, 2, ',', ' ') }} {{ $currency }}</h6>
-                                        @endif
-                                        @if($invoice->discount_total > 0)
-                                        <h6 class="fs-14 fw-medium mb-2 pb-2">-{{ number_format($invoice->discount_total, 2, ',', ' ') }} {{ $currency }}</h6>
-                                        @endif
-                                        @if($invoice->round_off != 0)
-                                        <h6 class="fs-14 fw-medium mb-0">{{ number_format($invoice->round_off, 2, ',', ' ') }} {{ $currency }}</h6>
-                                        @endif
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">$1650.00</h6>
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">$165.00</h6>
+                                        <h6 class="fs-14 fw-medium mb-2 pb-2">$165.00</h6>
+                                        <h6 class="fs-14 fw-medium mb-0">$165.00</h6>
                                     </div>
                                 </td>
                             </tr>
@@ -163,49 +176,48 @@
                 </div>
                 <div class="row border-top border-bottom p-2">
                     <div class="col-md-8">
-
-                    </div> <!-- end col -->
+                        
+                    </div>  <!-- end col -->
                     <div class="col-md-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class=" text-end">
-                                <span class="fw-bold fs-18 text-end text-primary">Total TTC</span>
+                                <span class="fw-bold fs-18 text-end text-primary">Total</span>
                             </div>
                             <div class="text-end">
-                                <span class="fw-bold fs-18 text-primary">{{ number_format($invoice->total, 2, ',', ' ') }} {{ $currency }}</span>
+                                <span class="fw-bold fs-18 text-primary">$1,815.00</span>
                             </div>
                         </div>
-                    </div> <!-- end col -->
-                </div> <!-- end row -->
-                @if($invoice->total_in_words)
+                    </div>  <!-- end col -->               
+                </div>  <!-- end row -->
                 <div class="row py-3 border-bottom mb-3 d-flex align-items-center">
                     <div class="col-lg-12">
                         <div class="d-flex align-items-center justify-content-center">
-                            <p class="text-dark">Arrêtée la présente facture à la somme de : {{ $invoice->total_in_words }}</p>
+                            <p class="text-dark">Total amount ( in words): One Thousand Eight Hundred Fifteen Dollars Only.</p>
                         </div>
-                    </div> <!-- end col -->
-                </div> <!-- end row -->
-                @endif
-                <div class="d-flex align-items-center justify-content-between flex-wrap border-bottom mb-3">
-                    @if(!empty($bank))
+                    </div>  <!-- end col -->                       
+                </div>  <!-- end row -->
+                <div class="d-flex align-items-center justify-content-between flex-wrap border-bottom mb-3">                        
                     <div class="d-flex align-items-center mb-3">
+                        <div class="me-4">
+                            <span class="d-block mb-2"><img src="{{URL::asset('build/img/icons/qr.png')}}" alt=""></span>
+                            <p class="text-dark">Scan to View Receipt</p>
+                        </div>
                         <div>
-                            <h6 class="mb-2">Coordonnées bancaires :</h6>
+                            <h6 class="mb-2">Payment Info :</h6>
                             <div>
-                                @if(!empty($bank['bank_name'])) <p class="mb-1">Banque : <span class="text-dark">{{ $bank['bank_name'] }}</span></p> @endif
-                                @if(!empty($bank['rib'])) <p class="mb-1">RIB : <span class="text-dark">{{ $bank['rib'] }}</span></p> @endif
+                                <p class="mb-1">Debit Card :  <span class="text-dark">465*************645</span></p>
+                                <p class="mb-1">Amount :  <span class="text-dark">$1,815</span></p>
                             </div>
                         </div>
                     </div>
-                    @endif
-                    @if($invoice->terms)
                     <div class="mb-3">
-                        <h6 class="mb-2">Conditions générales :</h6>
-                        {!! nl2br(e($invoice->terms)) !!}
+                        <h6 class="mb-2">Terms & Conditions : </h6>
+                        <p class="mb-1">1. Goods Once sold cannot be taken back or exchanged.</p>
+                        <p>2. We are not the manufactures, company will stand for warrenty as per their terms and conditions.</p>
                     </div>
-                    @endif
                 </div>
                 <div class="border-bottom text-center pb-3">
-                    <p>Merci pour votre confiance</p>
+                    <p>Thanks for your Business</p>
                 </div>
             </div> <!-- end col -->
         </div>
@@ -214,6 +226,6 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->     
 @endsection

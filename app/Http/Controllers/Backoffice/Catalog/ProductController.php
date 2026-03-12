@@ -105,6 +105,62 @@ class ProductController extends Controller
             ->with('success', "$label créé avec succès.");
     }
 
+    public function show(Product $product)
+    {
+        $this->authorize('view', $product);
+
+        // Load product with relationships
+        $product->load(['category', 'unit', 'taxCategory', 'stocks.warehouse']);
+
+        // Get invoices through invoice items
+        $invoices = \App\Models\Sales\Invoice::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with('customer')->latest('issue_date')->limit(20)->get();
+
+        // Get quotes through quote items
+        $quotes = \App\Models\Sales\Quote::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with('customer')->latest('issue_date')->limit(20)->get();
+
+        // Get delivery challans
+        $deliveryChallans = \App\Models\Sales\DeliveryChallan::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with('customer')->latest('challan_date')->limit(20)->get();
+
+        // Get purchase orders
+        $purchaseOrders = \App\Models\Purchases\PurchaseOrder::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with('supplier')->latest('order_date')->limit(20)->get();
+
+        // Get debit notes
+        $debitNotes = \App\Models\Purchases\DebitNote::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with('supplier')->latest('debit_note_date')->limit(20)->get();
+
+        // Get goods receipts
+        $goodsReceipts = \App\Models\Purchases\GoodsReceipt::whereHas('items', function ($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })->with(['purchaseOrder.supplier', 'warehouse'])->latest('received_at')->limit(20)->get();
+
+        // Get recent stock movements
+        $stockMovements = StockMovement::with(['warehouse', 'createdBy'])
+            ->where('product_id', $product->id)
+            ->latest('moved_at')
+            ->limit(20)
+            ->get();
+
+        return view('backoffice.catalog.products.show', compact(
+            'product',
+            'invoices',
+            'quotes',
+            'deliveryChallans',
+            'purchaseOrders',
+            'debitNotes',
+            'goodsReceipts',
+            'stockMovements'
+        ));
+    }
+
     public function edit(Product $product)
     {
         $this->authorize('update', $product);

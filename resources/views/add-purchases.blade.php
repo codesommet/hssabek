@@ -1,9 +1,9 @@
 <?php $page = 'add-purchases'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
 
@@ -17,13 +17,11 @@
                     <!-- Start Breadcrumb -->
                     <div class="d-flex d-block align-items-center justify-content-between flex-wrap gap-3 mb-3">
                         <div>
-                            <h6><a href="{{ url('purchases') }}" class="d-flex align-items-center "><i
-                                        class="isax isax-arrow-left me-2"></i>Purchase</a></h6>
+                            <h6><a href="{{url('purchases')}}" class="d-flex align-items-center "><i class="isax isax-arrow-left me-2"></i>Purchase</a></h6>
                         </div>
                         <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
                             <div class="me-1">
-                                <a href="javascript:void(0);"
-                                    class="btn btn-outline-white d-inline-flex align-items-center">
+                                <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center">
                                     <i class="isax isax-eye me-1"></i>Preview
                                 </a>
                             </div>
@@ -47,8 +45,7 @@
                                                     <div class="col-md-6">
                                                         <div class="mb-3">
                                                             <label class="form-label">Purchase Id</label>
-                                                            <input type="text" class="form-control" placeholder="1254569"
-                                                                readonly>
+                                                            <input type="text" class="form-control" placeholder="1254569" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -60,9 +57,7 @@
                                                     <div class="col-md-12">
                                                         <label class="form-label">Purchase Date</label>
                                                         <div class="input-group position-relative mb-3">
-                                                            <input type="text"
-                                                                class="form-control datetimepicker rounded-end"
-                                                                placeholder="25 Mar 2025">
+                                                            <input type="text" class="form-control datetimepicker rounded-end" placeholder="25 Mar 2025">
                                                             <span class="input-icon-addon fs-16 text-gray-9">
                                                                 <i class="isax isax-calendar-2"></i>
                                                             </span>
@@ -82,10 +77,8 @@
                                                     <div class="col-md-12">
                                                         <div class="mb-3">
                                                             <div class="logo-image">
-                                                                <img src="{{ URL::asset('build/img/invoice-logo.svg') }}"
-                                                                    class="invoice-logo-dark" alt="img">
-                                                                <img src="{{ URL::asset('build/img/invoice-logo-white-2.svg') }}"
-                                                                    class="invoice-logo-white" alt="img">
+                                                                <img src="{{URL::asset('build/img/invoice-logo.svg')}}" class="invoice-logo-dark" alt="img">
+                                                                <img src="{{URL::asset('build/img/invoice-logo-white-2.svg')}}" class="invoice-logo-white" alt="img">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -113,10 +106,8 @@
                                                         <div class="p-2 border rounded d-flex justify-content-between">
                                                             <div class="d-flex align-items-center">
                                                                 <div class="form-check form-switch me-4">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        role="switch" id="enabe_tax" checked>
-                                                                    <label class="form-check-label" for="enabe_tax">Enable
-                                                                        Tax</label>
+                                                                    <input class="form-check-input" type="checkbox" role="switch" id="enabe_tax" checked>
+                                                                    <label class="form-check-label" for="enabe_tax">Enable Tax</label>
                                                                 </div>
                                                             </div>
                                                             <div>
@@ -157,8 +148,7 @@
                                                     <div class="d-flex">
                                                         <div class="me-3">
                                                             <span class="p-2 rounded border">
-                                                                <img src="{{ URL::asset('build/img/logo-small.svg') }}"
-                                                                    alt="image" class="img-fluid">
+                                                                <img src="{{URL::asset('build/img/logo-small.svg')}}" alt="image" class="img-fluid">
                                                             </span>
                                                         </div>
                                                         <div>
@@ -197,8 +187,7 @@
                                                 <div class="p-3 bg-light rounded border">
                                                     <div class="d-flex">
                                                         <div class="me-3">
-                                                            <span><img
-                                                                    src="{{ URL::asset('build/img/icons/timesquare-icon.svg') }}"
+                                                            <span><img src="{{URL::asset('build/img/icons/timesquare-icon.svg')}}"
                                                                     alt="image" class="img-fluid rounded"></span>
                                                         </div>
                                                         <div>
@@ -232,15 +221,13 @@
                                             <h6 class="fs-14 mb-1">Item Type</h6>
                                             <div class="d-flex align-items-center gap-3">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
                                                     <label class="form-check-label" for="flexRadioDefault1">
                                                         Product
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="flexRadioDefault" id="flexRadioDefault2">
+                                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                                                     <label class="form-check-label" for="flexRadioDefault2">
                                                         Service
                                                     </label>
@@ -281,36 +268,29 @@
                                                     <input type="text" class="form-control" value="Nike Jordon">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="1"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="1" style="min-width: 66px;">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="Pcs"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="Pcs" style="min-width: 66px;">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="$1360.00"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="$1360.00" style="min-width: 66px;">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="0%"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="0%" style="min-width: 66px;">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="18"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="18" style="min-width: 66px;">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="$1358.00"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="$1358.00" style="min-width: 66px;">
                                                 </td>
                                                 <td>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <input type="text" class="form-control"
-                                                        value="Enter Product Name">
+                                                    <input type="text" class="form-control" value="Enter Product Name">
                                                 </td>
                                                 <td>
                                                     <input type="text" class="form-control" value="0">
@@ -328,13 +308,11 @@
                                                     <input type="text" class="form-control" value="0">
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control" value="0"
-                                                        style="min-width: 66px;">
+                                                    <input type="text" class="form-control" value="0" style="min-width: 66px;">
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <a href="javascript:void(0);" class="text-danger remove-table"><i
-                                                                class="isax isax-close-circle"></i></a>
+                                                        <a href="javascript:void(0);" class="text-danger remove-table"><i class="isax isax-close-circle"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -344,8 +322,7 @@
                                 <!-- Table list end -->
 
                                 <div>
-                                    <a href="#" class="d-inline-flex align-items-center add-invoice-data"><i
-                                            class="isax isax-add-circle5 text-primary me-1"></i>Add New</a>
+                                    <a href="#" class="d-inline-flex align-items-center add-invoice-data"><i class="isax isax-add-circle5 text-primary me-1"></i>Add New</a>
                                 </div>
                             </div>
 
@@ -359,23 +336,13 @@
                                             <div>
                                                 <ul class="nav nav-tabs nav-solid-primary mb-3" role="tablist">
                                                     <li class="nav-item me-2" role="presentation">
-                                                        <a class="nav-link active border fs-12 fw-semibold rounded"
-                                                            data-bs-toggle="tab" data-bs-target="#notes"
-                                                            aria-current="page" href="javascript:void(0);"><i
-                                                                class="isax isax-document-text me-1"></i>Add Notes</a>
+                                                        <a class="nav-link active border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#notes" aria-current="page" href="javascript:void(0);"><i class="isax isax-document-text me-1"></i>Add Notes</a>
                                                     </li>
                                                     <li class="nav-item me-2" role="presentation">
-                                                        <a class="nav-link border fs-12 fw-semibold rounded"
-                                                            data-bs-toggle="tab" data-bs-target="#terms"
-                                                            href="javascript:void(0);"><i
-                                                                class="isax isax-document me-1"></i>Add Terms &
-                                                            Conditions</a>
+                                                        <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#terms" href="javascript:void(0);"><i class="isax isax-document me-1"></i>Add Terms & Conditions</a>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <a class="nav-link border fs-12 fw-semibold rounded"
-                                                            data-bs-toggle="tab" data-bs-target="#bank"
-                                                            href="javascript:void(0);"><i
-                                                                class="isax isax-bank me-1"></i>Bank Details</a>
+                                                        <a class="nav-link border fs-12 fw-semibold rounded" data-bs-toggle="tab" data-bs-target="#bank" href="javascript:void(0);"><i class="isax isax-bank me-1"></i>Bank Details</a>
                                                     </li>
                                                 </ul>
                                                 <div class="tab-content">
@@ -392,13 +359,10 @@
                                                         <select class="select">
                                                             <option>Select</option>
                                                             <option>Andrew - 5225655545555454 (Swiss Bank)</option>
-                                                            <option>Mark Salween - 4654145644566 (International Bank)
-                                                            </option>
-                                                            <option>Sophia Martinez - 7890123456789012 (Global Finance)
-                                                            </option>
+                                                            <option>Mark Salween - 4654145644566 (International Bank)</option>
+                                                            <option>Sophia Martinez - 7890123456789012 (Global Finance)</option>
                                                             <option>David Chen - 2345678901234567 (National Bank)</option>
-                                                            <option>Emily Johnson - 3456789012345678 (Community Credit
-                                                                Union)</option>
+                                                            <option>Emily Johnson - 3456789012345678 (Community Credit Union)</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -426,9 +390,7 @@
                                                 </div>
                                             </li>
                                             <li class="mb-3">
-                                                <a href="javascript:void(0);" class="d-flex align-items-center "><i
-                                                        class="isax isax-add-circle5 text-primary me-1"></i>Add Additional
-                                                    Charges</a>
+                                                <a href="javascript:void(0);" class="d-flex align-items-center "><i class="isax isax-add-circle5 text-primary me-1"></i>Add Additional Charges</a>
                                             </li>
                                             <li class="mb-3">
                                                 <div class="d-flex align-items-center justify-content-between">
@@ -445,10 +407,8 @@
                                             <li class="pb-3 border-gray border-bottom">
                                                 <div class="p-2  d-flex justify-content-between">
                                                     <div class="form-check form-switch me-4">
-                                                        <input class="form-check-input" type="checkbox" role="switch"
-                                                            id="enabe_tax1" checked>
-                                                        <label class="form-check-label" for="enabe_tax1">Round Off
-                                                            Total</label>
+                                                        <input class="form-check-input" type="checkbox" role="switch" id="enabe_tax1" checked>
+                                                        <label class="form-check-label" for="enabe_tax1">Round Off Total</label>
                                                     </div>
                                                     <div>
                                                         <h6 class="fs-14">$596</h6>
@@ -486,13 +446,10 @@
                                                 </div>
                                             </li>
                                             <li>
-                                                <div
-                                                    class="singnature-upload bg-light d-flex align-items-center justify-content-center">
-                                                    <div
-                                                        class="drag-upload-btn bg-light position-relative mb-2 fs-14 fw-normal text-gray-5">
+                                                <div class="singnature-upload bg-light d-flex align-items-center justify-content-center">
+                                                    <div class="drag-upload-btn bg-light position-relative mb-2 fs-14 fw-normal text-gray-5">
                                                         <i class="isax isax-image me-1 text-primary"></i>Upload Image
-                                                        <input type="file" class="form-control image-sign"
-                                                            multiple="">
+                                                        <input type="file" class="form-control image-sign" multiple="">
                                                     </div>
                                                 </div>
                                             </li>
@@ -517,12 +474,12 @@
         </div>
         <!-- End Content -->
 
-        @component('backoffice.components.footer')
+        @component('components.footer')
         @endcomponent
 
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

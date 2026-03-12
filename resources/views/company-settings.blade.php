@@ -1,9 +1,9 @@
 <?php $page = 'company-settings'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= --> 
 
     <div class="page-wrapper">
         <div class="content">
@@ -11,19 +11,17 @@
             <div class="row justify-content-center mb-4">
                 <div class="col-lg-12">
                     <div class=" row settings-wrapper d-flex">
-                        @component('backoffice.components.settings-sidebar')
+                        @component('components.settings-sidebar')
                         @endcomponent
                         <div class="col-xl-9 col-lg-8">
                             <div class="mb-4 pb-4 border-bottom">
                                 <h6 class="fw-bold mb-0">Company Settings</h6>
                             </div>
-                            <form action="{{ url('company-settings') }}">
+                            <form action="{{url('company-settings')}}">
                                 <div class="border-bottom mb-4">
                                     <div class="card-title-head">
                                         <h6 class="fs-16 fw-semibold mb-3 d-flex align-items-center">
-                                            <span
-                                                class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i
-                                                    class="isax isax-info-circle"></i></span>
+                                            <span class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i class="isax isax-info-circle"></i></span> 
                                             General Information
                                         </h6>
                                     </div>
@@ -65,9 +63,7 @@
                                 <div class="border-bottom mb-4 pb-3">
                                     <div class="card-title-head">
                                         <h6 class="fs-16 fw-semibold mb-3 d-flex align-items-center">
-                                            <span
-                                                class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i
-                                                    class="isax isax-image"></i></span>
+                                            <span class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i class="isax isax-image"></i></span> 
                                             Company Images
                                         </h6>
                                     </div>
@@ -87,12 +83,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -101,11 +95,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-light border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-1.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-1.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -125,12 +116,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -139,11 +128,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-dark border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-2.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-2.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -163,12 +149,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -177,11 +161,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-light border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-1.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-1.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -201,12 +182,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -215,11 +194,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-dark border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-4.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-4.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -239,12 +215,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -253,11 +227,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-light border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-3.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-3.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -277,12 +248,10 @@
                                                                 <div class="image-upload mb-1">
                                                                     <input type="file">
                                                                     <div class="image-uploads">
-                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo
-                                                                        </h4>
+                                                                        <h4><i class="ti ti-upload me-1"></i>Change Photo</h4>
                                                                     </div>
                                                                 </div>
-                                                                <span class="fs-12">Recommended size is 250 px*100
-                                                                    px</span>
+                                                                <span class="fs-12">Recommended size is 250 px*100 px</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -291,11 +260,8 @@
                                         </div>
                                         <div class="col-xl-3">
                                             <div class="new-logo ms-xl-auto bg-light border">
-                                                <img src="{{ URL::asset('build/img/settings/company-setting-3.svg') }}"
-                                                    alt="Logo">
-                                                <a href="javascript:void(0);"
-                                                    class="logo-trash bg-white text-danger me-1 mt-1"><i
-                                                        class="isax isax-trash"></i></a>
+                                                <img src="{{URL::asset('build/img/settings/company-setting-3.svg')}}" alt="Logo">
+                                                <a href="javascript:void(0);" class="logo-trash bg-white text-danger me-1 mt-1"><i class="isax isax-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -303,9 +269,7 @@
                                 <div class="company-address pb-2 mb-4 border-bottom">
                                     <div class="card-title-head">
                                         <h6 class="fs-16 fw-bold mb-3 d-flex align-items-center">
-                                            <span
-                                                class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i
-                                                    class="isax isax-map"></i></span>
+                                            <span class="fs-16 me-2 p-1 rounded bg-dark text-white d-inline-flex align-items-center justify-content-center"><i class="isax isax-map"></i></span> 
                                             Address Information
                                         </h6>
                                     </div>
@@ -379,12 +343,12 @@
             </div>
             <!-- End Row -->
 
-            @component('backoffice.components.footer')
+            @component('components.footer')
             @endcomponent
         </div>
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

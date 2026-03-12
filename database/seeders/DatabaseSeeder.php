@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             // 1) Plans (global, no tenant FK)
-            PlanSeeder::class,
+            // PlanSeeder::class,
 
             // 2) Permissions (~120 permission strings)
             PermissionSeeder::class,
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             DemoTenantSeeder::class,
 
             // 5) Fake data for all CRUD operations (customers, products, invoices, etc.)
-            FakeDataSeeder::class,
+            // FakeDataSeeder::class,
         ]);
     }
 }

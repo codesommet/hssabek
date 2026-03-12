@@ -1,9 +1,9 @@
 <?php $page = 'icon-flag'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper cardhead">
 
@@ -529,11 +529,11 @@
         </div>
         <!-- End container -->
 
-        @component('backoffice.components.footer')
+        @component('components.footer')
         @endcomponent
     </div>
 
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 @endsection

@@ -14,6 +14,9 @@ class PlansBillingsController extends Controller
         $tenant = TenantContext::get();
         $currentSubscription = Subscription::with('plan')
             ->where('status', '!=', 'cancelled')
+            ->where(function ($q) {
+                $q->whereNull('cancels_at')->orWhere('cancels_at', '>', now());
+            })
             ->latest('starts_at')
             ->first();
         $subscriptionHistory = Subscription::with('plan')

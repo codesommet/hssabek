@@ -1,9 +1,9 @@
 <?php $page = 'ui-placeholders'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
 
@@ -39,20 +39,17 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                In the example below, we take a typical card component and recreate it with placeholders
-                                applied to create a “loading card”. Size and proportions are the same between the two.
+                                In the example below, we take a typical card component and recreate it with placeholders applied to create a “loading card”. Size and proportions are the same between the two.
                             </p>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card border shadow-none mb-md-0">
-                                        <img src="{{ URL::asset('build/img/media/img-1.jpg') }}" class="card-img-top"
-                                            alt="...">
+                                        <img src="{{URL::asset('build/img/media/img-1.jpg')}}" class="card-img-top" alt="...">
 
                                         <div class="card-body">
                                             <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">Some quick example text to build on the card title and make
-                                                up the bulk of the card's content.
+                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
                                             </p>
                                             <a href="#" class="btn btn-primary">Go somewhere</a>
                                         </div>
@@ -64,8 +61,7 @@
 
                                 <div class="col-md-6">
                                     <div class="card border shadow-none mb-0" aria-hidden="true">
-                                        <img src="{{ URL::asset('build/img/media/img-2.jpg') }}" class="card-img-top"
-                                            alt="...">
+                                        <img src="{{URL::asset('build/img/media/img-2.jpg')}}" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <h5 class="header-title placeholder-glow">
                                                 <span class="placeholder col-6"> </span>
@@ -77,8 +73,7 @@
                                                 <span class="placeholder col-6"></span>
                                                 <span class="placeholder col-8"></span>
                                             </p>
-                                            <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true">
-                                                <span class="invisible">Read Only</span></a>
+                                            <a class="btn btn-primary disabled placeholder col-6" aria-disabled="true"> <span class="invisible">Read Only</span></a>
                                         </div>
                                         <!-- end card body -->
                                     </div>
@@ -99,8 +94,7 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                You can change the <code>width</code> through grid column classes, width utilities, or
-                                inline styles.
+                                You can change the <code>width</code> through grid column classes, width utilities, or inline styles.
                             </p>
                             <span class="placeholder col-6"></span>
                             <span class="placeholder w-75"></span>
@@ -119,9 +113,7 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                The size of <code>.placeholder</code>s are based on the typographic style of the parent
-                                element. Customize them with sizing modifiers: <code>.placeholder-lg</code>,
-                                <code>.placeholder-sm</code>, or <code>.placeholder-xs</code>.
+                                The size of <code>.placeholder</code>s are based on the typographic style of the parent element. Customize them with sizing modifiers: <code>.placeholder-lg</code>, <code>.placeholder-sm</code>, or <code>.placeholder-xs</code>.
                             </p>
                             <span class="placeholder col-12 placeholder-lg"></span>
                             <span class="placeholder col-12"></span>
@@ -144,8 +136,7 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                By default, the <code>placeholder</code> uses <code>currentColor</code>. This can be
-                                overriden with a custom color or utility class.
+                                By default, the <code>placeholder</code> uses <code>currentColor</code>. This can be overriden with a custom color or utility class.
                             </p>
                             <span class="placeholder col-12"></span>
                             <span class="placeholder col-12 bg-primary"></span>
@@ -169,9 +160,7 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                Create placeholders with the <code>.placeholder</code> class and a grid column class (e.g.,
-                                <code>.col-6</code>) to set the <code>width</code>. They can replace the text inside an
-                                element or as be added as a modifier
+                                Create placeholders with the <code>.placeholder</code> class and a grid column class (e.g., <code>.col-6</code>) to set the <code>width</code>. They can replace the text inside an element or as be added as a modifier
                                 class to an existing component.
                             </p>
                             <p aria-hidden="true">
@@ -192,8 +181,7 @@
 
                         <div class="card-body">
                             <p class="text-muted">
-                                Animate placehodlers with <code>.placeholder-glow</code> or <code>.placeholder-wave</code>
-                                to better convey the perception of something being <em>actively</em> loaded.
+                                Animate placehodlers with <code>.placeholder-glow</code> or <code>.placeholder-wave</code> to better convey the perception of something being <em>actively</em> loaded.
                             </p>
                             <p class="placeholder-glow">
                                 <span class="placeholder col-12"></span>
@@ -219,12 +207,7 @@
 
         <!-- Start Footer -->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script> <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights
-                Reserved
-            </p>
+            <p class="text-dark mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- End Footer -->
@@ -232,6 +215,6 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

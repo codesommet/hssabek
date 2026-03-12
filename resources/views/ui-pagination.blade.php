@@ -1,9 +1,9 @@
 <?php $page = 'ui-pagination'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-            Start Page Content
-        ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
 
@@ -69,8 +69,7 @@
                         </div>
 
                         <div class="card-body">
-                            <p>Pagination links are customizable for different circumstances. Use <code>.disabled</code> for
-                                links that appear un-clickable and <code>.active</code> to indicate the current page.</p>
+                            <p>Pagination links are customizable for different circumstances. Use <code>.disabled</code> for links that appear un-clickable and <code>.active</code> to indicate the current page.</p>
 
                             <nav aria-label="...">
                                 <ul class="pagination mb-0">
@@ -209,8 +208,7 @@
                                             <i class="ti ti-chevron-left"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
@@ -232,8 +230,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
@@ -248,20 +245,17 @@
                                 <ul class="pagination pagination-boxed mb-0">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                            <iconify-icon icon="solar:arrow-left-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-left-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">5</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
                                         <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                            <iconify-icon icon="solar:arrow-right-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-right-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                 </ul>
@@ -289,8 +283,7 @@
                                         </a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">2</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
@@ -309,8 +302,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
@@ -328,8 +320,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
@@ -367,8 +358,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
@@ -402,8 +392,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript: void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
                                     <li class="page-item">
@@ -429,15 +418,13 @@
                         <div class="card-body">
                             <p>Add <code> .pagination-boxed</code> for rounded pagination.</p>
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-primary flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-primary flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
                                             <i class="ti ti-chevron-left"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
@@ -451,8 +438,7 @@
                             </nav>
 
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-secondary flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-secondary flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
                                             <i class="ti ti-arrow-left"></i>
@@ -460,8 +446,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">5</a></li>
                                     <li class="page-item">
@@ -473,24 +458,20 @@
                             </nav>
 
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-dark mb-0 flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-dark mb-0 flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
-                                            <iconify-icon icon="solar:arrow-left-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-left-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">5</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">5</a></li>
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Next">
-                                            <iconify-icon icon="solar:arrow-right-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-right-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                 </ul>
@@ -500,7 +481,7 @@
                 </div> <!-- end col -->
 
 
-                <div class="col-xl-6">
+                    <div class="col-xl-6">
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title">Gradient Color Pagination</h5>
@@ -509,15 +490,13 @@
                             <p>Add <code> .pagination-boxed</code> for rounded pagination.</p>
 
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-gradient pagination-primary flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-gradient pagination-primary flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
                                             <i class="ti ti-chevron-left"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
@@ -531,8 +510,7 @@
                             </nav>
 
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-secondary pagination-gradient flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-secondary pagination-gradient flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
                                             <i class="ti ti-arrow-left"></i>
@@ -540,8 +518,7 @@
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">3</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">5</a></li>
                                     <li class="page-item">
@@ -553,24 +530,20 @@
                             </nav>
 
                             <nav>
-                                <ul
-                                    class="pagination pagination-boxed pagination-dark pagination-gradient mb-0 flex-wrap gap-lg-0 gap-md-0 gap-1">
+                                <ul class="pagination pagination-boxed pagination-dark pagination-gradient mb-0 flex-wrap gap-lg-0 gap-md-0 gap-1">
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Previous">
-                                            <iconify-icon icon="solar:arrow-left-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-left-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
                                     <li class="page-item"><a class="page-link" href="javascript:void(0);">4</a></li>
-                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">5</a>
-                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="javascript:void(0);">5</a></li>
                                     <li class="page-item">
                                         <a class="page-link" href="javascript:void(0);" aria-label="Next">
-                                            <iconify-icon icon="solar:arrow-right-line-duotone"
-                                                class="fs-18"></iconify-icon>
+                                            <iconify-icon icon="solar:arrow-right-line-duotone" class="fs-18"></iconify-icon>
                                         </a>
                                     </li>
                                 </ul>
@@ -586,12 +559,7 @@
 
         <!-- Start Footer -->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script> <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights
-                Reserved
-            </p>
+            <p class="text-dark mb-0">&copy; <script>document.write(new Date().getFullYear())</script> <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- End Footer -->
@@ -599,6 +567,6 @@
     </div>
 
     <!-- ========================
-            End Page Content
-        ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

@@ -131,8 +131,9 @@ class PdfService
     {
         $payment->loadMissing(['customer', 'paymentMethod', 'allocations.invoice']);
 
-        $data = $this->buildData($payment, 'payment');
-        $pdf  = Pdf::loadView('pdf.templates.free.payment-receipt.model-1', $data)->setPaper('a4', 'portrait');
+        $data = $this->buildData($payment, 'payment_receipt');
+        $view = $this->resolveView('payment_receipt');
+        $pdf  = Pdf::loadView($view, $data)->setPaper('a4', 'portrait');
 
         $filename = 'recu-paiement-' . ($payment->reference_number ?? $payment->id) . '.pdf';
 
@@ -163,7 +164,8 @@ class PdfService
         $bill->loadMissing(['supplier', 'purchaseOrder', 'goodsReceipt']);
 
         $data = $this->buildData($bill, 'vendor_bill');
-        $pdf  = Pdf::loadView('pdf.templates.free.vendor-bill.model-1', $data)->setPaper('a4', 'portrait');
+        $view = $this->resolveView('vendor_bill');
+        $pdf  = Pdf::loadView($view, $data)->setPaper('a4', 'portrait');
 
         $filename = 'facture-fournisseur-' . $bill->number . '.pdf';
 
@@ -177,7 +179,8 @@ class PdfService
         $debitNote->loadMissing(['supplier', 'items', 'vendorBill', 'purchaseOrder']);
 
         $data = $this->buildData($debitNote, 'debit_note');
-        $pdf  = Pdf::loadView('pdf.templates.free.debit-note.model-1', $data)->setPaper('a4', 'portrait');
+        $view = $this->resolveView('debit_note');
+        $pdf  = Pdf::loadView($view, $data)->setPaper('a4', 'portrait');
 
         $filename = 'note-debit-' . $debitNote->number . '.pdf';
 
@@ -190,8 +193,9 @@ class PdfService
     {
         $payment->loadMissing(['supplier', 'paymentMethod', 'vendorBill', 'allocations.vendorBill']);
 
-        $data = $this->buildData($payment, 'supplier_payment');
-        $pdf  = Pdf::loadView('pdf.templates.free.supplier-payment-receipt.model-1', $data)->setPaper('a4', 'portrait');
+        $data = $this->buildData($payment, 'supplier_payment_receipt');
+        $view = $this->resolveView('supplier_payment_receipt');
+        $pdf  = Pdf::loadView($view, $data)->setPaper('a4', 'portrait');
 
         $filename = 'recu-paiement-fournisseur-' . ($payment->reference_number ?? $payment->id) . '.pdf';
 
@@ -205,7 +209,8 @@ class PdfService
         $receipt->loadMissing(['purchaseOrder.supplier', 'warehouse', 'items.product', 'creator']);
 
         $data = $this->buildData($receipt, 'goods_receipt');
-        $pdf  = Pdf::loadView('pdf.templates.free.goods-receipt.model-1', $data)->setPaper('a4', 'portrait');
+        $view = $this->resolveView('goods_receipt');
+        $pdf  = Pdf::loadView($view, $data)->setPaper('a4', 'portrait');
 
         $filename = 'bon-reception-' . $receipt->number . '.pdf';
 

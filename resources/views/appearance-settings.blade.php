@@ -1,9 +1,9 @@
 <?php $page = 'appearance-settings'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper">
 
@@ -18,15 +18,15 @@
                     <div class=" row settings-wrapper d-flex">
 
                         <!-- Start settings sidebar -->
-                        @component('backoffice.components.settings-sidebar')
-                        @endcomponent
+                        @component('components.settings-sidebar')
+                        @endcomponent                        
                         <!-- End settings sidebar -->
 
                         <div class="col-xl-9 col-lg-8">
                             <div class="mb-3 pb-3 border-bottom">
                                 <h6 class="fw-bold mb-0">Appearance</h6>
                             </div>
-                            <form action="{{ url('appearance-settings') }}">
+                            <form action="{{url('appearance-settings')}}">
                                 <div class="mb-3">
 
                                     <!-- start row -->
@@ -44,8 +44,7 @@
                                                         <div class="card-body p-2">
                                                             <a href="javascript:void(0);">
                                                                 <div class="border rounded border-gray mb-2">
-                                                                    <img src="{{ URL::asset('build/img/theme/light.jpg') }}"
-                                                                        class="img-fluid rounded" alt="theme">
+                                                                    <img src="{{URL::asset('build/img/theme/light.jpg')}}" class="img-fluid rounded" alt="theme">
                                                                 </div>
                                                                 <p class="text-center fw-medium text-truncate">Light</p>
                                                             </a>
@@ -57,8 +56,7 @@
                                                         <div class="card-body p-2">
                                                             <a href="javascript:void(0);">
                                                                 <div class="border rounded border-gray mb-2">
-                                                                    <img src="{{ URL::asset('build/img/theme/dark.jpg') }}"
-                                                                        class="img-fluid rounded" alt="theme">
+                                                                    <img src="{{URL::asset('build/img/theme/dark.jpg')}}" class="img-fluid rounded" alt="theme">
                                                                 </div>
                                                                 <p class="text-center fw-medium text-truncate">Dark</p>
                                                             </a>
@@ -70,8 +68,7 @@
                                                         <div class="card-body p-2">
                                                             <a href="javascript:void(0);">
                                                                 <div class="border rounded border-gray mb-2">
-                                                                    <img src="{{ URL::asset('build/img/theme/automatic.jpg') }}"
-                                                                        class="img-fluid rounded" alt="theme">
+                                                                    <img src="{{URL::asset('build/img/theme/automatic.jpg')}}" class="img-fluid rounded" alt="theme">
                                                                 </div>
                                                                 <p class="text-center fw-medium text-truncate">Automatic</p>
                                                             </a>
@@ -97,33 +94,29 @@
                                                     <li>
                                                         <span class="themecolorset">
                                                             <span class="primecolor bg-primary">
-                                                                <span class="colorcheck text-white"><i
-                                                                        class="ti ti-check text-primary fs-10"></i></span>
-                                                            </span>
+                                                                <span class="colorcheck text-white"><i class="ti ti-check text-primary fs-10"></i></span>
+                                                        </span>
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <span class="themecolorset">
                                                             <span class="primecolor bg-secondary">
-                                                                <span class="colorcheck text-white"><i
-                                                                        class="ti ti-check text-primary fs-10"></i></span>
-                                                            </span>
+                                                                <span class="colorcheck text-white"><i class="ti ti-check text-primary fs-10"></i></span>
+                                                        </span>
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <span class="themecolorset">
                                                             <span class="primecolor bg-info">
-                                                                <span class="colorcheck text-white"><i
-                                                                        class="ti ti-check text-primary fs-10"></i></span>
-                                                            </span>
+                                                                <span class="colorcheck text-white"><i class="ti ti-check text-primary fs-10"></i></span>
+                                                        </span>
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <span class="themecolorset active">
                                                             <span class="primecolor bg-danger">
-                                                                <span class="colorcheck text-white"><i
-                                                                        class="ti ti-check text-primary fs-10"></i></span>
-                                                            </span>
+                                                                <span class="colorcheck text-white"><i class="ti ti-check text-primary fs-10"></i></span>
+                                                        </span>
                                                         </span>
                                                     </li>
                                                 </ul>
@@ -192,8 +185,7 @@
 
                                 </div>
 
-                                <div
-                                    class="text-end settings-bottom-btn mt-0 border-top d-flex align-items-center justify-content-between pt-4 mb-3">
+                                <div class="text-end settings-bottom-btn mt-0 border-top d-flex align-items-center justify-content-between pt-4 mb-3">
                                     <button type="button" class="btn btn-outline-white btn-md me-2">Cancel</button>
                                     <button type="submit" class="btn btn-primary btn-md">Save Changes</button>
                                 </div>
@@ -211,8 +203,7 @@
 
         <!-- Start Footer-->
         <div class="footer d-sm-flex align-items-center justify-content-between bg-white py-2 px-4 border-top">
-            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights
-                Reserved</p>
+            <p class="text-dark mb-0">&copy; 2025 <a href="javascript:void(0);" class="link-primary">Kanakku</a>, All Rights Reserved</p>
             <p class="text-dark">Version : 1.3.8</p>
         </div>
         <!-- End Footer-->
@@ -220,6 +211,6 @@
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

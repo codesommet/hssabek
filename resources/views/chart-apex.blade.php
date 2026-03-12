@@ -1,9 +1,9 @@
 <?php $page = 'chart-apex'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= -->
 
     <div class="page-wrapper cardhead">
         <div class="content ">
@@ -128,11 +128,11 @@
             </div>
         </div>
 
-        @component('backoffice.components.footer')
+        @component('components.footer')
         @endcomponent
     </div>
-
+    
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection

@@ -1,9 +1,9 @@
 <?php $page = 'companies'; ?>
-@extends('backoffice.layout.mainlayout')
+@extends('layout.mainlayout')
 @section('content')
     <!-- ========================
-                Start Page Content
-            ========================= -->
+        Start Page Content
+    ========================= --> 
 
     <div class="page-wrapper">
         <div class="content content-two">
@@ -14,8 +14,7 @@
                 </div>
                 <div class="d-flex my-xl-auto right-content align-items-center flex-wrap gap-2">
                     <div class="dropdown me-1">
-                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center"
-                            data-bs-toggle="dropdown">
+                        <a href="javascript:void(0);" class="btn btn-outline-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
                             <i class="isax isax-export-1 me-1"></i>Export
                         </a>
                         <ul class="dropdown-menu">
@@ -28,8 +27,7 @@
                         </ul>
                     </div>
                     <div>
-                        <a href="#" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
-                            data-bs-target="#add_companies">
+                        <a href="#" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#add_companies">
                             <i class="isax isax-add-circle5 me-1"></i>New Company
                         </a>
                     </div>
@@ -117,20 +115,16 @@
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="table-search d-flex align-items-center mb-0">
                             <div class="search-input">
-                                <a href="javascript:void(0);" class="btn-searchset"><i
-                                        class="isax isax-search-normal fs-12"></i></a>
+                                <a href="javascript:void(0);" class="btn-searchset"><i class="isax isax-search-normal fs-12"></i></a>
                             </div>
                         </div>
-                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center"
-                            href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
+                        <a class="btn btn-outline-white fw-normal d-inline-flex align-items-center" href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#customcanvas">
                             <i class="isax isax-filter me-1"></i>Filter
                         </a>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="dropdown me-2">
-                            <a href="javascript:void(0);"
-                                class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center fw-medium"
-                                data-bs-toggle="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center fw-medium" data-bs-toggle="dropdown">
                                 <i class="isax isax-sort me-1"></i>Sort By : <span class="fw-normal ms-1">Latest</span>
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-end">
@@ -143,9 +137,7 @@
                             </ul>
                         </div>
                         <div class="dropdown">
-                            <a href="javascript:void(0);"
-                                class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center"
-                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-outline-white d-inline-flex align-items-center" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="isax isax-grid-3 me-1"></i>Column
                             </a>
                             <ul class="dropdown-menu  dropdown-menu-lg">
@@ -191,12 +183,8 @@
                 <!-- Filter Info -->
                 <div class="align-items-center gap-2 flex-wrap filter-info mt-3">
                     <h6 class="fs-13 fw-semibold">Filters</h6>
-                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span
-                            class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">5</span>Companies
-                        Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
-                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span
-                            class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">2</span>Plans
-                        Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
+                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">5</span>Companies Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
+                    <span class="tag bg-light border rounded-1 fs-12 text-dark badge"><span class="num-count d-inline-flex align-items-center justify-content-center bg-success fs-10 me-1">2</span>Plans Selected<span class="ms-1 tag-close"><i class="fa-solid fa-x fs-10"></i></span></span>
                     <a href="#" class="link-danger fw-medium text-decoration-underline ms-md-1">Clear All</a>
                 </div>
                 <!-- /Filter Info -->
@@ -231,11 +219,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-01.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-01.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Trend Hive</a></h6>
@@ -247,9 +232,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>22 Feb 2025</td>
@@ -264,19 +247,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -289,11 +266,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-02.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-02.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Quick Cart</a></h6>
@@ -305,9 +279,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Basic (Yearly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>07 Feb 2025</td>
@@ -322,19 +294,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -347,15 +313,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-03.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-03.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Tech Bazaar</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Tech Bazaar</a></h6>
                                     </div>
                                 </div>
                             </td>
@@ -364,9 +326,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>30 Jan 2025</td>
@@ -381,19 +341,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -406,15 +360,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-04.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-04.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Harvest Basket</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Harvest Basket</a></h6>
                                     </div>
                                 </div>
                             </td>
@@ -423,9 +373,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>17 Jan 2025</td>
@@ -440,19 +388,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -465,11 +407,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-05.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-05.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Elite Mart</a></h6>
@@ -481,9 +420,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Enterprise (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>04 Jan 2025</td>
@@ -498,19 +435,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -523,11 +454,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-06.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-06.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Prime Mart</a></h6>
@@ -539,9 +467,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>09 Dec 2024</td>
@@ -556,19 +482,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -581,15 +501,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-07.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-07.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Trend Crafters</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Trend Crafters</a></h6>
                                     </div>
                                 </div>
                             </td>
@@ -598,9 +514,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Enterprise (Yearly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>02 Dec 2024</td>
@@ -615,19 +529,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -640,11 +548,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-08.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-08.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Fresh Nest</a></h6>
@@ -656,9 +561,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Basic (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>30 Nov 2024</td>
@@ -673,19 +576,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -698,11 +595,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-09.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-09.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Gizmo Mart</a></h6>
@@ -714,9 +608,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Basic (Yearly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>15 Nov 2024</td>
@@ -731,19 +623,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -756,15 +642,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-10.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-10.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dream Space</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Dream Space</a></h6>
                                     </div>
                                 </div>
                             </td>
@@ -773,9 +655,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Enterprise (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>12 Oct 2024</td>
@@ -790,19 +670,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -815,11 +689,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-11.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-11.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Mega Mart</a></h6>
@@ -831,9 +702,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>05 Oct 2024</td>
@@ -848,19 +717,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -873,11 +736,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-12.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-12.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Decor Ease</a></h6>
@@ -889,9 +749,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Basic (Yearly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>09 Sep 2024</td>
@@ -906,19 +764,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -931,15 +783,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-13.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-13.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
-                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Electro World</a>
-                                        </h6>
+                                        <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Electro World</a></h6>
                                     </div>
                                 </div>
                             </td>
@@ -948,9 +796,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Advanced (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>02 Sep 2024</td>
@@ -965,19 +811,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -990,11 +830,8 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <a href="javascript:void(0);"
-                                        class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal"
-                                        data-bs-target="#companies_details">
-                                        <img src="{{ URL::asset('build/img/icons/company-14.svg') }}"
-                                            class="rounded-circle" alt="img">
+                                    <a href="javascript:void(0);" class="avatar avatar-sm rounded-circle me-2 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#companies_details">
+                                        <img src="{{URL::asset('build/img/icons/company-14.svg')}}" class="rounded-circle" alt="img">
                                     </a>
                                     <div>
                                         <h6 class="fs-14 fw-medium mb-0"><a href="javascript:void(0);">Urban Home</a></h6>
@@ -1006,9 +843,7 @@
                             <td>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="mb-0">Enterprise (Monthly)</p>
-                                    <a href="javascript:void(0);" class="ms-3"><span
-                                            class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i
-                                                class="isax isax-candle"></i></span></a>
+                                    <a href="javascript:void(0);" class="ms-3"><span class="btn btn-sm btn-light p-1 d-inline-flex align-items-center"><i class="isax isax-candle"></i></span></a>
                                 </div>
                             </td>
                             <td>07 Aug 2024</td>
@@ -1023,19 +858,13 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#view_companies"><i
-                                                class="isax isax-eye me-2"></i>View</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#view_companies"><i class="isax isax-eye me-2"></i>View</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#edit_companies"><i
-                                                class="isax isax-edit me-2"></i>Edit</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#edit_companies"><i class="isax isax-edit me-2"></i>Edit</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"
-                                            data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                class="isax isax-trash me-2"></i>Delete</a>
+                                        <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#delete_modal"><i class="isax isax-trash me-2"></i>Delete</a>
                                     </li>
                                 </ul>
                             </td>
@@ -1047,11 +876,11 @@
 
         </div>
 
-        @component('backoffice.components.footer')
+        @component('components.footer')
         @endcomponent
     </div>
 
     <!-- ========================
-                End Page Content
-            ========================= -->
+        End Page Content
+    ========================= -->
 @endsection
